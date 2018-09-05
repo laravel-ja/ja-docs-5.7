@@ -38,7 +38,7 @@
     - [認証](/docs/{{version}}/authentication)
     - [API認証](/docs/{{version}}/passport)
     - [認可](/docs/{{version}}/authorization)
-    - [Email Verification](/docs/{{version}}/verification)
+    - [メール検証](/docs/{{version}}/verification)
     - [暗号化](/docs/{{version}}/encryption)
     - [ハッシュ](/docs/{{version}}/hashing)
     - [パスワードリセット](/docs/{{version}}/passwords)
@@ -72,7 +72,7 @@
 - ## テスト
     - [テストの準備](/docs/{{version}}/testing)
     - [HTTPテスト](/docs/{{version}}/http-tests)
-    - [Console Tests](/docs/{{version}}/console-tests)
+    - [コンソールテスト](/docs/{{version}}/console-tests)
     - [ブラウザテスト](/docs/{{version}}/dusk)
     - [データベース](/docs/{{version}}/database-testing)
     - [モック](/docs/{{version}}/mocking)
