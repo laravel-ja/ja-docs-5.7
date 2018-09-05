@@ -11,7 +11,7 @@
 - [ポリシーの記述](#writing-policies)
     - [ポリシーのメソッド](#policy-methods)
     - [モデルを持たないメソッド](#methods-without-models)
-    - [Guest Users](#guest-users)
+    - [ゲストユーザー](#guest-users)
     - [ポリシーフィルタ](#policy-filters)
 - [ポリシーを使ったアクションの認可](#authorizing-actions-using-policies)
     - [Userモデルによる認可](#via-the-user-model)
@@ -237,9 +237,9 @@ Laravelは組み込み済みの[認証](/docs/{{version}}/authentication)サー�
     }
 
 <a name="guest-users"></a>
-### Guest Users
+### ゲストユーザー
 
-By default, all gates and policies automatically return `false` if the incoming HTTP request was not initiated by an authenticated user. However, you may allow these authorization checks to pass through to your gates and policies by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
+HTTPリクエストが認証済みユーザーにより開始されたものでなければ、全てのゲートとポリシーは自動的にデフォルトとして`false`を返します。しかし、「オプショナル」なタイプヒントを宣言するか、ユーザーの引数宣言に`null`デフォルトバリューを指定することで、ゲートやポリシーに対する認可チェックをパスさせることができます。
 
     <?php
 

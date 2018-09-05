@@ -1198,7 +1198,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 <a name="method-pad"></a>
 #### `pad()` {#collection-method}
 
-`pad`メソッドは、配列が指定したサイズに達するまで、指定値で配列を埋めます。このメソッドは[array_pad](https://secure.php.net/manual/en/function.array-pad.php) PHP関数のような動作をします。
+`pad`メソッドは、配列が指定したサイズに達するまで、指定値で配列を埋めます。このメソッドは[array_pad](https://secure.php.net/manual/ja/function.array-pad.php) PHP関数のような動作をします。
 
 先頭を埋めるためには、サイズに負数を指定します。配列サイズ以下のサイズ値を指定した場合は、埋め込みを行いません。
 

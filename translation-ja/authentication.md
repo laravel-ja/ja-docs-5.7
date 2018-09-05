@@ -599,8 +599,8 @@ Laravelは認証処理の過程で、様々な[イベント](/docs/{{version}}/e
             'App\Listeners\LogAuthenticationAttempt',
         ],
 
-        'Illuminate\Auth\Events\Registered' => [
-            'App\Listeners\LogRegisteredUser',
+        'Illuminate\Auth\Events\Authenticated' => [
+            'App\Listeners\LogAuthenticated',
         ],
 
         'Illuminate\Auth\Events\Login' => [

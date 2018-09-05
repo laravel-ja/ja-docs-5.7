@@ -476,7 +476,7 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
         }
     }
 
-Next, define a route to your Cashier controller within your `routes/web.php` file:
+次に、`routes/web.php`の中で、キャッシャーコントローラへのルートを定義します。
 
     Route::post(
         'stripe/webhook',

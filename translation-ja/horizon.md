@@ -20,7 +20,7 @@ Horizon（水平線、展望）は、Laravelで動作するRedisキューのた�
 <a name="installation"></a>
 ## インストール
 
-> {note} Due to its usage of async process signals, Horizon requires PHP 7.1+. Secondly, you should ensure that your queue driver is set to `redis` in your `queue` configuration file.
+> {note} 非同期のプロセスシグナルを活用しているため、Horizonを動作させるにはPHP7.1以上が必要です。次に、`queue`設定ファイルで、`redis`をキュードライバーへ確実に指定してください。
 
 Composerを使い、LaravelプロジェクトにHorizonをインストールします。
 
@@ -87,7 +87,7 @@ Horizonを実働サーバにデプロイする場合、`php artisan horizon`コ�
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/horizon.log
 
-> {tip} If you are uncomfortable managing your own servers, consider using [Laravel Forge](https://forge.laravel.com). Forge provisions PHP 7+ servers with everything you need to run modern, robust Laravel applications with Horizon.
+> {tip} サーバ管理に自信がない場合は、[Laravel Forge](https://forge.laravel.com)の利用を考慮してください。ForgeはHorizonを利用する、モダンで堅牢なLaravelアプリケーションに必要なすべてをPHP7以上のサーバにプロビションします。
 
 <a name="tags"></a>
 ## タグ

@@ -389,7 +389,7 @@ Markdown MailableではBladeコンポーネントとMarkdown記法が利用で�
 
 #### Buttonコンポーネント
 
-The button component renders a centered button link. The component accepts two arguments, a `url` and an optional `color`. Supported colors are `primary`, `success`, and `error`. You may add as many button components to a message as you wish:
+ボタンコンポーネントは中央寄せのボタンリンクをレンダーします。このコンポーネントは引数として、`url`とオプションの`color`を受け取ります。サポートしている色は`primary`、`success`、`error`です。メッセージに好きなだけのボタンコンポーネントを追加できます。
 
     @component('mail::button', ['url' => $url, 'color' => 'success'])
     注文の確認
@@ -473,7 +473,7 @@ The button component renders a centered button link. The component accepts two a
 <a name="rendering-mailables"></a>
 ## Mailableのレンダリング
 
-Sometimes you may wish to capture the HTML content of a mailable without sending it. To accomplish this, you may call the `render` method of the mailable. This method will return the evaluated contents of the mailable as a string:
+場合により、実際に送信はしないが、MailableのHTMLコンテンツを利用したいことも起きます。そのためには、Mailableの`render`メソッドを呼び出してください。このメソッドは、Mailableのコンテンツを評価し、文字列として返します。
 
     $invoice = App\Invoice::find(1);
 

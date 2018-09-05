@@ -1278,7 +1278,7 @@ NULL値を指定すると、空の配列が返ってきます。
 
 変数の値をダンプした後に実行を停止したい場合は、代わりに[`dd`](#method-dd)関数を使用してください。
 
-> {tip} You may use Artisan's `dump-server` command to intercept all `dump` calls and display them in your console window instead of your browser.
+> {tip} すべての`dump`呼び出しをインターセプトし、ブラウザの代わりにコンソールウィンドウで表示する、Artisan `dump-server`コマンドが利用できます。
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {#collection-method}
@@ -1387,13 +1387,13 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-optional"></a>
 #### `optional()` {#collection-method}
 
-The `optional` function accepts any argument and allows you to access properties or call methods on that object. If the given object is `null`, properties and methods will return `null` instead of causing an error:
+`optional`関数はどんな引数も指定でき、そのオブジェクトのプロパティへアクセスするか、メソッドを呼び出せます。指定したオブジェクトが`null`だった場合、エラーを発生させる代わりに、プロパティとメソッドは`null`を返します。
 
     return optional($user->address)->street;
 
     {!! old('name', optional($user)->name) !!}
 
-The `optional` function also accepts a Closure as its second argument. The Closure will be invoked if the value provided as the first argument is not null:
+`optional`関数は、第２引数にクロージャを受け付けます。クロージャは最初の引数がNULLでなかった場合に、呼び出されます。
 
     return optional(User::find($id), function ($user) {
         return new DummyUser;

@@ -46,7 +46,7 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 <a name="which-branch"></a>
 ## どのブランチ？
 
-**All** bug fixes should be sent to the latest stable branch or to the current LTS branch (5.6). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**全ての**バグフィックスは、最新の安定ブランチ,もしくは現在のLTSブランチ(5.6)へ送ってください。次のリリースの中にだけ存在している機能に対する修正でない限り、決してバグフィックスを`master`ブランチに送っては**いけません**。
 
 現在のLaravelリリースと**完全な後方コンパティビリティ**を持っている**マイナー**な機能は、最新の安定ブランチへ送ってください。
 

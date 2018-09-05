@@ -2,14 +2,14 @@
 
 - [バージョニング規約](#versioning-scheme)
 - [サポートポリシー](#support-policy)
-- [Laravel 5.7](#laravel-5.7)
+- [Laravel5.7](#laravel-5.7)
 
 <a name="versioning-scheme"></a>
 ## バージョニング規約
 
 Laravelのバージョニングは、「パラダイム.メジャー・マイナー」の規約を維持しています。メジャーフレームワークリリースは、１月と６月の半年ごとにリリースします。一方、マイナーリリースは毎週のように、頻繁にリリースされます。マイナーリリースは、ブレーキングチェンジを**絶対に**含めません。
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `5.7.*`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+アプリケーションやパッケージで、Laravelフレームワークやコンポーネントを利用する場合、常に`5.7.*`のようにバージョンを指定してください。理由は上記の通り、Laravelのメジャーリリースは、ブレーキングチェンジを含んでいるからです。新しいメジャーリリースへの更新は、一日かからない程度になるように努力しています。
 
 パラダイムシフトリリースは数年空けています。これはフレームワークの構造と規約に重要な変更が起きたことを表します。現在、パラダイムシフトリリースは開発されていません。
 
@@ -27,10 +27,10 @@ Laravel5.5のようなLTSリリースでは、バグフィックスは２年間�
 | 5.4 | ２０１７年１月２４日 | ２０１７年７月２４日 | ２０１８年１月２４日 |
 | 5.5 (LTS) | ２０１７年８月３０日 | ２０１９年８月３０日 | ２０２０年８月３０日 |
 | 5.6 | ２０１８年２月７日 | ２０１８年８月７日 | ２０１９年２月７日 |
-| 5.7 | August 2018 | February 2019 | August 2019 |
+| 5.7 | ２０１８年８月 | ２０１９年２月 | ２０１９年８月 |
 
 <a name="laravel-5.7"></a>
-## Laravel 5.7
+## Laravel5.7
 
 Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, console testing improvements, Symfony `dump-server` integration, localizable notifications, and a variety of other bug fixes and usability improvements.
 

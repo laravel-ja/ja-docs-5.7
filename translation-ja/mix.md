@@ -296,7 +296,7 @@ The `version` method will automatically append a unique hash to the filenames of
     mix.js('resources/assets/js/app.js', 'public/js')
        .version();
 
-After generating the versioned file, you won't know the exact file name. So, you should use Laravel's global `mix` function within your [views](/docs/{{version}}/views) to load the appropriately hashed asset. The `mix` function will automatically determine the current name of the hashed file:
+バージョン付されたファイルを生成した後は、適切にバージョン付けされたアセットのURLを生成するため、Laravelのグローバル`mix`関数を[ビュー](/docs/{{version}}/views)の中で使用してください。
 
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
