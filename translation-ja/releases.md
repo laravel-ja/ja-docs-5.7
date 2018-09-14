@@ -32,19 +32,19 @@ Laravel5.5のようなLTSリリースでは、バグフィックスは２年間�
 <a name="laravel-5.7"></a>
 ## Laravel5.7
 
-Laravel 5.7 continues the improvements made in Laravel 5.6 by introducing [Laravel Nova](https://nova.laravel.com), optional email verification to the authentication scaffolding, support for guest users in authorization gates and policies, console testing improvements, Symfony `dump-server` integration, localizable notifications, and a variety of other bug fixes and usability improvements.
+Laravel5.7はLaravel5.6からの持続的な向上に付け加え、[Laravel Nova](https://nova.laravel.com)、認証のスカフォールドへのオプショナルなメール確認の導入、認可のゲートとポリシーでのゲストユーザーのサポート、コンソールのテスト向上、Symfonyの`dump-server`の統合、通知のローカライズ化、それと様々なバグ修正に、使い勝手の向上が行われました。
 
 ### Laravel Nova
 
-[Laravel Nova](https://nova.laravel.com) is a beautiful, best-in-class administration dashboard for Laravel applications. Of course, the primary feature of Nova is the ability to administer your underlying database records using Eloquent. Additionally, Nova offers support for filters, lenses, actions, queued actions, metrics, authorization, custom tools, custom cards, custom fields, and more.
+[Laravel Nova](https://nova.laravel.com)はLaravelアプリケーションの美しく、クラス最高な管理ダッシュボードです。もちろん、Novaのメインな機能は、裏で働いているEloquentを使用したデータベースレコードを管理する能力です。さらに、Novaはフィルター、レンズ、アクション、キューされたアクション、メトリクス、認証、カスタムツール、カスタムカード、カスタムフィールドなども提供しています。
 
-To learn more about Laravel Nova, check out the [Nova website](https://nova.laravel.com).
+Laravel Novaについてより詳しく学ぶには、[NovaのWebサイト](https://nova.laravel.com)で確認してください。
 
-### Email Verification
+### メール確認
 
-Laravel 5.7 introduces optional email verification to the authentication scaffolding included with the framework. To accommodate this feature, an `email_verified_at` timestamp column has been added to the default `users` table migration that is included with the framework.
+フレームワークに含まれている認証スカフォールドへ、オプショナルなメール確認をLaravel5.7から導入しました。この機能を取り入れるために、フレームワークに含まれている`users`テーブルデフォルトマイグレーションへ、`email_verified_at`タイムスタンプを追加しました。
 
-To prompt newly registered users to verify their email, the `User` model should be marked with the `MustVerifyEmail` interface:
+新しい登録ユーザーへメールで登録を確認してもらうのを促すには、`User`モデルに`MustVerifyEmail`インターフェイスを実装します。
 
     <?php
 
@@ -59,45 +59,45 @@ To prompt newly registered users to verify their email, the `User` model should 
         // ...
     }
 
-Once the `User` model is marked with the `MustVerifyEmail` interface, newly registered users will receive an email containing a signed verification link. Once this link has been clicked, Laravel will automatically record the verification time in the database and redirect users to a location of your choosing.
+`User`モデルに`MustVerifyEmail`インターフェイスを実装すると、新しい登録ユーザーは、サイン付きの確認リンクを含んだメールを受信します。このリンクがクリックされると、Laravelは自動的に確認時間をデータベースに登録し、あなたの選んだページへユーザーをリダイレクトします。
 
-A `verified` middleware has been added to the default application's HTTP kernel. This middleware may be attached to routes that should only allow verified users:
+`verified`ミドルウェアをデフォルトのアプリケーションのHTTPカーネルへ追加しました。このミドルウェアは、追加したルートへ確認済みのユーザーだけを許可します。
 
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-> {tip} To learn more about email verification, check out the [complete documentation](/docs/{{version}}/verification).
+> {tip} メール確認についてもっと知るには、[完全なドキュメント](/docs/{{version}}/verification)をチェックしてください。
 
-### Guest User Gates / Policies
+### ゲストユーザーゲート／ポリシー
 
-In previous versions of Laravel, authorization gates and policies automatically returned `false` for unauthenticated visitors to your application. However, you may now allow guests to pass through authorization checks by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
+以前のバージョンのLaravelでは、認可ゲートとポリシーは、アプリケーションの未認証な訪問者に対し、自動的に`false`を返していました。しかし今バージョンからはユーザーの引数定義で、「オプショナル」なタイプヒントを宣言するか、`null`デフォルト値を指定することにより、ゲストを認可チェックにパスさせることができます。
 
     Gate::define('update-post', function (?User $user, Post $post) {
         // ...
     });
 
-### Symfony Dump Server
+### Symfonyダンプサーバ
 
-Laravel 5.7 offers integration with Symfony's `dump-server` command via [a package by Marcel Pociot](https://github.com/beyondcode/laravel-dump-server). To get started, run the `dump-server` Artisan command:
+Laravel5.7では、[Marcel Pociotによるパッケージ](https://github.com/beyondcode/laravel-dump-server)により、Symfonyの`dump-server`コマンドを統合しました。利用開始するには、`dump-server` Artisanコマンドを起動します。
 
     php artisan dump-server
 
-Once the server has started, all calls to `dump` will be displayed in the `dump-server` console window instead of in your browser, allowing you to inspect the values without mangling your HTTP response output.
+サーバを起動すると、すべての`dump`呼び出しはブラウザの代わりに、`dump-server`コンソールウィンドウに表示されます。それにより、HTTPレスポンス出力をごちゃごちゃにしなくても、値を確認できます。
 
-### Notification Localization
+### 通知のローカライズ化
 
-Laravel now allows you to send notifications in a locale other than the current language, and will even remember this locale if the notification is queued.
+Laravelは現在の言語ではなく、ローケルにより通知を送れるようになりました。このローケルは通知がキューされていても保持されます。
 
-To accomplish this, the `Illuminate\Notifications\Notification` class now offers a `locale` method to set the desired language. The application will change into this locale when the notification is being formatted and then revert back to the previous locale when formatting is complete:
+これを実現するため、希望する言語を指定する`locale`メソッドを`Illuminate\Notifications\Notification`クラスに提供しました。アプリケーションは通知を整形する時に、指定のローケルへ変更します。その後に整形が完了したら、以前のローケルへ戻ります。
 
     $user->notify((new InvoicePaid($invoice))->locale('es'));
 
-Localization of multiple notifiable entries may also be achieved via the `Notification` facade:
+複数のNotifiableエントリーのローカリゼーションも、`Notification`ファサードにより達成できます。
 
     Notification::locale('es')->send($users, new InvoicePaid($invoice));
 
-### Console Testing
+### コンソールテスト
 
-Laravel 5.7 allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
+Laravel5.7で`expectsQuestion`メソッドを使用すれば、コンソールコマンドのユーザー入力を簡単に「モック」できます。更に、終了コードを`assertExitCode`メソッドで、コンソールコマンドに期待する出力を`expectsOutput`メソッドで指定することもできます。
 
     Artisan::command('question', function () {
         $name = $this->ask('What is your name?');
@@ -111,10 +111,10 @@ Laravel 5.7 allows you to easily "mock" user input for your console commands usi
         $this->line('Your name is '.$name.' and you program in '.$language.'.');
     });
 
-You may test this command with the following test which utilizes the `expectsQuestion`, `expectsOutput`, and `assertExitCode` methods:
+このコマンドを以下のように、`expectsQuestion`、`expectsOutput`、`assertExitCode`メソッドを活用してテストできます。
 
     /**
-     * Test a console command.
+     * コンソールコマンドのテスト
      *
      * @return void
      */
@@ -127,21 +127,21 @@ You may test this command with the following test which utilizes the `expectsQue
              ->assertExitCode(0);
     }
 
-### URL Generator & Callable Syntax
+### URLジェネレータとコールバック記法
 
-Instead of only accepting strings, Laravel's URL generator now accepts "callable" syntax when generating URLs to controller actions:
+コントローラアクションに対するURLを生成する場合、LaravelのURLジェネレータは文字列を受け取るだけでなく、"callable"記法も受け付けるようになりました。
 
     action([UserController::class, 'index']);
 
-### Paginator Links
+### ペジネーションリンク
 
-Laravel 5.7 allows you to control how many additional links are displayed on each side of the paginator's URL "window". By default, three links are displayed on each side of the primary paginator links. However, you may control this number using the `onEachSide` method:
+Laravel5.7では、ペギネータのURL「ウィンドウ」の両サイドに、いくつの追加のリンクを表示するかを調整できます。デフォルトでは、メインのペジネータリンクの両サイドに３つのリンクが表示されます。この数を調整するには、`onEachSide`メソッドを使用します。
 
     {{ $paginator->onEachSide(5)->links() }}
 
-### Filesystem Read / Write Streams
+### ファイルシステム読み込み／書き込みストリーム
 
-Laravel's Flysystem integration now offers `readStream` and `writeStream` methods:
+Laravelのファイルシステムに、`readStream`と`writeStream`メソッドが用意されました。
 
     Storage::disk('s3')->writeStream(
         'remote-file.zip',

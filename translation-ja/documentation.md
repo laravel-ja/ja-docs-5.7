@@ -38,7 +38,7 @@
     - [認証](/docs/{{version}}/authentication)
     - [API認証](/docs/{{version}}/passport)
     - [認可](/docs/{{version}}/authorization)
-    - [メール検証](/docs/{{version}}/verification)
+    - [メール確認](/docs/{{version}}/verification)
     - [暗号化](/docs/{{version}}/encryption)
     - [ハッシュ](/docs/{{version}}/hashing)
     - [パスワードリセット](/docs/{{version}}/passwords)

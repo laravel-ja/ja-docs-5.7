@@ -1,20 +1,20 @@
-# Email Verification
+# メール確認
 
-- [Introduction](#introduction)
-- [Database Considerations](#verification-database)
-- [Routing](#verification-routing)
-    - [Protecting Routes](#protecting-routes)
-- [Views](#verification-views)
-- [After Verifying Emails](#after-verifying-emails)
+- [イントロダクション](#introduction)
+- [データベースの検討](#verification-database)
+- [ルート](#verification-routing)
+    - [保護下のルート](#protecting-routes)
+- [ビュー](#verification-views)
+- [メール確認後](#after-verifying-emails)
 
 <a name="introduction"></a>
-## Introduction
+## イントロダクション
 
-Many web applications requires users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
+多くのWebアプリケーションはアプリケーション利用開始前に、ユーザーのメールアドレスを確認する必要があります。アプリケーションごとに再実装しなくても済むように、Laravelはメールを送信し、メールの確認リクエストを検証する便利なメソッドを用意しています。
 
-### Model Preparation
+### モデルの準備
 
-To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract. In addition, you should use the `Illuminate\Auth\MustVerifyEmail` trait:
+利用を開始するには、`App\User`モデルが`Illuminate\Contracts\Auth\MustVerifyEmail`契約を実装していることを確認してください。さらに、`Illuminate\Auth\MustVerifyEmail`トレイトを使用する必要もあります。
 
     <?php
 
@@ -33,38 +33,38 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
     }
 
 <a name="verification-database"></a>
-## Database Considerations
+## データベースの検討
 
-#### The Email Verification Column
+#### メール確認カラム
 
-Next, your `user` table must contain an `email_verified_at` column to store the date and time that the email address was verified. By default, the `users` table migration included with the Laravel framework already includes this column. So, all you need to do is run your database migrations:
+次に、メールアドレスを確認した日時を保存するための、`email_verified_at`カラムを`users`テーブルに含める必要があります。Laravelフレームワークにデフォルトで含まれている、`users`テーブルマイグレーションには、あらかじめこのカラムが準備されています。ですから、必要なのはデータベースマイグレーションを実行することだけです。
 
     php artisan migrate
 
 <a name="verification-routing"></a>
-## Routing
+## ルート
 
-Laravel includes the `Auth\VerificationController` class that contains the necessary logic to send verification links and verify emails. To register the necessary routes for this controller, pass the `verify` option to the `Auth::routes` method:
+確認リンクを送信し、メールを確認するために必要なロジックを含む、`Auth\VerificationController`クラスをLaravelは用意しています。このコントローラに必要なルートを登録するには、`Auth::routes`メソッドに、`verify`オプションを渡してください。
 
     Auth::routes(['verify' => true]);
 
 <a name="protecting-routes"></a>
-### Protecting Routes
+### 保護下のルート
 
-[Route middleware](/docs/{{version}}/middleware) can be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which is defined at `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:
+[Routeミドルウェア](/docs/{{version}}/middleware)を指定したルートに対しメールアドレス確認済みのユーザーのみアクセスを許すために使用します。`Illuminate\Auth\Middleware\EnsureEmailIsVerified`で定義している`verified`ミドルウェアをLaravelは用意しています。このミドルウェアは、アプリケーションのHTTPカーネルで登録済みですので、ルート定義にこのミドルウェアを指定するだけです。
 
     Route::get('profile', function () {
         // Only verified users may enter...
     })->middleware('verified');
 
 <a name="verification-views"></a>
-## Views
+## ビュー
 
-Laravel will generate all of the necessary email verification view when the `make:auth` command is executed. This view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
+`make:auth`コマンドを実行すると、Laravelはメール確認に必要なビューを全て生成します。ビューは`resources/views/auth/verify.blade.php`として生成されます。アプリケーションの必要に応じ、自由にこのビューをカスタマイズしてください。
 
 <a name="after-verifying-emails"></a>
-## After Verifying Emails
+## メール確認後
 
-After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
+メールアドレスを確認後、ユーザーを自動的に`/home`ヘリダイレクトします。`VerificationController`の`redirectTo`メソッドかプロパティにより、確認後のリダイレクト先をカスタマイズできます。
 
     protected $redirectTo = '/dashboard';
