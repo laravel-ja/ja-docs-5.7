@@ -19,7 +19,9 @@
     - [Where節](#where-clauses)
     - [ペジネーション](#pagination)
     - [ソフトデリート](#soft-deleting)
+    - [エンジンの検索のカスタマイズ](#customizing-engine-searches)
 - [カスタムエンジン](#custom-engines)
+- [ビルダマクロ](#builder-macros)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -330,6 +332,22 @@ Scoutは検索クエリに対して"WHERE"節を単に追加する方法も提�
 
 > {tip} ソフトデリートされたモデルが、`forceDelete`により完全に削除されると、Scoutは自動的に検索インデックスから削除します。
 
+<a name="customizing-engine-searches"></a>
+### エンジンの検索のカスタマイズ
+
+エンジンの検索の振る舞いをカスタマイズする必要があれば、`search`メソッドの第２引数にコールパックを渡してください。たとえば、Algoliaへサーチクエリが渡される前に、サーチオプションにgeo-locationデータを追加するために、このコールバックが利用できます。
+
+    use AlgoliaSearch\Index;
+
+    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
+        $options['body']['query']['bool']['filter']['geo_distance'] = [
+            'distance' => '1000km',
+            'location' => ['lat' => 36, 'lon' => 111],
+        ];
+
+        return $algolia->search($query, $options);
+    })->get();
+
 <a name="custom-engines"></a>
 ## カスタムエンジン
 
@@ -370,3 +388,37 @@ Scoutは検索クエリに対して"WHERE"節を単に追加する方法も提�
 エンジンが登録できたら、Scoutのデフォルト`driver`として、`config/scout.php`設定ファイルで設定します。
 
     'driver' => 'mysql',
+
+<a name="builder-macros"></a>
+## ビルダマクロ
+
+カスタムビルダメソッドを定義したい場合は、`Laravel\Scout\Builder`クラスの`macro`メソッドを使用してください。通常、「マクロ」は[サービスプロバイダ](/docs/{{version}}/providers)の`boot`メソッドの中で定義します。
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Scout\Builder;
+    use Illuminate\Support\ServiceProvider;
+    use Illuminate\Support\Facades\Response;
+
+    class ScoutMacroServiceProvider extends ServiceProvider
+    {
+        /**
+         * アプリケーションのScoutマクロ登録
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Builder::macro('count', function () {
+                return $this->engine->getTotalCount(
+                    $this->engine()->search($this)
+                );
+            });
+        }
+    }
+
+`macro`関数の最初の引数は、名前を渡します。第２引数はクロージャです。マクロのクロージャは`Laravel\Scout\Builder`実装から、そのマクロ名を呼び出されたときに実行されます。
+
+    App\Order::search('Star Trek')->count();

@@ -378,6 +378,14 @@ Variables that are dynamically passed to mailable views [are now automatically "
 
 If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
 
+### Queue
+
+#### `QUEUE_DRIVER` Environment Variable
+
+**Likelihood Of Impact: Very Low**
+
+The `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION`. This should not affect existing applications that you are upgrading unless you intentionally modify your `config/queue.php` configuration file to match Laravel 5.7's.
+
 ### Routing
 
 #### The `Route::redirect` Method

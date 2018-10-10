@@ -378,6 +378,14 @@ Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)
 
 Markdownのmailableテンプレートのためのデフォルトテーマスタイルをカスタマイズしている場合、再公開(publish)し、カスタマイズし直す必要があります。'blue'、'green'、'red'のボタン色クラスが、'primary'、'success'、'error'へリネームされました。
 
+### キュー
+
+#### `QUEUE_DRIVER`環境変数
+
+**影響の可能性： とても低い**
+
+`QUEUE_DRIVER`環境変数は、`QUEUE_CONNECTION`へリネームされました。意図的に皆さんの`config/queue.php`設定ファイルをLaravel5.7の内容へ合わせようとしない限り、アップグレードしている既存のアプリケーションには影響ありません。
+
 ### ルート
 
 #### `Route::redirect`メソッド

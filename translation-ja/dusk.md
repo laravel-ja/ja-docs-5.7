@@ -1355,21 +1355,30 @@ Duskテストを[Heroku CI](https://www.heroku.com/continuous-integration)上で
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-Travis CI上でDuskテストを実行するためには、Ubuntu 14.04 (Trusty)環境を"sudo-enabled"で使用する必要があります。Travis CIはグラフィカルな環境ではないため、Chromeブラウザを実行するには追加の手順を行う必要があります。さらに、PHPの組み込みWebサーバを起動するために、`php artisan serve`を使用する必要もあるでしょう。
+[Travis CI](https://travis-ci.org)上でDuskテストを実行するためには、Ubuntu 14.04 (Trusty)環境を"sudo-enabled"で使用する必要があります。Travis CIはグラフィカルな環境ではないため、Chromeブラウザを実行するには追加の手順を行う必要があります。さらに、PHPの組み込みWebサーバを起動するために、`php artisan serve`を使用する必要もあるでしょう。
 
+    language: php
     sudo: required
     dist: trusty
 
+    php:
+      - 7.2
+
     addons:
-       chrome: stable
+      chrome: stable
 
     install:
-       - cp .env.testing .env
-       - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+      - cp .env.testing .env
+      - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+      - php artisan key:generate
 
     before_script:
-       - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-       - php artisan serve &
+      - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      - php artisan serve &
 
     script:
-       - php artisan dusk
+      - php artisan dusk
+
+`.env.testing`ファイルの中で、`APP_URL`値を調整します。
+
+    APP_URL=http://127.0.0.1:8000

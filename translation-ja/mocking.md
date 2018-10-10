@@ -3,7 +3,7 @@
 - [イントロダクション](#イントロダクション)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
-    - [限定的なEvent Fakes](#scoped-event-fakes)
+    - [限定的なEvent Fake](#scoped-event-fakes)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
@@ -90,8 +90,29 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
 
 > {note} `Event::fake()`を呼び出したあとは、イベントリスナは実行されなくなります。そのため例えば、モデルの`creating`イベントでUUIDを生成するなど、イベントに結びつけたモデルファクトリの使用をテストする場合は、ファクトリを呼び出した**後に**、`Event::fake()`を呼び出す必要があります。
 
+#### イベントのサブセットのフェイク
+
+特定のイベントに対してだけ、イベントリスナをフェイクしたい場合は、`fake`か`fakeFor`メソッドに指定してください。
+
+    /**
+     * 受注処理のテスト
+     */
+    public function testOrderProcess()
+    {
+        Event::fake([
+            OrderCreated::class,
+        ]);
+
+        $order = factory(Order::class)->create();
+
+        Event::assertDispatched(OrderCreated::class);
+
+        // 他のイベントは通常通りにディスパッチされる
+        $order->update([...]);
+    }
+
 <a name="scoped-event-fakes"></a>
-### 限定的なEvent Fakes
+### 限定的なEvent Fake
 
 テストの一部分だけでイベントをフェイクしたい場合は、`fakeFor`メソッドを使用します。
 

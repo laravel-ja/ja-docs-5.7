@@ -151,6 +151,7 @@ Laravelのコマンドスケジューラは、Laravel自身の中でコマンド
 `->saturdays();`  |  土曜だけに限定
 `->between($start, $end);`  |  開始と終了時間間にタスク実行を制限
 `->when(Closure);`  |  クロージャの戻り値が`true`の時のみに限定
+`->environments($env);`  |  指定の環境でのみタスク実行を限定
 
 #### 時間制限
 
@@ -181,6 +182,14 @@ Laravelのコマンドスケジューラは、Laravel自身の中でコマンド
     });
 
 `when`メソッドをいくつかチェーンした場合は、全部の`when`条件が`true`を返すときのみスケジュールされたコマンドが実行されます。
+
+#### 環境制約
+
+`environments`メソッドは指定した環境時のみ、タスクを実行するために使用します。
+
+    $schedule->command('emails:send')
+                ->daily()
+                ->environments(['staging', 'production']);
 
 <a name="timezones"></a>
 ### タイムゾーン
@@ -283,7 +292,13 @@ Laravelスケジューラはスケジュールしたタスクが生成する出�
              ->pingBefore($url)
              ->thenPing($url);
 
-`pingBefore($url)`か`thenPing($url)`のどちらを使用するにも、Guzzle HTTPライブラリーが必要です。GuzzleはComposerパッケージマネージャを利用し追加できます。
+`pingBeforeIf`と`thenPingIf`メソッドは、指定した条件が`true`のときのみ、指定URLへPingするために使用します。
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->pingBeforeIf($condition, $url)
+             ->thenPingIf($condition, $url);
+
+これらのPingメソッドすべてで、Guzzle HTTPライブラリが必要です。Composerパッケージマネージャを使用して、プロジェクトにGuzzleを追加できます。
 
     composer require guzzlehttp/guzzle
-

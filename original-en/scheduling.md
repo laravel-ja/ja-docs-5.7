@@ -151,6 +151,7 @@ Method  | Description
 `->saturdays();`  |  Limit the task to Saturday
 `->between($start, $end);`  |  Limit the task to run between start and end times
 `->when(Closure);`  |  Limit the task based on a truth test
+`->environments($env);`  |  Limit the task to specific environments
 
 #### Between Time Constraints
 
@@ -181,6 +182,14 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
     });
 
 When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
+
+#### Environment Constraints
+
+The `environments` method may be used to execute tasks only on the given environments:
+
+    $schedule->command('emails:send')
+                ->daily()
+                ->environments(['staging', 'production']);
 
 <a name="timezones"></a>
 ### Timezones
@@ -283,7 +292,13 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
              ->pingBefore($url)
              ->thenPing($url);
 
-Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
+The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only if the given condition is `true`:
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->pingBeforeIf($condition, $url)
+             ->thenPingIf($condition, $url);
+
+All of the ping methods require the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
 
     composer require guzzlehttp/guzzle
-

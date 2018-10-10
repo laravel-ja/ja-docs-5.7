@@ -243,6 +243,12 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
     cache(['key' => 'value'], now()->addSeconds(10));
 
+`cache`関数を引数なしで呼び出すと、`Illuminate\Contracts\Cache\Factory`を実装したインスタンスが帰ってきます。これを使い、すべてのキャッシュメソッドを呼び出せます。
+
+    cache()->remember('users', $minutes, function () {
+        return DB::table('users')->get();
+    });
+
 > グローバル`cache`関数への呼び出しをテストする場合、[ファサードのテスト](/docs/{{version}}/mocking#mocking-facades)と同様に、`Cache::shouldReceive`メソッドを使います。
 
 <a name="cache-tags"></a>
