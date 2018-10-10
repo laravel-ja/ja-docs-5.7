@@ -835,15 +835,14 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 <a name="assert-see-link"></a>
 #### assertSeeLink
 
-Assert that the given link is present on the page:指定したリンクが、ページ上に存在していることを宣言します。
+指定したリンクが、ページ上に存在していることを宣言します。
 
     $browser->assertSeeLink($linkText);
 
 <a name="assert-dont-see-link"></a>
 #### assertDontSeeLink
 
-Assert that the given link is not present on the page:指定したリンクが、ページ上に存在していないことを宣言します。
-
+指定したリンクが、ページ上に存在していないことを宣言します。
 
     $browser->assertDontSeeLink($linkText);
 
@@ -851,7 +850,6 @@ Assert that the given link is not present on the page:指定したリンクが�
 #### assertInputValue
 
 指定した入力フィールドが、指定値を持っていることを宣言します。
-
 
     $browser->assertInputValue($field, $value);
 

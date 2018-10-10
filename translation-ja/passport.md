@@ -130,7 +130,6 @@ Passport Vueコンポーネントを公開（Laravel用語で開発者が変更�
 
 公開されたコンポーネントは、`resources/js/components`ディレクトリへ設置されます。公開したコンポーネントは、`resources/js/app.js`ファイルで登録してください。
 
-
     Vue.component(
         'passport-clients',
         require('./components/passport/Clients.vue')
