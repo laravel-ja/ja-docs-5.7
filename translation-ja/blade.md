@@ -14,6 +14,9 @@
     - [ループ変数](#the-loop-variable)
     - [コメント](#comments)
     - [PHP](#php)
+- [フォーム](#forms)
+    - [CSRFフィールド](#csrf-field)
+    - [Methodフィールド](#method-field)
 - [サブビューの読み込み](#including-sub-views)
     - [コレクションのレンダービュー](#rendering-views-for-collections)
 - [スタック](#stacks)
@@ -429,6 +432,31 @@ PHPコードをビューへ埋め込むと便利な場合もあります。Blade
     @endphp
 
 > {tip} Bladeはこの機能を提供していますが、数多く使用しているのであれば、それはテンプレートへ多すぎるロジックを埋め込んでいるサインです。
+
+<a name="forms"></a>
+## フォーム
+
+<a name="csrf-field"></a>
+### CSRFフィールド
+
+アプリケーションでHTMLフォームを定義する場合、[CSRF保護](https://laravel.com/docs/{{version}}/csrf)ミドルウェアがリクエストを検査できるようにするため、隠しCSRFトークンフィールドを含める必要があります。このトークンフィールドを生成するには、`@csrf` Bladeディレクティブを使用します。
+
+    <form method="POST" action="/profile">
+        @csrf
+
+        ...
+    </form>
+
+<a name="method-field"></a>
+### Methodフィールド
+
+HTMLフォームでは、`PUT`、`PATCH`、`DELETE`リクエストを作成できないため、見かけ上のHTTP動詞を指定するための`_method`フィールドを追加する必要があります。`@method` Bladeディレクティブでこのフィールドを生成できます。
+
+    <form action="/foo/bar" method="POST">
+        @method('PUT')
+
+        ...
+    </form>
 
 <a name="including-sub-views"></a>
 ## サブビューの読み込み

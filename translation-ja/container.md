@@ -151,7 +151,7 @@ Laravelのサービスコンテナを深く理解することは、パワフル�
                   return Storage::disk('local');
               });
 
-    $this->app->when(VideoController::class)
+    $this->app->when([VideoController::class, UploadController::class])
               ->needs(Filesystem::class)
               ->give(function () {
                   return Storage::disk('s3');
@@ -183,7 +183,7 @@ Laravelのサービスコンテナを深く理解することは、パワフル�
 
 `extend`メソッドでサービスの解決結果を修正できます。たとえば、あるサービスが解決されたときに、そのサービスをデコレート、もしくは設定するために追加のコードを実行できます。`extend`メソッドは唯一引数としてクロージャを受け取り、修正したサービスを返します。
 
-    $this->app->extend(Service::class, function($service) {
+    $this->app->extend(Service::class, function ($service) {
         return new DecoratedService($service);
     });
 
@@ -276,4 +276,4 @@ Laravelのサービスコンテナは、[PSR-11](https://github.com/php-fig/fig-
         //
     });
 
-> {note} 識別子をコンテナへ明確に結合していない場合、`get`メソッドの呼び出しで例外が投げられます。
+指定された識別子を解決できない場合は例外が投げられます。識別子に何も結合されていない場合は、`Psr\Container\NotFoundExceptionInterface`のインスタンスが例外として投げられます。識別子が結合されているが、依存解決できない場合は、`Psr\Container\ContainerExceptionInterface`のインスタンスが投げられます。

@@ -38,7 +38,7 @@ CSSのコンパイルを始める前に、プロジェクトのフロントエ�
 
     npm run dev
 
-Laravelにデフォルトで含まれる`webpack.mix.js`は、`resources/assets/sass/app.scss` SASSファイルをコンパイルします。この`app.scss`ファイルはSASS変数のファイルと、ほとんどのアプリケーションの構築開始時に役に立つBootstrapをロードします。望みどおりに`app.scss`を自由にカスタマイズし、さらに[Laravel Mixを設定](/docs/{{version}}/mix)することで、まったく別のプリプロセッサを使用することさえ可能です。
+Laravelにデフォルトで含まれる`webpack.mix.js`は、`resources/sass/app.scss` SASSファイルをコンパイルします。この`app.scss`ファイルはSASS変数のファイルと、ほとんどのアプリケーションの構築開始時に役に立つBootstrapをロードします。望みどおりに`app.scss`を自由にカスタマイズし、さらに[Laravel Mixを設定](/docs/{{version}}/mix)することで、まったく別のプリプロセッサを使用することさえ可能です。
 
 <a name="writing-javascript"></a>
 ## JavaScriptの出力
@@ -53,14 +53,16 @@ Laravelにデフォルトで含まれる`webpack.mix.js`は、`resources/assets/
 
     npm run dev
 
-デフォルトでLaravelの`webpack.mix.js`ファイルは、SASSと`resources/assets/js/app.js`ファイルをコンパイルするように指示しています。`app.js`ファイルの中で、Vueコンポーネントを登録してください。もしくは、他のフーレムワークが好みであれば、自分のJavaScriptアプリケーションの設定を行えます。コンパイル済みのJavaScriptは通常、`public/js`ディレクトリへ出力されます。
+デフォルトでLaravelの`webpack.mix.js`ファイルは、SASSと`resources/js/app.js`ファイルをコンパイルするように指示しています。`app.js`ファイルの中で、Vueコンポーネントを登録してください。もしくは、他のフーレムワークが好みであれば、自分のJavaScriptアプ
+リケーションの設定を行えます。コンパイル済みのJavaScriptは通常、`public/js`ディレクトリへ出力されます。
 
-> {tip} `app.js`ファイルは、Vue、Axios、jQuery、その他のJavaScript依存パッケージを起動し、設定する`resources/assets/js/bootstrap.js`ファイルをロードします。JacaScript依存パッケージを追加した場合、このファイルの中で設定してください。
+> {tip} `app.js`ファイルは、Vue、Axios、jQuery、その他のJavaScript依存パッケージを起動し、設定する`resources/js/bootstrap.js`ファイルをロードします。JacaScript依存パッケージを追加した場合、このファイルの中で設定してください。
+
 
 <a name="writing-vue-components"></a>
 ### Vueコンポーネントの出力
 
-インストールしたてのLaravelアプリケーションは、デフォルトとして、`resources/assets/js/components`ディレクトリの中に`ExampleComponent.vue` Vueコンポーネントを持っています。`ExampleComponent.vue`ファイルは、JacaScriptとHTMLテンプレートを同じファイル中で定義している、[シングルファイルVueコンポーネント](https://vuejs.org/guide/single-file-components)の一例です。シングルファイルコンポーネントは、JavaScript駆動アプリケーションを構築するために、とても便利なアプローチを提供しています。`app.js`ファイルで登録されています。このコンポーネントサンプルは、`app.js`ファイル中で登録されています。
+インストールしたてのLaravelアプリケーションは、デフォルトとして、`resources/js/components`ディレクトリの中に`ExampleComponent.vue` Vueコンポーネントを持っています。`ExampleComponent.vue`ファイルは、JacaScriptとHTMLテンプレートを同じファイル中で定義している、[シングルファイルVueコンポーネント](https://vuejs.org/guide/single-file-components)の一例です。シングルファイルコンポーネントは、JavaScript駆動アプリケーションを構築するために、とても便利なアプローチを提供しています。`app.js`ファイルで登録されています。このコンポーネントサンプルは、`app.js`ファイル中で登録されています。
 
     Vue.component(
         'example-component',

@@ -250,7 +250,7 @@
 <a name="method-combine"></a>
 #### `combine()` {#collection-method}
 
-`combine`メソッドは、キーのコレクションと、値の配列かコレクションを結合します。
+`combine`メソッドは、コレクションの値をキーとして、他の配列かコレクションの値を結合します。
 
     $collection = collect(['name', 'age']);
 
@@ -806,11 +806,19 @@
 
 `has`メソッドは指定したキーがコレクションに存在しているかを調べます。
 
-    $collection = collect(['account_id' => 1, 'product' => 'Desk']);
+    $collection = collect(['account_id' => 1, 'product' => 'Desk', 'amount' => 5]);
 
     $collection->has('product');
 
     // true
+
+    $collection->has(['product', 'amount']);
+
+    // true
+
+    $collection->has(['amount', 'price']);
+
+    // false
 
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
@@ -1223,7 +1231,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     $collection = collect([1, 2, 3, 4, 5, 6]);
 
-    list($underThree, $aboveThree) = $collection->partition(function ($i) {
+    list($underThree, $equalOrAboveThree) = $collection->partition(function ($i) {
         return $i < 3;
     });
 
@@ -1231,7 +1239,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // [1, 2]
 
-    $aboveThree->all();
+    $equalOrAboveThree->all();
 
     // [3, 4, 5, 6]
 

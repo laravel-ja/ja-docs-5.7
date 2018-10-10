@@ -13,6 +13,8 @@
 
 Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` file.
 
+If you are using Laravel Passport, you should update your `laravel/passport` dependency to `^7.0` in your `composer.json` file.
+
 Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
 ### Application
@@ -41,6 +43,24 @@ The unused `options` argument of the `Illuminate\Foundation\Application` class' 
 The `$schedule->job` method now respects the `queue` and `connection` properties on the job class if a connection / job is not explicitly passed into the `job` method.
 
 Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
+
+### Assets
+
+#### Asset Directory Flattened
+
+**Likelihood Of Impact: None**
+
+For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not requires changes to your existing applications.
+
+However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
+
+- From `resources/assets/js/*` to `resources/js/*`
+- From `resources/assets/sass/*` to `resources/sass/*`
+
+Then, update any reference to the old directories in your `webpack.mix.js` file:
+
+    mix.js('resources/js/app.js', 'public/js')
+       .sass('resources/sass/app.scss', 'public/css');
 
 ### Authentication
 
@@ -97,7 +117,7 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
 
 **Likelihood Of Impact: Very Low**
 
-The `raw` was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate/Contracts/Auth/Access/Gate` contract](https://github.com/laravel/framework/pull/25143):
+The `raw` method was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
 
     /**
      * Get the raw result from the authorization callback.
@@ -124,6 +144,16 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
     // Laravel 5.7...
     {{ $foo ?? 'default' }}
 
+### Cache
+
+**Likelihood Of Impact: Very High**
+
+A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application.
+
+After creating the directory, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated.
+
+Finally, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory.
+
 ### Carbon
 
 **Likelihood Of Impact: Very Low**
@@ -144,7 +174,7 @@ The `split` method [has been updated to always return the requested number of "g
 
 **Likelihood Of Impact: Very Low**
 
-The signatures of the `make` and `forever` methods of the `Illuminate/Contracts/Cookie/Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
+The signatures of the `make` and `forever` methods of the `Illuminate\Contracts\Cookie\Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
 
 ### Database
 
@@ -217,6 +247,14 @@ Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server 
 
 If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driver.
 
+#### SQLite Foreign Keys
+
+**Likelihood Of Impact: Medium**
+
+SQLite does not support dropping foreign keys. For that reason, using the `dropForeign` method on a table now throws an exception. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+
+If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite.
+
 ### Debug
 
 #### Dumper Classes
@@ -251,9 +289,60 @@ As of Laravel 5.7, these values will be cast to the corresponding PHP constants 
 
 **Likelihood Of Impact: Optional**
 
-If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/develop/app/Http/Controllers/Auth/VerificationController.php).
+If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
+
+You will also need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable implements MustVerifyEmail
+    {
+        use Notifiable;
+
+        // ...
+    }
+
+In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new middleware:
+
+    // Within App\Http\Kernel Class...
+
+    protected $routeMiddleware = [
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
 
 You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
+
+Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified:
+
+    $table->timestamp('email_verified_at')->nullable();
+
+In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php) class:
+
+    use Illuminate\Auth\Events\Registered;
+    use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+    ];
 
 Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
 
@@ -267,6 +356,14 @@ Finally, when calling the `Auth::routes` method, you should pass the `verify` op
 
 The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
 
+### Hashing
+
+#### `Hash:check` Method
+
+**Likelihood Of Impact: None**
+
+The `check` method now **optionally** checks if the algorithm of the hash matches the configured algorithm.
+
 ### Mail
 
 #### Mailable Dynamic Variable Casing
@@ -274,6 +371,12 @@ The `readStream` and `writeStream` methods [have been added to the `Illuminate\C
 **Likelihood Of Impact: Medium**
 
 Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
+
+#### Template Theme
+
+**Likelihood Of Impact: Medium**
+
+If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
 
 ### Routing
 
@@ -325,7 +428,7 @@ In previous versions of Laravel, the `validate` method did not return the correc
 
 **Likelihood Of Impact: Very Low**
 
-The `validate` method [was added to the `Illuminate/Contracts/Validation/Validator` contract](https://github.com/laravel/framework/pull/25128):
+The `validate` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/25128):
 
     /**
      * Run the validator's rules against its data.

@@ -5,6 +5,7 @@
     - [環境変数タイプ](#environment-variable-types)
     - [環境設定の取得](#retrieving-environment-configuration)
     - [現在環境の決定](#determining-the-current-environment)
+    - [デバッグページの環境変数非表示](#hiding-environment-variables-from-debug)
 - [設定値へのアクセス](#accessing-configuration-values)
 - [設定キャッシュ](#configuration-caching)
 - [メンテナンスモード](#maintenance-mode)
@@ -74,6 +75,34 @@ null | (null) null
     }
 
 > {tip} 現在のアプリケーション環境は、サーバレベルの`APP_ENV`環境変数によりオーバーライドされます。これは同じアプリケーションを異なった環境で実行する場合に便利です。特定のホストに対し、サーバの設定で適切な環境を指定できます。
+
+<a name="hiding-environment-variables-from-debug"></a>
+### デバッグページの環境変数非表示
+
+例外が補足されず、`APP_DEBUG`環境変数が`true`になっていると、全ての環境変数とその内容がデバッグページに表示されます。特定の変数は非表示にしたい場合があるでしょう。`config/app.php`設定ファイルの`debug_blacklist`オプションを更新してください。
+
+いくつかの変数は、環境変数とサーバ／リクエストデータの両方で利用できます。そのため、`$_ENV`と`$_SERVER`両方のブラックリストへ登録する必要があります。
+
+    return [
+
+        // ...
+
+        'debug_blacklist' => [
+            '_ENV' => [
+                'APP_KEY',
+                'DB_PASSWORD',
+            ],
+
+            '_SERVER' => [
+                'APP_KEY',
+                'DB_PASSWORD',
+            ],
+
+            '_POST' => [
+                'password',
+            ],
+        ],
+    ];
 
 <a name="accessing-configuration-values"></a>
 ## 設定値へのアクセス

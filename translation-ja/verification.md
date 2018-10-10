@@ -14,20 +14,19 @@
 
 ### モデルの準備
 
-利用を開始するには、`App\User`モデルが`Illuminate\Contracts\Auth\MustVerifyEmail`契約を実装していることを確認してください。さらに、`Illuminate\Auth\MustVerifyEmail`トレイトを使用する必要もあります。
+利用を開始するには、`App\User`モデルが`Illuminate\Contracts\Auth\MustVerifyEmail`契約を実装していることを確認してください。
 
     <?php
 
     namespace App;
 
-    use Illuminate\Auth\MustVerifyEmail;
     use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
     use Illuminate\Foundation\Auth\User as Authenticatable;
-    use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 
-    class User extends Authenticatable implements MustVerifyEmailContract
+    class User extends Authenticatable implements MustVerifyEmail
     {
-        use MustVerifyEmail, Notifiable;
+        use Notifiable;
 
         // ...
     }

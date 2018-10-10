@@ -460,19 +460,21 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 <a name="method-array-sort-recursive"></a>
 #### `array_sort_recursive()` {#collection-method}
 
-`array_sort_recursive`関数は`sort`機能を使い配列を再帰的にソートします。
+`array_sort_recursive`関数は、数値の下位配列に対し`sort`機能、連想配列の下位配列に対し`ksort`を使用し、配列を再帰的にソートします。
 
     $array = [
         ['Roman', 'Taylor', 'Li'],
         ['PHP', 'Ruby', 'JavaScript'],
+        ['one' => 1, 'two' => 2, 'three' => 3],
     ];
 
     $sorted = array_sort_recursive($array);
 
     /*
         [
-            ['Li', 'Roman', 'Taylor'],
             ['JavaScript', 'PHP', 'Ruby'],
+            ['one' => 1, 'three' => 3, 'two' => 2],
+            ['Li', 'Roman', 'Taylor'],
         ]
     */
 
@@ -683,7 +685,7 @@ NULL値を指定すると、空の配列が返ってきます。
 
     $path = resource_path();
 
-    $path = resource_path('assets/sass/app.scss');
+    $path = resource_path('sass/app.scss');
 
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}

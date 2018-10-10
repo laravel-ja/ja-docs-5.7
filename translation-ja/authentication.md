@@ -74,7 +74,7 @@ Laravelの認証機能は「ガード」と「プロバイダ」を中心概念�
 
 #### パスのカスタマイズ
 
-ユーザーが認証に成功すると、`/home`のURIへリダイレクトします。これをカスタマイズするには、`LoginController`、`RegisterController`、`ResetPasswordController`の`redirectTo`プロパティで、認証後のリダイレクト先の場所を定義してください。
+ユーザーが認証に成功すると、`/home`のURIへリダイレクトします。これをカスタマイズするには、`LoginController`、`RegisterController`、`ResetPasswordController`、`VerificationController`の`redirectTo`プロパティで、認証後のリダイレクト先の場所を定義してください。
 
     protected $redirectTo = '/';
 
@@ -182,17 +182,17 @@ Laravelの認証機能は「ガード」と「プロバイダ」を中心概念�
 
 #### 未認証ユーザーのリダイレクト
 
-ミドルウェアが未認証ユーザーを突き止めると、`401` JSONレスポンスか、もしくはリクエストがAJAXでなければ、ユーザーを`login`[名前付きルート](/docs/{{version}}/routing#named-routes)へリダイレクトします。
+ミドルウェアが未認証ユーザーを突き止めると、ユーザーを`login`[名前付きルート](/docs/{{version}}/routing#named-routes)へリダイレクトします。この振る舞いは、`app/Http/Middleware/Authenticate.php`ファイルの`redirectTo`関数で変更できます。
 
-この振る舞いを変更するには、`app/Exceptions/Handler.php`ファイルで`unauthenticated`関数を定義します。
-
-    use Illuminate\Auth\AuthenticationException;
-
-    protected function unauthenticated($request, AuthenticationException $exception)
+    /**
+     * ユーザーをリダイレクトさせるパスの取得
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected function redirectTo($request)
     {
-        return $request->expectsJson()
-                    ? response()->json(['message' => $exception->getMessage()], 401)
-                    : redirect()->guest(route('login'));
+        return route('login');
     }
 
 #### ガードの指定

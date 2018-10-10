@@ -151,7 +151,7 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
 `rememberForever`メソッドでアイテムをキャッシュから取得するか、できない場合は永久に保存できます。
 
-    $value = Cache::rememberForever('users', function() {
+    $value = Cache::rememberForever('users', function () {
         return DB::table('users')->get();
     });
 
@@ -220,22 +220,15 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
         // 無期限のロックを獲得し、自動的に開放する
     });
 
-リクエスト時にロックが獲得できないときに、利用可能になるまで待機するようにLaravelに指示できます。
+リクエスト時にロックが獲得できないときに、指定秒数待機するようにLaravelに指示できます。指定制限時間内にロックが獲得できなかった場合は、`Illuminate\Contracts\Cache\LockTimeoutException`が投げられます。
 
-    if (Cache::lock('foo', 10)->block()) {
-        // 待機後、ロックを獲得
-    }
-
-`block`メソッドはデフォルトで、ロックが利用できるまで無期限に待機します。指定秒数だけ待機したい場合は、`blockFor`メソッドを使用します。指定された時間内にロックが獲得できない場合は、`Illuminate\Contracts\Cache\LockTimeoutException`が投げられます。
-
-    if (Cache::lock('foo', 10)->blockFor(5)) {
+    if (Cache::lock('foo', 10)->block(5)) {
         // 最大５秒待機し、ロックを獲得
     }
 
-    Cache::lock('foo', 10)->blockFor(5, function () {
+    Cache::lock('foo', 10)->block(5, function () {
         // 最大５秒待機し、ロックを獲得
     });
-
 
 <a name="the-cache-helper"></a>
 ### cacheヘルパ

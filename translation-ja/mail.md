@@ -18,6 +18,7 @@
     - [キュー使用メール](#queueing-mail)
 - [Mailableのレンダリング](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+- [Mailableのローカライズ](#localizing-mailables)
 - [メールとローカル開発](#mail-and-local-development)
 - [イベント](#events)
 
@@ -73,6 +74,23 @@ Amazon SESドライバを使う場合、Amazon AWS SDK for PHPをインストー
         'region' => 'ses-region',  // e.g. us-east-1
     ],
 
+SESの`SendRawEmail`リクエストを実行する時に、[追加オプション](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail)を含めたい場合は、`ses`設定の中に`options`配列を定義してください。
+
+    'ses' => [
+        'key' => 'your-ses-key',
+        'secret' => 'your-ses-secret',
+        'region' => 'ses-region',  // e.g. us-east-1
+        'options' => [
+            'ConfigurationSetName' => 'MyConfigurationSet',
+            'Tags' => [
+                [
+                    'Name' => 'foo',
+                    'Value' => 'bar',
+                ],
+            ],
+        ],
+    ],
+
 <a name="generating-mailables"></a>
 ## Mailable概論
 
@@ -108,6 +126,10 @@ Laravelではアプリケーションが送信する、各種メールタイプ�
 もし、アプリケーションで同じ"from"アドレスを全メールで使用するのであれば、生成する全mailableクラスで`from`メソッドを呼び出すのは面倒です。代わりに、グローバルな"from"アドレスを`config/mail.php`設定ファイルで指定しましょう。このアドレスは、mailableクラスの中で、"from"アドレスが指定されなかった場合に使用されます。
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
+
+もしくは、`config/mail.php`設定ファイルの中で、グローバルな"reply_to"アドレスを定義することもできます。
+
+    'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
 <a name="configuring-the-view"></a>
 ### ビューの設定
@@ -538,6 +560,40 @@ mailableのテンプレートをデザインしているとき、Bladeテンプ�
     {
         //
     }
+
+<a name="localizing-mailables"></a>
+## Mailableのローカライズ
+
+Laravelでは、現在のデフォルト言語とは別のローケルで、mailableを送信できます。メールがキュー投入されても、このローケルは保持されます。
+
+希望する言語を指定するために、`Illuminate\Mail\Mailable`クラスに`locale`メソッドが用意されています。mailableを整形する時点で、アプリケーションはこのローケルへ変更し、フォーマットが完了したら以前のローケルへ戻します。
+
+    Mail::to($request->user())->send(
+        (new OrderShipped($order))->locale('es')
+    );
+
+### ユーザー希望のローケル
+
+ユーザーの希望するローケルをアプリケーションで保存しておくことは良くあります。モデルで`HasLocalePreference`契約を実装すると、メール送信時にこの保存してあるローケルを使用するように、Laravelへ指示できます。
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * ユーザーの希望するローケルの取得
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+このインターフェイスを実装すると、そのモデルに対しmailableや通知を送信する時に、Laravelは自動的に好みのローケルを使用します。そのため、このインターフェイスを使用する場合、`locale`メソッドを呼び出す必要はありません。
+
+    Mail::to($request->user())->send(new OrderShipped($order));
 
 <a name="mail-and-local-development"></a>
 ## メールとローカル開発

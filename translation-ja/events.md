@@ -339,7 +339,6 @@ Laravelアプリケーションに含まれている`EventServiceProvider`は、
                 'App\Listeners\UserEventSubscriber@onUserLogout'
             );
         }
-
     }
 
 <a name="registering-event-subscribers"></a>

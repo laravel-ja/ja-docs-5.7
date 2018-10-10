@@ -51,7 +51,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * リソースを配列へ変換する
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -103,7 +103,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * コレクションリソースを配列へ変換
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -126,6 +126,28 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         return new UserCollection(User::all());
     });
 
+#### 背後のリソースクラスのカスタマイズ
+
+リソースコレクションの`$this->collection`は、リソースクラスコレクションの単数形で、各アイテムのマッピング結果を自動的に収集します。コレクションのクラス名から、末尾の`Collection`文字列を除いたものが、単数形のリソースクラス名と仮定します。
+
+たとえば、`UserCollection`は、指定ユーザーインスタンスを`User`リソースへマッピングしようとします。この動作をカスタマイズする場合は、リソースコレクションの`$collects`プロパティをオーバーライドしてください。
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\ResourceCollection;
+
+    class UserCollection extends ResourceCollection
+    {
+        /**
+         * このリソースを収集するリソース
+         *
+         * @var string
+         */
+        public $collects = 'App\Http\Resources\Member';
+    }
+
 <a name="writing-resources"></a>
 ## リソース記述
 
@@ -144,7 +166,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * リソースを配列へ変換する
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -175,7 +197,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
     /**
      * リソースを配列へ変換
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -216,7 +238,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * コレクションリソースを配列へ変換
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -310,7 +332,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * コレクションリソースを配列へ変換
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -405,7 +427,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
     /**
      * リソースを配列へ変換
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -435,7 +457,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
     /**
      * リソースを配列へ変換
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -467,7 +489,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
     /**
      * リソースを配列へ変換
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -491,7 +513,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
     /**
      * リソースを配列へ変換
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -499,8 +521,27 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'expires_at' => $this->whenPivotLoaded('role_users', function () {
+            'expires_at' => $this->whenPivotLoaded('role_user', function () {
                 return $this->pivot->expires_at;
+            }),
+        ];
+    }
+
+中間テーブルが`pivot`以外のアクセサにより使用されている場合は、`whenPivotLoadedAs`メソッドを使用してください。
+
+    /**
+     * リソースを配列へ変換
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'expires_at' => $this->whenPivotLoadedAs('subscription', 'role_user', function () {
+                return $this->subscription->expires_at;
             }),
         ];
     }
@@ -513,7 +554,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
     /**
      * リソースを配列へ変換
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -543,7 +584,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * コレクションリソースを配列へ変換
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -554,7 +595,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * リソース配列と共に返すべき、追加データの取得
          *
-         * @param \Illuminate\Http\Request  $request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function with($request)
@@ -612,7 +653,7 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * リソースを配列へ変換する
          *
-         * @param  \Illuminate\Http\Request
+         * @param  \Illuminate\Http\Request  $request
          * @return array
          */
         public function toArray($request)
@@ -625,8 +666,8 @@ API構築時、Eloquentモデルと、アプリケーションユーザーに対
         /**
          * リソースに対して送信するレスポンスのカスタマイズ
          *
-         * @param  \Illuminate\Http\Request
-         * @param  \Illuminate\Http\Response
+         * @param  \Illuminate\Http\Request  $request
+         * @param  \Illuminate\Http\Response  $response
          * @return void
          */
         public function withResponse($request, $response)

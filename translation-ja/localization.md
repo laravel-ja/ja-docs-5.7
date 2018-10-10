@@ -106,6 +106,8 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
 
 指定した翻訳文字列が存在しない場合、`__`関数は翻訳文字列キーをそのまま返します。そのため、上記の例で`__`関数は、翻訳文字列がない場合に`messages.welcome`を返します。
 
+> {note} `@lang`ディレクティブは出力を全くエスケープしません。このディレクティブ使用時の出力のエスケープは、**全て皆さんの責任**です。
+
 <a name="replacing-parameters-in-translation-strings"></a>
 ### 翻訳文字列中のパラメータ置換
 
@@ -142,6 +144,10 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
     'minutes_ago' => '{1} :value minute ago|[2,*] :value minutes ago',
 
     echo trans_choice('time.minutes_ago', 5, ['value' => 5]);
+
+`trans_choice`関数へ渡した整数値を表示したい場合は、`:count`プレースホルダを使用します。
+
+    'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
 
 <a name="overriding-package-language-files"></a>
 ## パッケージの言語ファイルのオーバーライド

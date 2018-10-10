@@ -864,6 +864,18 @@ Eloquentは新しいモデルをリレーションに追加するために便利
         new App\Comment(['message' => 'Another comment.']),
     ]);
 
+<a name="the-push-method"></a>
+#### モデルとリレーションの再帰的保存
+
+モデルと関連付いているリレーション全てを保存(`save`)したい場合は、`push`メソッドを使用してください。
+
+    $post = App\Post::find(1);
+
+    $post->comments[0]->message = 'Message';
+    $post->comments[0]->author->name = 'Author Name';
+
+    $post->push();
+
 <a name="the-create-method"></a>
 ### `Create`メソッド
 
@@ -889,6 +901,8 @@ Eloquentは新しいモデルをリレーションに追加するために便利
             'message' => 'Another new comment.',
         ],
     ]);
+
+[リレーション上のモデルを作成、変更](https://laravel.com/docs/{{version}}/eloquent#other-creation-methods)するために、`findOrNew`、`firstOrNew`、`firstOrCreate`、`updateOrCreate`メソッドも使用できます。
 
 <a name="updating-belongs-to-relationships"></a>
 ### Belongs To関係

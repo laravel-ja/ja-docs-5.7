@@ -57,7 +57,7 @@ LaravelクエリビルダはアプリケーションをSQLインジェクショ�
         }
     }
 
-`get`メソッドは、PHPの`StdClass`オブジェクトのインスタンスを結果として含む、`Illuminate\Support\Collection`を返します。各カラムの値は、オブジェクトのプロパティとしてアクセスできます。
+`get`メソッドは、PHPの`stdClass`オブジェクトのインスタンスを結果として含む、`Illuminate\Support\Collection`を返します。各カラムの値は、オブジェクトのプロパティとしてアクセスできます。
 
     foreach ($users as $user) {
         echo $user->name;
@@ -65,7 +65,7 @@ LaravelクエリビルダはアプリケーションをSQLインジェクショ�
 
 #### テーブルから１カラム／１レコード取得
 
-データベーステーブルから１レコードのみ取得する必要がある場合は、`first`メソッドを使います。このメソッドは`StdClass`オブジェクトを返します。
+データベーステーブルから１レコードのみ取得する必要がある場合は、`first`メソッドを使います。このメソッドは`stdClass`オブジェクトを返します。
 
     $user = DB::table('users')->where('name', 'John')->first();
 
@@ -111,6 +111,16 @@ LaravelクエリビルダはアプリケーションをSQLインジェクショ�
 
         return false;
     });
+
+分割された結果を主キーで並び替えることが多いため、簡単にできる`chunkById`メソッドも使用できます。
+
+    DB::table('users')->chunkById(100, function ($users) {
+        foreach ($users as $user) {
+            //
+        }
+    });
+
+> {note} chunkのコールバックの中で、レコードを更新／削除することにより主キーや外部キーが変化すると、chunkクエリに影響を及ぼします。分割結果にレコードが含まれない可能性が起きます。
 
 <a name="aggregates"></a>
 ### 集計
@@ -264,7 +274,7 @@ JOINに"where"節を使用したい場合はjoinの中で`where`や`orWhere`を�
                        ->groupBy('user_id');
 
     $users = DB::table('users')
-            ->joinSub($latestPosts, 'latest_posts', function($join) {
+            ->joinSub($latestPosts, 'latest_posts', function ($join) {
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
 
@@ -479,7 +489,7 @@ Laravelはデータベース上のJSONタイプをサポートするカラムに
                     ->where('preferences->dining->meal', 'salad')
                     ->get();
 
-You may use `whereJsonContains` to query JSON arrays:
+JSON配列をクエリするには、`whereJsonContains`を使います。（SQLiteではサポートされていません）
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', 'en')
@@ -489,6 +499,16 @@ MySQLとPostgreSQLでは、`whereJsonContains`で複数の値をサポートし�
 
     $users = DB::table('users')
                     ->whereJsonContains('options->languages', ['en', 'de'])
+                    ->get();
+
+JSON配列を長さでクエリするには、`whereJsonLength`を使います。
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', 0)
+                    ->get();
+
+    $users = DB::table('users')
+                    ->whereJsonLength('options->languages', '>', 1)
                     ->get();
 
 <a name="ordering-grouping-limit-and-offset"></a>
@@ -614,7 +634,7 @@ MySQLとPostgreSQLでは、`whereJsonContains`で複数の値をサポートし�
 <a name="updating-json-columns"></a>
 ### JSONカラムの更新
 
-JSONカラムを更新する場合は、JSONオブジェクトの適切なキーへアクセスするために、`->`記法を使用してください。この操作子は、JSONカラムをサポートしているデータベースのみサポートしています。
+JSONカラムを更新する場合は、JSONオブジェクトの適切なキーへアクセスするために、`->`記法を使用してください。この操作子は、MySQL5.7以上のみサポートしています。
 
     DB::table('users')
                 ->where('id', 1)

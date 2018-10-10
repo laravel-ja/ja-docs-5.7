@@ -68,7 +68,7 @@
         'encrypted' => true
     ],
 
-Pusherと[Laravel Echo](#installing-laravel-echo)を使用する場合、`resources/assets/js/bootstrap.js`ファイルのEchoインスタンスをインスタンス化する時に、使用するブロードキャスタとして、`pusher`を指定する必要があります。
+Pusherと[Laravel Echo](#installing-laravel-echo)を使用する場合、`resources/js/bootstrap.js`ファイルのEchoインスタンスをインスタンス化する時に、使用するブロードキャスタとして、`pusher`を指定する必要があります。
 
     import Echo from "laravel-echo"
 
@@ -451,7 +451,7 @@ Laravel EchoはJavaScriptライブラリで、チャンネルの購読とLaravel
 
     npm install --save laravel-echo pusher-js
 
-Echoがインストールできたら、アプリケーションのJavaScriptで、真新しいEchoインスタンスを作成する準備が整いました。これを行うには、Laravelフレームワークに含まれている、`resources/assets/js/bootstrap.js`ファイルの最後が、良いでしょう。
+Echoがインストールできたら、アプリケーションのJavaScriptで、真新しいEchoインスタンスを作成する準備が整いました。これを行うには、Laravelフレームワークに含まれている、`resources/js/bootstrap.js`ファイルの最後が、良いでしょう。
 
     import Echo from "laravel-echo"
 

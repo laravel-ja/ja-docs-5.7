@@ -597,12 +597,12 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 <a name="rule-before"></a>
 #### before:_日付_
 
-フィールドが指定された日付より前であることをバリデートします。日付はPHPの`strtotime`関数で処理されます。
+フィールドが指定された日付より前であることをバリデートします。日付はPHPの`strtotime`関数で処理されます。さらに、[`after`](#rule-after)ルールと同様に、日付け値の代わりにバリデーション対象のフィールド名を指定することができます。
 
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_日付_
 
-フィールドが指定した日付以前であることをバリデートします。日付はPHPの`strtotime`関数で処理されます。
+フィールドが指定した日付以前であることをバリデートします。日付はPHPの`strtotime`関数で処理されます。さらに、[`after`](#rule-after)ルールと同様に、日付け値の代わりにバリデーション対象のフィールド名を指定することができます。
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -757,7 +757,7 @@ _ratio_制約は、横／縦比を表します。`3/2`という指定も、`1.5`
     ]);
 
 <a name="rule-in-array"></a>
-#### in_array:_別のフィールド_
+#### in_array:_他のフィールド_.*
 
 フィールドが、*他のフィールド*の値のどれかであることをバリデートします。
 
@@ -841,9 +841,11 @@ MIMEタイプと対応する拡張子の完全なリストは、[https://svn.apa
     ]);
 
 <a name="rule-not-regex"></a>
-#### not_regex:_pattern_
+#### not_regex:_正規表現_
 
 フィールドが指定した正規表現と一致しないことをバリデートします。
+
+このルールは内部でPHPの`preg_match`関数を使用しています。指定された正規表現はデリミッタも含め、`preg_match`で要求されているのと同じ形式に従う必要があります。たとえば、`'email' => 'regex:/^.+@.+$/i'`のようにです。
 
 **注目：** `regex`と`not_regex`パターンを使用する場合はルールをパイプ（縦棒）で区切らず、ルールの配列で指定する必要があります。特に正規表現に縦棒を含んでいる場合に該当します。
 
@@ -866,6 +868,8 @@ MIMEタイプと対応する拡張子の完全なリストは、[https://svn.apa
 #### regex:_正規表現_
 
 フィールドが指定された正規表現にマッチすることをバリデートします。
+
+このルールは内部でPHPの`preg_match`関数を使用しています。指定された正規表現はデリミッタも含め、`preg_match`で要求されているのと同じ形式に従う必要があります。たとえば、`'email' => 'regex:/^.+@.+$/i'`のようにです。
 
 **注目：** `regex`と`not_regex`パターンを使用する場合はルールをパイプ（縦棒）で区切らず、ルールの配列で指定する必要があります。特に正規表現に縦棒を含んでいる場合に該当します。
 
@@ -1114,9 +1118,9 @@ Laravelは様々な便利なバリデーションルールを提供していま�
         'title' => [
             'required',
             'max:255',
-            function($attribute, $value, $fail) {
+            function ($attribute, $value, $fail) {
                 if ($value === 'foo') {
-                    return $fail($attribute.' is invalid.');
+                    $fail($attribute.' is invalid.');
                 }
             },
         ],

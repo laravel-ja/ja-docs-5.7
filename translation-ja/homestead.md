@@ -27,6 +27,7 @@
     - [Webサービス](#web-servers)
     - [メール](#mail)
 - [ネットワークインターフェイス](#network-interfaces)
+- [Homesteadの拡張](#extending-homestead)
 - [Homesteadの更新](#updating-homestead)
 - [プロパイダ固有の設定](#provider-specific-settings)
     - [VirtualBox](#provider-specific-virtualbox)
@@ -38,7 +39,7 @@
 
 Laravel Homestead（入植農地、「ホームステード」）はパッケージを事前に済ませた、Laravel公式の"box"で、PHPやWebサーバ、その他のサーバソフトウェアをローカルマシンにインストールする必要なく、素晴らしい開発環境を準備できます。オペレーティングシステムでごちゃごちゃになる心配はもうありません！　Vagrant boxは完全に使い捨てできます。何かの調子が悪くなれば壊して、数分のうちにそのboxを再生成できます！
 
-HomesteadはWindowsやMac、Linuxシステム上で実行でき、Nginx WebサーバとPHP7.2、PHP7.1、PHP7.0、PHP5.6、MySQL、PostgreSQL、Redis、Memcached、Node、他にも素晴らしいLaravelアプリケーションを開発するために必要となるものすべてを含んでいます。
+HomesteadはWindowsやMac、Linuxシステム上で実行でき、Nginx WebサーバとPHP7.3、PHP7.2、PHP7.1、PHP7.0、PHP5.6、MySQL、PostgreSQL、Redis、Memcached、Node、他にも素晴らしいLaravelアプリケーションを開発するために必要となるものすべてを含んでいます。
 
 > {note} Windowsを使用している場合は、ハードウェア仮想化(VT-x)を有効にする必要があります。通常、BIOSにより有効にできます。UEFI system上のHyper-Vを使用している場合は、VT-xへアクセスするため、さらにHyper-Vを無効にする必要があります。
 
@@ -48,6 +49,7 @@ HomesteadはWindowsやMac、Linuxシステム上で実行でき、Nginx Webサ�
 <div class="content-list" markdown="1">
 - Ubuntu 18.04
 - Git
+- PHP 7.3
 - PHP 7.2
 - PHP 7.1
 - PHP 7.0
@@ -107,7 +109,7 @@ VirtualBox/VMwareとVagrantをインストールし終えたら、`laravel/homes
     cd ~/Homestead
 
     // クローンしたいリリースバージョン
-    git checkout v7.14.2
+    git checkout v7.18.0
 
 Homesteadリポジトリをクローンしたら、`Homestead.yaml`設定ファイルを生成するために、`bash init.sh`コマンドをHomesteadディレクトリで実行します。
 
@@ -403,6 +405,8 @@ Mailhogを使用すると、簡単に送信するメールを捉えることが�
     MAIL_PASSWORD=null
     MAIL_ENCRYPTION=null
 
+Mailhogを設定したら、ダッシュボードへ`http://localhost:8025`でアクセスできます。
+
 <a name="configuring-minio"></a>
 ### Minioの設定
 
@@ -430,6 +434,16 @@ Minioを使用するために、`config/filesystems.php`設定ファイルの中
     AWS_SECRET_ACCESS_KEY=secretkey
     AWS_DEFAULT_REGION=us-east-1
     AWS_URL=http://homestead:9600
+
+バケットをセットアップするには、Homestead設定ファイルに`buckets`ディレクティブを追加してください。
+
+    buckets:
+        - name: your-bucket
+          policy: public
+        - name: your-private-bucket
+          policy: none
+
+サポートしている`policy`の値は、`none`、`download`、`upload`、`public`です。
 
 <a name="ports"></a>
 ### ポート
@@ -477,9 +491,7 @@ Minioを使用するために、`config/filesystems.php`設定ファイルの中
 <a name="multiple-php-versions"></a>
 ### 複数のPHPバージョン
 
-> {note} この機能は、Nginx使用時のみ利用できます。
-
-Homestead6から、同一仮想マシン上での複数PHPバージョンをサポートを開始しました。`Homestead.yaml`ファイルで、特定のサイトでどのバージョンのPHPを使用するのかを指定できます。利用できるPHPバージョンは、"5.6"、"7.0"、"7.1"、"7.2（デフォルト）"です。
+Homestead6から、同一仮想マシン上での複数PHPバージョンをサポートを開始しました。`Homestead.yaml`ファイルで、特定のサイトでどのバージョンのPHPを使用するのかを指定できます。利用できるPHPバージョンは、"5.6"、"7.0"、"7.1"、"7.2"、"7.3（デフォルト）"です。
 
     sites:
         - map: homestead.test
@@ -492,6 +504,7 @@ Homestead6から、同一仮想マシン上での複数PHPバージョンをサ�
     php7.0 artisan list
     php7.1 artisan list
     php7.2 artisan list
+    php7.3 artisan list
 
 <a name="web-servers"></a>
 ### Webサービス
@@ -526,6 +539,18 @@ Homesteadは、デフォルトで`1025`ポートをリッスンする、Postfix�
     networks:
         - type: "public_network"
           bridge: "en1: Wi-Fi (AirPort)"
+
+<a name="extending-homestead"></a>
+## Homesteadの拡張
+
+Homesteadのルートディレクトリにある、`after.sh`スクリプトを使用し、Homesteadを拡張できます。このファイルの中へ、適切な設定や仮想マシンのカスタマイズに必要なシェルコマンドを追加してください。
+
+Homesteadをカスタマイズすると、Ubuntuはパッケージのオリジナル設定をそのままにするか、それとも新しい設定ファイルでオーバーライドするかを尋ねます。これを停止するには、Homesteadにより事前に記述された設定の上書きをパッケージインストール時に無視するように、以下のコマンドを使用してください。
+
+    sudo apt-get -y \
+        -o Dpkg::Options::="--force-confdef" \
+        -o pkg::Options::="--force-confold" \
+        install your-package
 
 <a name="updating-homestead"></a>
 ## Homesteadの更新

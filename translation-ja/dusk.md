@@ -63,6 +63,10 @@ Duskパッケージをインストールし終えたら、`dusk:install` Artisan
 
     php artisan dusk
 
+`dusk`コマンドで最後に実行したテストが失敗した場合、`dusk:fails`コマンドを使用し、失敗したテストを再実行することにより、時間を節約できます。
+
+    php artisan dusk:fails
+
 <a name="using-other-browsers"></a>
 ### 他ブラウザの使用
 
@@ -111,6 +115,10 @@ Duskのテストを生成するには、`dusk:make` Artisanコマンドを使い
 ブラウザテストを実行するには、`dusk` Artisanコマンドを使用します。
 
     php artisan dusk
+
+`dusk`コマンドで最後に実行したテストが失敗した場合、`dusk:fails`コマンドを使用し、失敗したテストを再実行することにより、時間を節約できます。
+
+    php artisan dusk:fails
 
 PHPUnitテストランナが通常受け付ける引数は、`dusk`コマンドでも指定できます。たとえば、指定した[グループ](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group)のテストのみを実行するなどです。
 
@@ -571,6 +579,12 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertTitle](#assert-title)
 [assertTitleContains](#assert-title-contains)
 [assertUrlIs](#assert-url-is)
+[assertSchemeIs](#assert-scheme-is)
+[assertSchemeIsNot](#assert-scheme-is-not)
+[assertHostIs](#assert-host-is)
+[assertHostIsNot](#assert-host-is-not)
+[assertPortIs](#assert-port-is)
+[assertPortIsNot](#assert-port-is-not)
 [assertPathBeginsWith](#assert-path-begins-with)
 [assertPathIs](#assert-path-is)
 [assertPathIsNot](#assert-path-is-not)
@@ -638,6 +652,48 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 クエリ文字列を除いた、現在のURLが指定した文字列と一致するのを宣言します。
 
     $browser->assertUrlIs($url);
+
+<a name="assert-scheme-is"></a>
+#### assertSchemeIs
+
+現在のURLスキームが、指定したスキームと一致することを宣言します。
+
+    $browser->assertSchemeIs($scheme);
+
+<a name="assert-scheme-is-not"></a>
+#### assertSchemeIsNot
+
+現在のURLスキームが、指定したスキームと一致しないことを宣言します。
+
+    $browser->assertSchemeIsNot($scheme);
+
+<a name="assert-host-is"></a>
+#### assertHostIs
+
+現在のURLのホストが、指定したホストと一致することを宣言します。
+
+    $browser->assertHostIs($host);
+
+<a name="assert-host-is-not"></a>
+#### assertHostIsNot
+
+現在のURLのホストが、指定したホストと一致しないことを宣言します。
+
+    $browser->assertHostIsNot($host);
+
+<a name="assert-port-is"></a>
+#### assertPortIs
+
+現在のURLポートが、指定したポートと一致することを宣言します。
+
+    $browser->assertPortIs($port);
+
+<a name="assert-port-is-not"></a>
+#### assertPortIsNot
+
+現在のURLポートが、指定したポートと一致しないことを宣言します。
+
+    $browser->assertPortIsNot($port);
 
 <a name="assert-path-begins-with"></a>
 #### assertPathBeginsWith
@@ -779,14 +835,15 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 <a name="assert-see-link"></a>
 #### assertSeeLink
 
-指定したリンクが、ページ上に存在していることを宣言します。
+Assert that the given link is present on the page:指定したリンクが、ページ上に存在していることを宣言します。
 
     $browser->assertSeeLink($linkText);
 
 <a name="assert-dont-see-link"></a>
 #### assertDontSeeLink
 
-指定したリンクが、ページ上に存在していないことを宣言します。
+Assert that the given link is not present on the page:指定したリンクが、ページ上に存在していないことを宣言します。
+
 
     $browser->assertDontSeeLink($linkText);
 
@@ -794,6 +851,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 #### assertInputValue
 
 指定した入力フィールドが、指定値を持っていることを宣言します。
+
 
     $browser->assertInputValue($field, $value);
 

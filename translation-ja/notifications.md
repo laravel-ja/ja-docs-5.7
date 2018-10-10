@@ -36,6 +36,7 @@
     - [Slack通知のフォーマット](#formatting-slack-notifications)
     - [Slack添付](#slack-attachments)
     - [Slack通知のルート指定](#routing-slack-notifications)
+- [通知のローカライズ](#localizing-notifications)
 - [通知イベント](#notification-events)
 - [カスタムチャンネル](#custom-channels)
 
@@ -805,9 +806,45 @@ Slackメッセージに「添付」を追加することもできます。添付
          */
         public function routeNotificationForSlack($notification)
         {
-            return $this->slack_webhook_url;
+            return 'https://hooks.slack.com/services/...';
         }
     }
+
+<a name="localizing-notifications"></a>
+## 通知のローカライズ
+
+Laravelでは、現在のデフォルト言語とは別のローケルで、通知を送信できます。通知がキュー投入されても、このローケルは保持されます。
+
+希望する言語を指定するために、`Illuminate\Notifications\Notification`クラスに`locale`メソッドが用意されています。通知を整形する時点で、アプリケーションはこのローケルへ変更し、フォーマットが完了したら以前のローケルへ戻します。
+
+    $user->notify((new InvoicePaid($invoice))->locale('es'));
+
+通知可能な複数のエンティティをローカライズするのも、`Notification`ファサードにより可能です。
+
+    Notification::locale('es')->send($users, new InvoicePaid($invoice));
+
+### ユーザー希望のローケル
+
+ユーザーの希望するローケルをアプリケーションで保存しておくことは良くあります。notifiableモデルで`HasLocalePreference`契約を実装すると、通知送信時にこの保存してあるローケルを使用するように、Laravelへ指示できます。
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * ユーザーの希望するローケルの取得
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+このインターフェイスを実装すると、そのモデルに対しmailableや通知を送信する時に、Laravelは自動的に好みのローケルを使用します。そのため、このインターフェイスを使用する場合、`locale`メソッドを呼び出す必要はありません。
+
+    $user->notify(new InvoicePaid($invoice));
 
 <a name="notification-events"></a>
 ## 通知イベント

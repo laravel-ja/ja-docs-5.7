@@ -597,12 +597,12 @@ Stop running validation rules after the first validation failure.
 <a name="rule-before"></a>
 #### before:_date_
 
-The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding the given date. The dates will be passed into the PHP `strtotime` function. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_date_
 
-The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function.
+The field under validation must be a value preceding or equal to the given date. The dates will be passed into the PHP `strtotime` function. In addition, like the [`after`](#rule-after) rule, the name of another field under validation may be supplied as the value of `date`.
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -757,7 +757,7 @@ The field under validation must be included in the given list of values. Since t
     ]);
 
 <a name="rule-in-array"></a>
-#### in_array:_anotherfield_
+#### in_array:_anotherfield_.*
 
 The field under validation must exist in _anotherfield_'s values.
 
@@ -845,6 +845,8 @@ The field under validation must not be included in the given list of values. The
 
 The field under validation must not match the given regular expression.
 
+Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+
 **Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
 <a name="rule-nullable"></a>
@@ -866,6 +868,8 @@ The field under validation must be present in the input data but can be empty.
 #### regex:_pattern_
 
 The field under validation must match the given regular expression.
+
+Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
 
 **Note:** When using the `regex` / `not_regex` patterns, it may be necessary to specify rules in an array instead of using pipe delimiters, especially if the regular expression contains a pipe character.
 
@@ -1114,9 +1118,9 @@ If you only need the functionality of a custom rule once throughout your applica
         'title' => [
             'required',
             'max:255',
-            function($attribute, $value, $fail) {
+            function ($attribute, $value, $fail) {
                 if ($value === 'foo') {
-                    return $fail($attribute.' is invalid.');
+                    $fail($attribute.' is invalid.');
                 }
             },
         ],

@@ -128,7 +128,8 @@ Passport Vueコンポーネントを公開（Laravel用語で開発者が変更�
 
     php artisan vendor:publish --tag=passport-components
 
-公開されたコンポーネントは、`resources/assets/js/components`ディレクトリへ設置されます。公開したコンポーネントは、`resources/assets/js/app.js`ファイルで登録してください。
+公開されたコンポーネントは、`resources/js/components`ディレクトリへ設置されます。公開したコンポーネントは、`resources/js/app.js`ファイルで登録してください。
+
 
     Vue.component(
         'passport-clients',
@@ -430,7 +431,7 @@ OAuth2のパスワードグラントはモバイルアプリケーションの�
 
 次に、このミドルウェアをルートへ指定します。
 
-    Route::get('/user', function(Request $request) {
+    Route::get('/user', function (Request $request) {
         ...
     })->middleware('client');
 
@@ -677,6 +678,9 @@ protected $listen = [
 ## テスト
 
 Passportの`actingAs`メソッドは、現在認証中のユーザーを指定知ると同時にスコープも指定します。`actingAs`メソッドの最初の引数はユーザーのインスタンスで、第２引数はユーザートークンに許可するスコープ配列を指定します。
+
+    use App\User;
+    use Laravel\Passport\Passport;
 
     public function testServerCreation()
     {

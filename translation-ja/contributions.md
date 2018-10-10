@@ -41,18 +41,18 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 
 新機能や、現存のLaravelの振る舞いについて改善を提言したい場合は、Laravelアイデア[issueボード](https://github.com/laravel/ideas/issues)へおねがいします。新機能を提言する場合は自発的に、それを完動させるのに必要な、コードを最低限でも実装してください。
 
-バグ、新機能、既存機能の実装についてのざっくばらんな議論は、Slackの[LaraChat](https://larachat.co)チームにある`#internals`チャンネルで行っています。LaravelのメンテナーであるTaylor Otwellは、通常ウイークエンドの午前８時から５時まで（America/Chicago標準時、UTC-6:00）接続しています。他の時間帯では、時々接続しています。
+バグ、新機能、既存機能の実装についてのざっくばらんな議論は、[Laravel Discord server](https://discordapp.com/invite/mPZNm7A)の`#internals`チャンネルで行っています。LaravelのメンテナーであるTaylor Otwellは、通常ウイークエンドの午前８時から５時まで（America/Chicago標準時、UTC-6:00）接続しています。他の時間帯では、時々接続しています。
 
 <a name="which-branch"></a>
 ## どのブランチ？
 
-**全ての**バグフィックスは、最新の安定ブランチ,もしくは現在のLTSブランチ(5.6)へ送ってください。次のリリースの中にだけ存在している機能に対する修正でない限り、決してバグフィックスを`master`ブランチに送っては**いけません**。
+**全ての**バグフィックスは、最新の安定ブランチ,もしくは[現行のLTSブランチ](/docs/{{version}}/releases#support-policy)へ送ってください。次のリリースの中にだけ存在している機能に対する修正でない限り、決してバグフィックスを`master`ブランチに送っては**いけません**。
 
 現在のLaravelリリースと**完全な後方コンパティビリティ**を持っている**マイナー**な機能は、最新の安定ブランチへ送ってください。
 
 次のLaravelリリースに含めるべき、**メジャー**な新機能は、常に`master`ブランチへ送ってください。
 
-もし、あなたの新機能がメジャーなのか、マイナーなのかはっきりしなければ、[LaraChat](https://larachat.co) Slackチームの`#internals`チャンネルでTaylor Otwellに尋ねてください。
+もし、あなたの新機能がメジャーなのか、マイナーなのかはっきりしなければ、[Laravel Discord server](https://discordapp.com/invite/mPZNm7A)の`#internals`チャンネルでTaylor Otwellに尋ねてください。
 
 <a name="security-vulnerabilities"></a>
 ## セキュリティ脆弱性

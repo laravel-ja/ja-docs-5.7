@@ -1,4 +1,4 @@
-# アセットのコンパイル(Laravel Mix)
+# アセットのコンパイル(Mix)
 
 - [イントロダクション](#introduction)
 - [インストールと準備](#installation)
@@ -27,8 +27,8 @@
 
 [Laravel Mix](https://github.com/JeffreyWay/laravel-mix)は多くの一般的なCSSとJavaScriptのプリプロセッサを使用し、Laravelアプリケーションために、構築過程をWebpackでスラスラと定義できるAPIを提供しています。シンプルなメソッドチェーンを使用しているため、アセットパイプラインを流暢に定義できます。例を見てください。
 
-    mix.js('resources/assets/js/app.js', 'public/js')
-       .sass('resources/assets/sass/app.scss', 'public/css');
+    mix.js('resources/js/app.js', 'public/js')
+       .sass('resources/sass/app.scss', 'public/css');
 
 Webpackやアセットのコンパイルを始めようとして、混乱と圧倒を感じているならLaravel Mixを気に入ってもらえるでしょう。しかし、アプリケーションの開発時に必要だというわけではありません。どんなアセットパイプラインツールを使用してもかまいませんし、使わなくても良いのです。
 
@@ -81,20 +81,20 @@ Mixは[Webpack](https://webpack.js.org)上の設定レイヤーですから、La
 
 [Less](http://lesscss.org/)をCSSへコンパイルするには`less`メソッドを使用します。最も主要な`app.less`ファイルを`public/css/app.css`としてコンパイルしてみましょう。
 
-    mix.less('resources/assets/less/app.less', 'public/css');
+    mix.less('resources/less/app.less', 'public/css');
 
 複数のファイルをコンパイルするには、`less`メソッドを複数回呼び出します。
 
-    mix.less('resources/assets/less/app.less', 'public/css')
-       .less('resources/assets/less/admin.less', 'public/css');
+    mix.less('resources/less/app.less', 'public/css')
+       .less('resources/less/admin.less', 'public/css');
 
 コンパイル済みのCSSのファイル名をカスタマイズしたい場合は、`less`の第２引数にファイルのフルパスを指定してください。
 
-    mix.less('resources/assets/less/app.less', 'public/stylesheets/styles.css');
+    mix.less('resources/less/app.less', 'public/stylesheets/styles.css');
 
 [裏で動作しているLessプラグインのオプション](https://github.com/webpack-contrib/less-loader#options)をオーバーライドする必要が起きたら、`mix.less()`の第３引数にオブジェクトを渡してください。
 
-    mix.less('resources/assets/less/app.less', 'public/css', {
+    mix.less('resources/less/app.less', 'public/css', {
         strictMath: true
     });
 
@@ -103,16 +103,16 @@ Mixは[Webpack](https://webpack.js.org)上の設定レイヤーですから、La
 
 `sass`メソッドは、[Sass](http://sass-lang.com/)をCSSへコンパイルします。次のように使用します。
 
-    mix.sass('resources/assets/sass/app.scss', 'public/css');
+    mix.sass('resources/sass/app.scss', 'public/css');
 
 `less`メソッドでも、複数のSassファイルを別々のCSSファイルへコンパイルできますし、結果のCSSの出力ディレクトリをカスタマイズ可能です。
 
-    mix.sass('resources/assets/sass/app.sass', 'public/css')
-       .sass('resources/assets/sass/admin.sass', 'public/css/admin');
+    mix.sass('resources/sass/app.sass', 'public/css')
+       .sass('resources/sass/admin.sass', 'public/css/admin');
 
 さらに、[Node-Sassプラグインオプション](https://github.com/sass/node-sass#options)を第３引数に指定できます。
 
-    mix.sass('resources/assets/sass/app.sass', 'public/css', {
+    mix.sass('resources/sass/app.sass', 'public/css', {
         precision: 5
     });
 
@@ -121,11 +121,11 @@ Mixは[Webpack](https://webpack.js.org)上の設定レイヤーですから、La
 
 LessやSassと同様に、`stylus`メソッドにより、[Stylus](http://stylus-lang.com/)をCSSへコンパイルできます。
 
-    mix.stylus('resources/assets/stylus/app.styl', 'public/css');
+    mix.stylus('resources/stylus/app.styl', 'public/css');
 
 さらに、[Rupture](https://github.com/jescalan/rupture)のような、追加のStylusプラグインをインストールすることもできます。最初に、NPM （`npm install rupture`）による質問でプラグインをインストールし、それから`mix.stylus()`の中で呼び出してください。
 
-    mix.stylus('resources/assets/stylus/app.styl', 'public/css', {
+    mix.stylus('resources/stylus/app.styl', 'public/css', {
         use: [
             require('rupture')()
         ]
@@ -136,7 +136,7 @@ LessやSassと同様に、`stylus`メソッドにより、[Stylus](http://stylus
 
 強力なCSS加工ツールである[PostCSS](http://postcss.org/)も、Laravel Mixには最初から含まれています。デフォルトでは、自動的に必要なCSS3ベンダープレフィックスを適用する、人気の[Autoprefixer](https://github.com/postcss/autoprefixer)プラグインを利用します。しかし、アプリケーションに適したプラグインを自由に追加できます。最初に、NPMにより希望のプラグインをインストールし、それから`webpack.mix.js`の中から参照してください。
 
-    mix.sass('resources/assets/sass/app.scss', 'public/css')
+    mix.sass('resources/sass/app.scss', 'public/css')
        .options({
             postCss: [
                 require('postcss-css-variables')()
@@ -172,7 +172,7 @@ Laravel MixはWebpack上に構築されているため、Webpackのコンセプ�
 
 この機能は便利ですが、好きなようにフォルダ構造を設定することもできます。その場合、以下のように`url()`リライトを停止してください。
 
-    mix.sass('resources/assets/app/app.scss', 'public/css')
+    mix.sass('resources/app/app.scss', 'public/css')
        .options({
           processCssUrls: false
        });
@@ -188,7 +188,7 @@ Laravel MixはWebpack上に構築されているため、Webpackのコンセプ�
 
 デフォルトでは無効になっているため、`webpack.mix.js`ファイルで`mix.sourceMaps()`を呼び出すことで、ソースマップは有効になります。コンパイルコストと実行パフォーマンスコストはかかりますが、これによりコンパイル済みアセットを使用する時に、ブラウザの開発ツール向けの追加デバッグ情報が提供されます。
 
-    mix.js('resources/assets/js/app.js', 'public/js')
+    mix.js('resources/js/app.js', 'public/js')
        .sourceMaps();
 
 <a name="working-with-scripts"></a>
@@ -196,7 +196,7 @@ Laravel MixはWebpack上に構築されているため、Webpackのコンセプ�
 
 MixはECMAScript 2015のコンパイル、モジュール結合、圧縮やJavaScriptファイルの結合などの操作を手助けする、多くの機能を提供しています。それだけでなく、設定をカスタマイズする必要は全く無く、全てがシームレスに動作します。
 
-    mix.js('resources/assets/js/app.js', 'public/js');
+    mix.js('resources/js/app.js', 'public/js');
 
 このコード一行で、以下の利点を享受できます。
 
@@ -214,7 +214,7 @@ MixはECMAScript 2015のコンパイル、モジュール結合、圧縮やJavaS
 
 アプリケーションのJavaScriptを頻繁に更新したい場合は、全ベンダーライブラリを専用のファイルへ分ける方法を考慮する必要があります。これにより、アプリケーションコードの変更は、大きな`vendor.js`ファイルのキャッシュへ影響しなくなります。Mixの`extract`メソッドで簡単に実現できます。
 
-    mix.js('resources/assets/js/app.js', 'public/js')
+    mix.js('resources/js/app.js', 'public/js')
        .extract(['vue'])
 
 `extract`メソッドは全ライブラリとモジュールの配列を受け取り、`vendor.js`へ別にまとめます。上記のコードを例にすると、Mix配下のファイルを生成します。
@@ -236,7 +236,7 @@ JavaScriptエラーを起こさないために、以下のファイルは順番�
 
 MixはReactをサポートするために、Babelプラグインを自動的にインストールします。使用開始するためには、`mix.js()`の呼び出しを`mix.react()`に置換してください。
 
-    mix.react('resources/assets/js/app.jsx', 'public/js');
+    mix.react('resources/js/app.jsx', 'public/js');
 
 実際には、Mixは最適なBabelプラグインとして`babel-preset-react`をダウンロードし、取り込んでいます。
 
@@ -291,9 +291,9 @@ Webpack設定をすべてカスタマイズしたい場合は、`node_modules/la
 
 多くの開発者は古いコードが提供され続けないように、新しいアセットがブラウザにロードされるよう、タイムスタンプやユニークなトークンをコンパイル済みのアセットへサフィックスとして付加しています。Mixでは、`version`メソッドを使用し、これを処理できます。
 
-The `version` method will automatically append a unique hash to the filenames of all compiled files, allowing for more convenient cache busting:
+`version`メソッドは、キャッシュを簡単に破壊できるようにするため、コンパイル済みファイルのファイル名に一意のハッシュを自動的に付け加えます。
 
-    mix.js('resources/assets/js/app.js', 'public/js')
+    mix.js('resources/js/app.js', 'public/js')
        .version();
 
 バージョン付されたファイルを生成した後は、適切にバージョン付けされたアセットのURLを生成するため、Laravelのグローバル`mix`関数を[ビュー](/docs/{{version}}/views)の中で使用してください。
@@ -302,7 +302,7 @@ The `version` method will automatically append a unique hash to the filenames of
 
 バージョン付けしたファイルは、通常開発に必要ないため、`npm run production`を実行するときのみ、バージョン付けするように指示したいと思うでしょう。
 
-    mix.js('resources/assets/js/app.js', 'public/js');
+    mix.js('resources/js/app.js', 'public/js');
 
     if (mix.inProduction()) {
         mix.version();

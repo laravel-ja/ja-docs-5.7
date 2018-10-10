@@ -9,6 +9,7 @@
     - [Timezones](#timezones)
     - [Preventing Task Overlaps](#preventing-task-overlaps)
     - [Running Tasks On One Server](#running-tasks-on-one-server)
+    - [Background Tasks](#background-tasks)
     - [Maintenance Mode](#maintenance-mode)
 - [Task Output](#task-output)
 - [Task Hooks](#task-hooks)
@@ -219,6 +220,15 @@ To indicate that the task should run on only one server, use the `onOneServer` m
                     ->at('17:00')
                     ->onOneServer();
 
+<a name="background-tasks"></a>
+### Background Tasks
+
+By default, multiple commands scheduled at the same time will execute sequentially. If you have long-running commands, this may cause subsequent commands to start much later than anticipated. If you would like to run commands in the background so that they may all run simultaneously, you may use the `runInBackground` method:
+
+    $schedule->command('analytics:report')
+             ->daily()
+             ->runInBackground();
+
 <a name="maintenance-mode"></a>
 ### Maintenance Mode
 
@@ -276,3 +286,4 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
 Using either the `pingBefore($url)` or `thenPing($url)` feature requires the Guzzle HTTP library. You can add Guzzle to your project using the Composer package manager:
 
     composer require guzzlehttp/guzzle
+

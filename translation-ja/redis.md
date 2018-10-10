@@ -92,8 +92,6 @@ LaravelでRedisを使用する前に、`predis/predis`パッケージをComposer
 <a name="phpredis"></a>
 ### PhpRedis
 
-> {note} PhpRedis PHP拡張をPECL経由でインストールした場合は、`config/app.php`設定ファイル中の`Redis`エイリアスをリネームする必要があります。
-
 PhpRedis拡張を使用するには、Redis設定の`client`オプションを`phpredis`へ変更してください。このオプションは`config/database.php`設定ファイルにあります。
 
     'redis' => [

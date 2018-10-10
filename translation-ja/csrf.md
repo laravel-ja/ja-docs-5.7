@@ -23,7 +23,7 @@ Laravelは、アプリケーションにより管理されているアクティ�
 
 #### CSRFトークンとJavaScript
 
-JacaScriptで駆動するアプリケーションを構築する場合、JavaScript HTTPライブラリーに対し、全ての送信リクエストへCSRFトークンを自動的に追加させると便利です。デフォルトでAxios HTTPライブラリにより、`csrf-token`メタタグの値が、`resources/assets/js/bootstrap.js`ファイルに登録されます。このライブラリを使用しない場合、自身のアプリケーションでこの振る舞いを用意する必要があります。
+JacaScriptで駆動するアプリケーションを構築する場合、JavaScript HTTPライブラリーに対し、全ての送信リクエストへCSRFトークンを自動的に追加させると便利です。デフォルトでAxios HTTPライブラリにより、`csrf-token`メタタグの値が、`resources/js/bootstrap.js`ファイルに登録されます。このライブラリを使用しない場合、自身のアプリケーションでこの振る舞いを用意する必要があります。
 
 <a name="csrf-excluding-uris"></a>
 ## URIの除外
@@ -69,7 +69,7 @@ JacaScriptで駆動するアプリケーションを構築する場合、JavaScr
         }
     });
 
-> {tip} デフォルトでAxios HTTPライブラリにより、`csrf-token`メタタグの値が、`resources/assets/js/bootstrap.js`へ保持されます。このライブラリを使用しない場合、自分のアプリケーションでこの振る舞いを実現する必要があります。
+> {tip} デフォルトでAxios HTTPライブラリにより、`csrf-token`メタタグの値が、`resources/js/bootstrap.js`へ保持されます。このライブラリを使用しない場合、自分のアプリケーションでこの振る舞いを実現する必要があります。
 
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN

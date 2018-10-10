@@ -9,6 +9,7 @@
     - [タイムゾーン](#timezones)
     - [タスク多重起動の停止](#preventing-task-overlaps)
     - [単一サーバ上でのタスク実行](#running-tasks-on-one-server)
+    - [バックグランドタスク](#background-tasks)
     - [メンテナンスモード](#maintenance-mode)
 - [タスク出力](#task-output)
 - [タスクフック](#task-hooks)
@@ -219,6 +220,15 @@ Laravelのコマンドスケジューラは、Laravel自身の中でコマンド
                     ->at('17:00')
                     ->onOneServer();
 
+<a name="background-tasks"></a>
+### バックグランドタスク
+
+デフォルトでは、同じ時間にスケジュールされている複数のコマンドは、順次実行されます。実行時間がかかるコマンドがある場合、それ以降のコマンドが期待している時間より遅れて起動されてしまいます。全てを同時に実行するには、`runInBackground`メソッドを使用し、コマンドをバックグランドで実行してください。
+
+    $schedule->command('analytics:report')
+             ->daily()
+             ->runInBackground();
+
 <a name="maintenance-mode"></a>
 ### メンテナンスモード
 
@@ -276,3 +286,4 @@ Laravelスケジューラはスケジュールしたタスクが生成する出�
 `pingBefore($url)`か`thenPing($url)`のどちらを使用するにも、Guzzle HTTPライブラリーが必要です。GuzzleはComposerパッケージマネージャを利用し追加できます。
 
     composer require guzzlehttp/guzzle
+

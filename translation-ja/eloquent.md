@@ -162,8 +162,6 @@ Eloquentモデルはデフォルトとして、アプリケーションに設定
 
     <?php
 
-    use App\Flight;
-
     $flights = App\Flight::all();
 
     foreach ($flights as $flight) {
@@ -180,6 +178,24 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
                    ->get();
 
 > {tip} Eloquentモデルはクエリビルダですから、[クエリビルダ](/docs/{{version}}/queries)で使用できる全メソッドを確認しておくべきでしょう。Eloquentクエリでどんなメソッドも使用できます。
+
+#### モデルのリフレッシュ
+
+`fresh`と`refresh`メソッドを使用し、モデルをリフレッシュできます。`fresh`メソッドはデータベースからモデルを再取得します。既存のモデルインスタンスは影響を受けません。
+
+    $flight = App\Flight::where('number', 'FR 900')->first();
+
+    $freshFlight = $flight->fresh();
+
+`refresh`メソッドは、データベースから取得したばかりのデータを使用し、既存のモデルを再構築します。
+
+    $flight = App\Flight::where('number', 'FR 900')->first();
+
+    $flight->number = 'FR 456';
+
+    $flight->refresh();
+
+    $flight->number; // "FR 900"
 
 <a name="collections"></a>
 ### コレクション
@@ -425,13 +441,15 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
 
 #### キーによる既存モデルの削除
 
-上記の例では`delete`メソッドを呼び出す前にデータベースからモデルを取得しています。しかしモデルの主キーが分かっている場合なら、モデルを取得せずに削除できます。`destroy`メソッドを呼び出してください。
+上記の例では`delete`メソッドを呼び出す前に、データベースからモデルを取得しています。しかしモデルの主キーが分かっている場合は、モデルを取得せずに`destroy`メソッドで削除できます。さらに、引数に主キーを一つ指定できるだけでなく、`destroy`メソッドは主キーの配列や、主キーの[コレクション](/docs/{{version}}/collections)を引数に指定することで、複数のキーを指定できます。
 
     App\Flight::destroy(1);
 
+    App\Flight::destroy(1, 2, 3);
+
     App\Flight::destroy([1, 2, 3]);
 
-    App\Flight::destroy(1, 2, 3);
+    App\Flight::destroy(collect([1, 2, 3]));
 
 #### クエリによるモデル削除
 
@@ -728,7 +746,7 @@ Or, if you defined the global scope using a Closure:
 <a name="events"></a>
 ## イベント
 
-Eloquentモデルは多くのイベントを発行します。`creating`、`created`、`updating`、`updated`、`saving`、`saved`、`deleting`、`deleted`、`restoring`、`restored`、`retrieved`のメソッドを利用し、モデルのライフサイクルの様々な時点をフックすることができます。イベントにより特定のモデルクラスが保存されたりアップデートされたりするたび、簡単にコードを実行できるようになります。
+Eloquentモデルは多くのイベントを発行します。`creating`、`created`、`updating`、`updated`、`saving`、`saved`、`deleting`、`deleted`、`restoring`、`restored`、`retrieved`のメソッドを利用し、モデルのライフサイクルの様々な時点をフックすることができます。イベントにより特定のモデルクラスが保存されたりアップデートされたりするたび、簡単にコードを実行できるようになります。各イベントは、コンストラクタによりモデルのインスタンスを受け取ります。
 
 `retrieved`は、データベースから既存のモデルを取得した時に発行されます。新しいアイテムが最初に保存される場合に`creating`と`created`イベントが発行されます。既存のアイテムに`save`メソッドが呼び出されると`updating`と`updated`イベントが発行されます。どちらの場合にも`saving`と`saved`イベントは発行されます。
 
@@ -760,6 +778,8 @@ Eloquentモデルは多くのイベントを発行します。`creating`、`crea
         ];
     }
 
+Eloquentイベントの定義とマップができたら、[イベントリスナ](https://laravel.com/docs/{{version}}/events#defining-listeners)を使用し、イベントを処理できます。
+
 <a name="observers"></a>
 ### オブザーバ
 
@@ -780,7 +800,7 @@ Eloquentモデルは多くのイベントを発行します。`creating`、`crea
     class UserObserver
     {
         /**
-         * ユーザーの"created"イベントを処理
+         * Userの"created"イベントを処理
          *
          * @param  \App\User  $user
          * @return void
@@ -791,7 +811,7 @@ Eloquentモデルは多くのイベントを発行します。`creating`、`crea
         }
 
         /**
-         * ユーザーの"updated"イベントを処理
+         * Userの"updated"イベントを処理
          *
          * @param  \App\User  $user
          * @return void
@@ -802,7 +822,7 @@ Eloquentモデルは多くのイベントを発行します。`creating`、`crea
         }
 
         /**
-         * ユーザーの"deleted"イベントを処理
+         * Userの"deleted"イベントを処理
          *
          * @param  \App\User  $user
          * @return void

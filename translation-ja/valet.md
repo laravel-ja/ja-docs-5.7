@@ -67,6 +67,7 @@ ValetとHomesteadのどちらを選んでも、Laravelの開発環境に向け�
 <div class="content-list" markdown="1">
 - `brew update`で最新バージョンの[Homebrew](http://brew.sh/)をインストール、もしくはアップデートしてください。
 - Homebrewを使い、`brew install php@7.2`でPHP7.2をインストールしてください。
+- [Composer](https://getcomposer.org)をインストールしてください。
 - `composer global require laravel/valet`でValetをインストールしてください。`~/.composer/vendor/bin`ディレクトリが実行パスに含まれていることを確認してください。
 - `valet install`コマンドを実行してください。これによりValetとDnsMasqがインストール／設定され、システム起動時に起動されるValetのデーモンが登録されます。
 </div>
@@ -83,7 +84,7 @@ Valetはマシンが起動されると、毎回デーモンを自動的に起動
 
 #### データベース
 
-データベースを使いたい場合、コマンドラインで`brew install mysql@5.7`を実行し、MySQLを試してください。MySQLがインストールできたら、`brew services start mysql`コマンドを使い、起動します。`127.0.0.1`でデータベースに接続し、ユーザー名は`root`、パスワードは空文字列です。
+データベースを使いたい場合、コマンドラインで`brew install mysql@5.7`を実行し、MySQLを試してください。MySQLがインストールできたら、`brew services start mysql@5.7`コマンドを使い、起動します。`127.0.0.1`でデータベースに接続し、ユーザー名は`root`、パスワードは空文字列です。
 
 <a name="upgrading"></a>
 ### アップグレード
@@ -130,7 +131,7 @@ Valetがインストールできたら、サイトを動作させる準備がで
 `link`コマンドは`park`のように親ディレクトリを指定するのではなく、各ディレクトリ中で一つのサイトを動作させるのに便利です。
 
 <div class="content-list" markdown="1">
-- ターミナルでプロジェクトのディレクトリへ移動し、`valet link アプリケーション名`を実行します。Valetはカレントワーキングディレクトリから`~/.valet/Sites`内へシンボリックリンクを張ります。
+- ターミナルでプロジェクトのディレクトリへ移動し、`valet link アプリケーション名`を実行します。Valetはカレントワーキングディレクトリから`~/.config/valet/Sites`内へシンボリックリンクを張ります。
 - `link`コマンド実行後、ブラウザで`http://アプリケーション名.test`にアクセスできます。
 </div>
 
@@ -163,11 +164,11 @@ Valetはローカルサイトを世界と共有するコマンドも用意して
 <a name="custom-valet-drivers"></a>
 ## カスタムValetドライバ
 
-Valetでサポートされていない、他のフレームワークやCMSでPHPアプリケーションを実行するには、独自のValet「ドライバ」を書く必要があります。Valetをインストールすると作成される、`~/.valet/Drivers`ディレクトリに`SampleValetDriver.php`ファイルが存在しています。このファイルは、カスタムドライバーをどのように書いたら良いかをデモンストレートするサンプルドライバの実装コードです。ドライバを書くために必要な`serves`、`isStaticFile`、`frontControllerPath`の３メソッドを実装するだけです。
+Valetでサポートされていない、他のフレームワークやCMSでPHPアプリケーションを実行するには、独自のValet「ドライバ」を書く必要があります。Valetをインストールすると作成される、`~/.config/valet/Drivers`ディレクトリに`SampleValetDriver.php`ファイルが存在しています。このファイルは、カスタムドライバーをどのように書いたら良いかをデモンストレートするサンプルドライバの実装コードです。ドライバを書くために必要な`serves`、`isStaticFile`、`frontControllerPath`の３メソッドを実装するだけです。
 
 全３メソッドは`$sitePath`、`$siteName`、`$uri`を引数で受け取ります。`$sitePath`は、`/Users/Lisa/Sites/my-project`のように、サイトプロジェクトへのフルパスです。`$siteName`は"ホスト" / "サイト名"記法のドメイン(`my-project`)です。`$uri`はやって来たリクエストのURI(`/foo/bar`)です。
 
-カスタムValetドライバを書き上げたら、`フレームワークValetDriver.php`命名規則をつかい、`~/.valet/Drivers`ディレクトリ下に設置してください。たとえば、WordPress用にカスタムValetドライバを書いたら、ファイル名は`WordPressValetDriver.php`になります。
+カスタムValetドライバを書き上げたら、`フレームワークValetDriver.php`命名規則をつかい、`~/.config/valet/Drivers`ディレクトリ下に設置してください。たとえば、WordPress用にカスタムValetドライバを書いたら、ファイル名は`WordPressValetDriver.php`になります。
 
 カスタムValetドライバで実装する各メソッドのサンプルコードを見ていきましょう。
 

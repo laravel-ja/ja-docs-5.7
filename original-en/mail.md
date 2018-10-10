@@ -18,6 +18,7 @@
     - [Queueing Mail](#queueing-mail)
 - [Rendering Mailables](#rendering-mailables)
     - [Previewing Mailables In The Browser](#previewing-mailables-in-the-browser)
+- [Localizing Mailables](#localizing-mailables)
 - [Mail & Local Development](#mail-and-local-development)
 - [Events](#events)
 
@@ -73,6 +74,23 @@ Next, set the `driver` option in your `config/mail.php` configuration file to `s
         'region' => 'ses-region',  // e.g. us-east-1
     ],
 
+If you need to include [additional options](https://docs.aws.amazon.com/aws-sdk-php/v3/api/api-email-2010-12-01.html#sendrawemail) when executing the SES `SendRawEmail` request, you may define an `options` array within your `ses` configuration:
+
+    'ses' => [
+        'key' => 'your-ses-key',
+        'secret' => 'your-ses-secret',
+        'region' => 'ses-region',  // e.g. us-east-1
+        'options' => [
+            'ConfigurationSetName' => 'MyConfigurationSet',
+            'Tags' => [
+                [
+                    'Name' => 'foo',
+                    'Value' => 'bar',
+                ],
+            ],
+        ],
+    ],
+
 <a name="generating-mailables"></a>
 ## Generating Mailables
 
@@ -108,6 +126,10 @@ First, let's explore configuring the sender of the email. Or, in other words, wh
 However, if your application uses the same "from" address for all of its emails, it can become cumbersome to call the `from` method in each mailable class you generate. Instead, you may specify a global "from" address in your `config/mail.php` configuration file. This address will be used if no other "from" address is specified within the mailable class:
 
     'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
+
+In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
+
+    'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
 
 <a name="configuring-the-view"></a>
 ### Configuring The View
@@ -538,6 +560,40 @@ If you have mailable classes that you want to always be queued, you may implemen
     {
         //
     }
+
+<a name="localizing-mailables"></a>
+## Localizing Mailables
+
+Laravel allows you to send mailables in a locale other than the current language, and will even remember this locale if the mail is queued.
+
+To accomplish this, the `Illuminate\Mail\Mailable` class offers a `locale` method to set the desired language. The application will change into this locale when the mailable is being formatted and then revert back to the previous locale when formatting is complete:
+
+    Mail::to($request->user())->send(
+        (new OrderShipped($order))->locale('es')
+    );
+
+### User Preferred Locales
+
+Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
+
+    use Illuminate\Contracts\Translation\HasLocalePreference;
+
+    class User extends Model implements HasLocalePreference
+    {
+        /**
+         * Get the user's preferred locale.
+         *
+         * @return string
+         */
+        public function preferredLocale()
+        {
+            return $this->locale;
+        }
+    }
+
+Once you have implemented the interface, Laravel will automatically use the preferred locale when sending mailables and notifications to the model. Therefore, there is no need to call the `locale` method when using this interface:
+
+    Mail::to($request->user())->send(new OrderShipped($order));
 
 <a name="mail-and-local-development"></a>
 ## Mail & Local Development

@@ -13,6 +13,8 @@
 
 `composer.json`ファイル中の、`laravel/framework`依存指定を`5.7.*`へアップデートしてください。
 
+Laravel Passportを使用している場合は、`composer.json`ファイルの`laravel/passport`依存指定を`^7.0`へアップデートしてください。
+
 もちろん、皆さんのアプリケーションで使用しているサードパーティのパッケージを確認し、Laravel5.7をサポートするバージョンを使用していることをチェックするのをお忘れなく。
 
 ### アプリケーション
@@ -41,6 +43,24 @@
 `$schedule->job`メソッドは、`job`メソッドで接続／ジョブが明確に渡されていない場合、ジョブクラスの`queue`と`connection`プロパティの値が利用されるようになりました。
 
 通常、これはバグフィックスと考えられています。しかしながら、不注意によるブレイキングチェンジとしてリストアップされています。[この変更により、問題に遭遇した場合は、お知らせください。](https://github.com/laravel/framework/pull/25216)
+
+### Assets
+
+#### Assetディレクトリの非階層化
+
+**影響の可能性: なし**
+
+新しいLaravel5.7アプリケーションでは、スクリプトとスタイルを含んでいたassetsディレクトリは削除され、スクリプトとスタイルは`resources`ディレクトリへ移動しました。これは既存のアプリケーションに影響**しません**し、既存のアプリケーションを更新する必要はありません。
+
+しかし、この変更を適用したければ、`resources/assets/*`下の全てのファイル／ディレクトリを一つ上の階層へ移動してください。
+
+- `resources/assets/js/*`を`resources/js/*`へ移動
+- `resources/assets/sass/*`を`resources/sass/*`へ移動
+
+それから、`webpack.mix.js`ファイル中の、古いディレクトリの参照を更新します。
+
+    mix.js('resources/js/app.js', 'public/js')
+       .sass('resources/sass/app.scss', 'public/css');
 
 ### 認証
 
@@ -97,7 +117,7 @@
 
 **影響の可能性： とても低い**
 
-`raw`は可視性を`protected`から`public`に変更しました。それに付け加え、[`Illuminate/Contracts/Auth/Access/Gate`契約に追加されました](https://github.com/laravel/framework/pull/25143)。
+`raw`メソッドは可視性を`protected`から`public`に変更しました。それに付け加え、[`Illuminate\Contracts\Auth\Access\Gate`契約に追加されました](https://github.com/laravel/framework/pull/25143)。
 
     /**
      * Get the raw result from the authorization callback.
@@ -124,6 +144,16 @@
     // Laravel 5.7
     {{ $foo ?? 'default' }}
 
+### Cacキャッシュhe
+
+**影響の可能性： とても高い**
+
+新しく`data`ディレクトリが`storage/framework/cache`へ追加されました。このディレクトリをアプリケーションに作成してください。
+
+ディレクトリを作成したら、[storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore)ファイルを更新してください。
+
+最後に、新しく作成した`data`ディレクトリへ、[.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore)ファイルを追加してください。
+
 ### Carbon
 
 **影響の可能性： とても低い**
@@ -144,7 +174,7 @@ Carbonの「マクロ」は、Laravelのライブラリの拡張に代わり、�
 
 **影響の可能性： とても低い**
 
-`Illuminate/Contracts/Cookie/Factory`インターフェイスの `make`と`forever`メソッドの使い方が、[変更されました](https://github.com/laravel/framework/pull/23200)。このインターフェイスを実装している場合は、これらのメソッドを更新してください。
+`Illuminate\Contracts\Cookie\Factory`インターフェイスの `make`と`forever`メソッドの使い方が、[変更されました](https://github.com/laravel/framework/pull/23200)。このインターフェイスを実装している場合は、これらのメソッドを更新してください。
 
 ### データベース
 
@@ -217,6 +247,14 @@ Laravel5.7より前は、デフォルトSQL Server PDOドライバとして、`P
 
 どちらのドライバも利用可能でない場合、Laravelは`PDO_DBLIB`ドライバを使用します。
 
+#### SQLite外部キー
+
+**影響の可能性： 中程度**
+
+SQLiteは外部キーのドロップをサポートしていません。そのため、テーブルに対する`dropForeign`メソッドを使用すると例外が投げられるようになりました。一般的にはこれはバグフィックスとして考えられています。しかし、不注意によるブレイキングチェンジとしてリストアップされています。
+
+複数のタイプのデータベースでマイグレーションを実行する場合、SQLiteの外部キー非サポートを避けるために、マイグレーションでの`DB::getDriverName()`使用を考慮してください。
+
 ### デバッグ
 
 #### ダンパクラス
@@ -251,9 +289,60 @@ Laravel5.7では、これらの値は対応するPHP定数、`INF`、`-INF`、`N
 
 **影響の可能性： 状況による**
 
-Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)を使用する選択をした場合、アプリケーションへスカフォールドを追加する必要があります。最初に、アプリケーションへ`VerificationController`を追加します。[App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/develop/app/Http/Controllers/Auth/VerificationController.php)。
+Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)を使用する選択をした場合、アプリケーションへスカフォールドを追加する必要があります。最初に、アプリケーションへ`VerificationController`を追加します。[App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php)。
+
+さらに、`App\User`モデルに`MustVerifyEmail`契約を実装する必要があります。
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable implements MustVerifyEmail
+    {
+        use Notifiable;
+
+        // ...
+    }
+
+検査済みのユーザーだけに特定のルートへのアクセスを許すために`verified`ミドルウェアを使うためには、`app/Http/Kernel.php`ファイルの`$routeMiddleware`プロパティへ、新しいミドルウェアを含めるために更新する必要があります。
+
+    // App\Http\Kernelクラスの中
+
+    protected $routeMiddleware = [
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
 
 さらに、確認ビュースタブが必要です。このビューは、`resources/views/auth/verify.blade.php`として設置します。ビューの中身は、[GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub)で取得できます。
+
+次に、メールアドレスが確認された日時を保存するための、`email_verified_at`カラムをユーザーテーブルへ追加します。
+
+    $table->timestamp('email_verified_at')->nullable();
+
+ユーザー登録時にメールを送信するには、[App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php)クラスへ、以下のイベントとリスナを登録する必要があります。
+
+    use Illuminate\Auth\Events\Registered;
+    use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+    ];
 
 最後に、`Auth::routes`メソッドを呼び出す時に、`verify`オプションを渡してください。
 
@@ -267,6 +356,14 @@ Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)
 
 `readStream`と`writeStream`メソッドが、[`Illuminate\Contracts\Filesystem\Filesystem`契約へ追加されました](https://github.com/laravel/framework/pull/23755)。このインターフェイスを実装している場合、皆さんの実装へこれらのメソッドを追加してください。
 
+### ハッシュ
+
+#### `Hash:check`メソッド
+
+**影響の可能性： なし**
+
+`check`メソッドは、設定されたアルゴリズムとハッシュのアルゴリズムがマッチするかを**オプションとして**チェックするようになりました。
+
 ### メール
 
 #### Mailable動的変数のケース
@@ -274,6 +371,12 @@ Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)
 **影響の可能性： 中程度**
 
 動的なビュー変数とMailable動的変数の振る舞いを統一するため、Mailableビューへ動的に渡される変数は、[自動的に「キャメルケース」](https://github.com/laravel/framework/pull/24232)になるようになりました。動的Mailable変数はLaravelの機能としてドキュメントに乗せていないため、アプリケーションに影響する可能性は低いでしょう。
+
+#### テンプレートテーマ
+
+**影響の可能性： 中程度**
+
+Markdownのmailableテンプレートのためのデフォルトテーマスタイルをカスタマイズしている場合、再公開(publish)し、カスタマイズし直す必要があります。'blue'、'green'、'red'のボタン色クラスが、'primary'、'success'、'error'へリネームされました。
 
 ### ルート
 
@@ -325,7 +428,7 @@ Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)
 
 **影響の可能性： とても低い**
 
-`validate`メソッドが、[`Illuminate/Contracts/Validation/Validator`契約に追加されました](https://github.com/laravel/framework/pull/25128)。
+`validate`メソッドが、[`Illuminate\Contracts\Validation\Validator`契約に追加されました](https://github.com/laravel/framework/pull/25128)。
 
     /**
      * Run the validator's rules against its data.
