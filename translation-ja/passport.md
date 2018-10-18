@@ -690,5 +690,5 @@ Passportの`actingAs`メソッドは、現在認証中のユーザーを指定�
 
         $response = $this->post('/api/create-server');
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
     }

@@ -11,19 +11,26 @@
     - [プラン変更](#changing-plans)
     - [サブスクリプション数](#subscription-quantity)
     - [サブスクリプションの税金](#subscription-taxes)
+    - [サブスクリプション課金日付け](#subscription-anchor-date)
     - [サブスクリプションキャンセル](#cancelling-subscriptions)
     - [サブスクリプション再開](#resuming-subscriptions)
     - [クレジットカード変更](#updating-credit-cards)
 - [サブスクリプションのトレイト](#subscription-trials)
     - [カードの事前登録あり](#with-credit-card-up-front)
     - [カードの事前登録なし](#without-credit-card-up-front)
+- [顧客](#customers)
+    - [顧客の生成](#create-customers)
 - [StripeのWebフック処理](#handling-stripe-webhooks)
     - [Webフックハンドラの定義](#defining-webhook-event-handlers)
     - [サブスクリプション不可](#handling-failed-subscriptions)
+    - [Webフック署名の確認](#verifying-webhook-signatures)
 - [BraintreeのWebフック処理](#handling-braintree-webhooks)
     - [Webフックハンドラの定義](#defining-braintree-webhook-event-handlers)
     - [サブスクリプション不可](#handling-braintree-failed-subscriptions)
 - [一回だけの課金](#single-charges)
+    - [シンプルな課金](#simple-charge)
+    - [インボイス付き課金](#charge-with-invoice)
+    - [払い戻し](#refunding-charges)
 - [インボイス](#invoices)
     - [インボイスPDF生成](#generating-invoice-pdfs)
 
@@ -51,7 +58,7 @@ Laravel Cashierは[Stripe](https://stripe.com)と[Braintree](https://www.braintr
 Cashierを使用する前に、[データベースを準備](/docs/{{version}}/migrations)する必要があります。`users`テーブルに、いくつかのカラムを追加し、顧客のサブスクリプション情報すべてを保持する新しい`subscriptions`テーブルを作成します。
 
     Schema::table('users', function ($table) {
-        $table->string('stripe_id')->nullable();
+        $table->string('stripe_id')->nullable()->collation('utf8mb4_bin');
         $table->string('card_brand')->nullable();
         $table->string('card_last_four')->nullable();
         $table->timestamp('trial_ends_at')->nullable();
@@ -61,7 +68,7 @@ Cashierを使用する前に、[データベースを準備](/docs/{{version}}/m
         $table->increments('id');
         $table->unsignedInteger('user_id');
         $table->string('name');
-        $table->string('stripe_id');
+        $table->string('stripe_id')->collation('utf8mb4_bin');
         $table->string('stripe_plan');
         $table->integer('quantity');
         $table->timestamp('trial_ends_at')->nullable();
@@ -328,6 +335,32 @@ Stripe／Braintreeがサポートしている追加のフィールドについ�
 
 > {note} `taxPercentage`メソッドは、サブスクリプションの課金時のみに適用されます。Cashierで「一回のみ」の支払いを行う場合は、税率を自分で適用する必要があります。
 
+#### 税率の同期
+
+`taxPercentage`が返すハードコードした値を変更する場合、ユーザーに対する既存のサブスクリプションは以前のままになります。`taxPercentage`が返す値に既存のサブスクリプションも更新したい場合は、ユーザーのサブスクリプションインスタンスに対し、`syncTaxPercentage`メソッドを呼び出す必要があります。
+
+    $user->subscription('main')->syncTaxPercentage();
+
+<a name="subscription-anchor-date"></a>
+### サブスクリプション課金日付け
+
+> {note} サブスクリプション課金日付けの変更は、Stripeを利用するCashierのみサポートします。
+
+デフォルトで課金日はサブスクリプションが生成された日付け、もしくは使用期間を使っている場合は、使用期間の終了日です。課金日付を変更したい場合は、`anchorBillingCycleOn`メソッドを使用します。
+
+    use App\User;
+    use Carbon\Carbon;
+
+    $user = User::find(1);
+
+    $anchor = Carbon::parse('first day of next month');
+
+    $user->newSubscription('main', 'premium')
+                ->anchorBillingCycleOn($anchor->startOfDay())
+                ->create($stripeToken);
+
+サブスクリプションの課金間隔を管理する情報は、[Stripeの課金サイクルのドキュメント](https://stripe.com/docs/billing/subscriptions/billing-cycle)をお読みください。
+
 <a name="cancelling-subscriptions"></a>
 ### サブスクリプションキャンセル
 
@@ -429,6 +462,20 @@ Stripe／Braintreeがサポートしている追加のフィールドについ�
 
     $user->newSubscription('main', 'monthly')->create($stripeToken);
 
+<a name="customers"></a>
+## 顧客
+
+<a name="creating-customers"></a>
+### 顧客の生成
+
+時にサブスクリプションの定期購入を始めなくても、顧客を生成したい場合があります。それには、`createAsStripeCustomer`メソッドを使用します。
+
+    $user->createAsStripeCustomer($stripeToken);
+
+もちろん、Stripeで作った顧客にたいし、後からサブスクリプションの定期購入を開始することができます。
+
+> {tip} Braintreeの同じ機能は、`createAsBraintreeCustomer`メソッドです。
+
 <a name="handling-stripe-webhooks"></a>
 ## StripeのWebフック処理
 
@@ -495,6 +542,20 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
 
 これだけです！　課金の失敗はコントローラにより捉えられ、処理されます。コントローラはStripeによりサブスクリプションが不能だと判断されると（通常は課金に３回失敗時）、その顧客のサブスクリプションをキャンセルします。
 
+<a name="verifying-webhook-signatures"></a>
+### Webフック署名の確認
+
+Webフックを安全にするため、[StripeのWebフック著名](https://stripe.com/docs/webhooks/signatures)が利用できます。便利に利用できるように、Cashierは送信されてきたWebフックリクエストが有効なものか確認するミドルウェアを用意しています。
+
+利用開始するには、`services`設定ファイルの`stripe.webhook.secret`設定値を確実に設定してください。Webフックのシークレット値を設定したら、ルートに対し`VerifyWebhookSignature`ミドルウェアを指定します。
+
+    use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
+
+    Route::post(
+        'stripe/webhook',
+        '\App\Http\Controllers\WebhookController@handleWebhook'
+    )->middleware(VerifyWebhookSignature::class);
+
 <a name="handling-braintree-webhooks"></a>
 ## BraintreeのWebフック処理
 
@@ -558,6 +619,7 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
 <a name="single-charges"></a>
 ## 一回だけの課金
 
+<a name="simple-charge"></a>
 ### 課金のみ
 
 > {note} Stripeを使用している場合、`charge`メソッドには**アプリケーションで使用している通貨の最低単位**で金額を指定しますが、Braintreeの`charge`メソッドには、ドル単位の金額を指定します。
@@ -565,7 +627,7 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
 すでに何かを購入している顧客のクレジットカードに、「一回だけ」の課金をしたい場合は、billableモデルのインスタンスに対し、`charge`メソッドを使います。
 
     // Stripeはセント単位で課金する
-    $user->charge(100);
+    $stripeCharge = $user->charge(100);
 
     // Braintreeはドル単位で課金する
     $user->charge(1);
@@ -584,6 +646,7 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
         //
     }
 
+<a name="charge-with-invoice"></a>
 ### インボイス付き課金
 
 一回だけ課金をしつつ、顧客へ発行するPDFのレシートとしてインボイスも生成したいことがあります。`invoiceFor`メソッドは、まさにそのために存在しています。例として、「一回だけ」の料金を５ドル課金してみましょう。
@@ -608,6 +671,15 @@ Braintreeを課金プロバイダに使用している場合、`invoiceFor` の�
 
 
 > {note} `invoiceFor`メソッドは、課金失敗時にリトライするStripeインボイスを生成します。リトライをしてほしくない場合は、最初に課金に失敗した時点で、Stripe APIを使用し、生成したインボイスを閉じる必要があります。
+
+<a name="refunding-charges"></a>
+### 払い戻し
+
+Stripeでの課金を払い戻す必要がある場合は、`refund`メソッドを使用します。このメソッドは、Stripe課金IDのみ引数に取ります。
+
+    $stripeCharge = $user->charge(100);
+
+    $user->refund($stripeCharge->id);
 
 <a name="invoices"></a>
 ## インボイス

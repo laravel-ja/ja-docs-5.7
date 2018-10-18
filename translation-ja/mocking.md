@@ -206,6 +206,7 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
     use Tests\TestCase;
     use App\Notifications\OrderShipped;
     use Illuminate\Support\Facades\Notification;
+    use Illuminate\Notifications\AnonymousNotifiable;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
 
@@ -233,6 +234,11 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
             // 通知が送られなかったことをアサート
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
+            );
+
+            // 通知がNotification::route()メソッドにより送られたことをアサート
+            Notification::assertSentTo(
+                new AnonymousNotifiable, OrderShipped::class
             );
         }
     }
@@ -272,6 +278,12 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
 
             // ジョブが投入されなかったことをアサート
             Queue::assertNotPushed(AnotherJob::class);
+
+            // 指定のチェーンにより、ジョブが投入されたことをアサート
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                AnotherJob::class,
+                FinalJob::class
+            ]);
         }
     }
 

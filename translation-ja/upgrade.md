@@ -150,9 +150,17 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
 
 新しく`data`ディレクトリが`storage/framework/cache`へ追加されました。このディレクトリをアプリケーションに作成してください。
 
-ディレクトリを作成したら、[storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore)ファイルを更新してください。
+    mkdir -p storage/framework/cache/data;
 
-最後に、新しく作成した`data`ディレクトリへ、[.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore)ファイルを追加してください。
+次に、新しく作成した`data`ディレクトリへ、[.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore)ファイルを追加してください。
+
+    cp storage/framework/cache/.gitignore storage/framework/cache/data/.gitignore
+
+最後に[storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore)ファイルを以下のように確実に更新してください。
+
+    *
+    !/data
+    !.gitignore
 
 ### Carbon
 
@@ -232,6 +240,12 @@ Carbonの「マクロ」は、Laravelのライブラリの拡張に代わり、�
     public function cursor($query, $bindings = [], $useReadPdo = true);
 
 このインターフェイスを実装している場合、このメソッドを追加してください。
+
+#### マイグレーションコマンド出力
+
+**影響の可能性： とても低い**
+
+コアのマイグレーションコマンドは、[マイグレータクラスの出力インスタンスをセットするように更新](https://github.com/laravel/framework/pull/24811)されました。既存のマイグレーションコマンドをオーバーライドしている場合は、`$this->migrator->getNotes()`の参照を削除し、代わりに`$this->migrator->setOutput($this->output)`を使用してください。
 
 #### SQL Serverドライバプライオリティ
 

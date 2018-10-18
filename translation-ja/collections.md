@@ -224,7 +224,7 @@
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
-このメソッドは特に[Bootstrap](https://getbootstrap.com/css/#grid)のようなグリッドシステムを[ビュー](/docs/{{version}}/views)で操作する場合に便利です。[Eloquent](/docs/{{version}}/eloquent)モデルのコレクションがあり、グリッドで表示しようとしているところを想像してください。
+このメソッドは特に[Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid)のようなグリッドシステムを[ビュー](/docs/{{version}}/views)で操作する場合に便利です。[Eloquent](/docs/{{version}}/eloquent)モデルのコレクションがあり、グリッドで表示しようとしているところを想像してください。
 
     @foreach ($products->chunk(3) as $chunk)
         <div class="row">

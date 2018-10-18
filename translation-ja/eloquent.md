@@ -485,7 +485,7 @@ Eloquentの`all`メソッドはモデルテーブルの全レコードを結果�
 
 もちろんデータベーステーブルにも`deleted_at`カラムを追加する必要があります。Laravel[スキーマビルダ](/docs/{{version}}/migrations)にはこのカラムを作成するメソッドが存在しています。
 
-    Schema::table('flights', function ($table) {
+    Schema::table('flights', function (Blueprint $table) {
         $table->softDeletes();
     });
 

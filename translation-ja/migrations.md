@@ -295,6 +295,8 @@ Laravelの`Schema`[ファサード](/docs/{{version}}/facades)は、テーブル
 `->unsigned()`  |  整数カラムを符号なしに設定(MySQLのみ)
 `->useCurrent()`  |  TIMESTAMPカラムのデフォルト値をCURRENT_TIMESTAMPに指定
 `->virtualAs($expression)`  |  virtual generatedカラムを生成(MySQLのみ)
+`->generatedAs($expression)`  |  指定のシーケンスオプションで、識別カラムを生成(PostgreSQLのみ)
+`->always()`  |  識別カラムの入力を上書きするシーケンス値を定義(PostgreSQLのみ)
 
 <a name="modifying-columns"></a>
 ### カラム変更
@@ -465,3 +467,5 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
     Schema::enableForeignKeyConstraints();
 
     Schema::disableForeignKeyConstraints();
+
+> {note} デフォルト状態では、SQLiteは外部キー制約が利用できません。SQLiteを使用する場合は、マイグレーションで外部キーを作成する前に、確実に外部キーサポートを有効にしてください。
