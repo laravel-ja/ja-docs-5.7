@@ -562,6 +562,17 @@ NULL値を指定すると、空の配列が返ってきます。
 
     // 0
 
+配列やオブジェクトのいずれのキーにもマッチする、ワイルドカードとしてアスタリスクも使用できます。
+
+    $data = [
+        'product-one' => ['name' => 'Desk 1', 'price' => 100],
+        'product-two' => ['name' => 'Desk 2', 'price' => 150],
+    ];
+
+    data_get($data, '*.name');
+
+    // ['Desk 1', 'Desk 2'];
+
 <a name="method-data-set"></a>
 #### `data_set()` {#collection-method}
 

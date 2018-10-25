@@ -540,6 +540,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 [タイムゾーン](#rule-timezone)
 [一意（データベース）](#rule-unique)
 [URL](#rule-url)
+[UUID](#rule-uuid)
 
 </div>
 
@@ -983,6 +984,11 @@ uniqueチェックで指定したIDを除外したい場合があります。た
 #### url
 
 フィールドが有効なURLであることをバリデートします。
+
+<a name="rule-uuid"></a>
+#### uuid
+
+フィールドが有効な、RFC 4122（バージョン1、3、4、5）universally unique identifier (UUID)であることをバリデートします。
 
 <a name="conditionally-adding-rules"></a>
 ## 条件付きでルールを追加する

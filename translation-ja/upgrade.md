@@ -159,7 +159,7 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
 最後に[storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore)ファイルを以下のように確実に更新してください。
 
     *
-    !/data
+    !data/
     !.gitignore
 
 ### Carbon

@@ -228,7 +228,7 @@ JSONPレスポンスを生成したい場合は、`json`メソッドと`withCall
 
     return response()->download($pathToFile, $name, $headers);
 
-    return response()->download($pathToFile)->deleteFileAfterSend(true);
+    return response()->download($pathToFile)->deleteFileAfterSend();
 
 > {note} ファイルダウンロードを管理しているSymfony HttpFoundationクラスは、ASCIIのダウンロードファイル名を指定するよう要求しています。
 

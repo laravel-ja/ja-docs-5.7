@@ -78,6 +78,7 @@
     - [モック](/docs/{{version}}/mocking)
 - ## 公式パッケージ
     - [Cashier](/docs/{{version}}/billing)
+    - [Dusk](/docs/{{version}}/dusk)
     - [Envoy](/docs/{{version}}/envoy)
     - [Horizon](/docs/{{version}}/horizon)
     - [Passport](/docs/{{version}}/passport)

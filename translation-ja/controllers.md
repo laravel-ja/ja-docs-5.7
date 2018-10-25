@@ -41,7 +41,7 @@
          * 指定ユーザーのプロフィール表示
          *
          * @param  int  $id
-         * @return Response
+         * @return View
          */
         public function show($id)
         {
@@ -84,7 +84,7 @@
          * 指定ユーザーのプロフィール表示
          *
          * @param  int  $id
-         * @return Response
+         * @return View
          */
         public function __invoke($id)
         {

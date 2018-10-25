@@ -23,7 +23,7 @@
 - [Handling Stripe Webhooks](#handling-stripe-webhooks)
     - [Defining Webhook Event Handlers](#defining-webhook-event-handlers)
     - [Failed Subscriptions](#handling-failed-subscriptions)
-    - [Veirfying Webhook Signatures](#verifying-webhook-signatures)
+    - [Verifying Webhook Signatures](#verifying-webhook-signatures)
 - [Handling Braintree Webhooks](#handling-braintree-webhooks)
     - [Defining Webhook Event Handlers](#defining-braintree-webhook-event-handlers)
     - [Failed Subscriptions](#handling-braintree-failed-subscriptions)
@@ -60,7 +60,7 @@ Before using Cashier, we'll also need to [prepare the database](/docs/{{version}
     Schema::table('users', function ($table) {
         $table->string('stripe_id')->nullable()->collation('utf8mb4_bin');
         $table->string('card_brand')->nullable();
-        $table->string('card_last_four')->nullable();
+        $table->string('card_last_four', 4)->nullable();
         $table->timestamp('trial_ends_at')->nullable();
     });
 
