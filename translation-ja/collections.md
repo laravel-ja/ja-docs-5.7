@@ -1057,7 +1057,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
     /*
         [
             'Sales' => ['John Doe', 'Jane Doe'],
-            'Marketing' => ['Johhny Doe'],
+            'Marketing' => ['Johnny Doe'],
         ]
     */
 

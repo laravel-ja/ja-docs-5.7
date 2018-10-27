@@ -372,7 +372,7 @@ Laravelの新しい[メール確認サービス](/docs/{{version}}/verification)
 
 ### ハッシュ
 
-#### `Hash:check`メソッド
+#### `Hash::check`メソッド
 
 **影響の可能性： なし**
 

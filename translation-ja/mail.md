@@ -304,6 +304,49 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
                         ]);
         }
 
+#### ディスクからのファイル添付
+
+[ファイルシステムのディスク](/docs/{{version}}/filesystem)へファイルを保存してあり、それをメールに添付する場合は`attachFromStorage`メソッドを使用します。
+
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file');
+     }
+
+必要に応じ、ファイルの添付名と追加のオプションを第２，第３引数として指定できます。
+
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorage('/path/to/file', 'name.pdf', [
+                        'mime' => 'application/pdf'
+                    ]);
+     }
+
+デフォルトディスク以外のストレージディスクを指定する場合は、`attachFromStorageDisk`メソッドを使用します。
+
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+     public function build()
+     {
+        return $this->view('email.orders.shipped')
+                    ->attachFromStorageDisk('s3', '/path/to/file');
+     }
+
 #### Rawデータ添付
 
 `attachData`メソッドは添付内容のバイト文字列をそのまま添付する場合に使用します。たとえば、メモリ中でPDFを生成し、それをディスクに書き出さずに、メールへ添付したい場合にこのメソッドを使用できます。`attachData`メソッドはrawデータバイトを最初の引数に取り、ファイル名を第２引数に、オプションの配列を第３引数に取ります。
