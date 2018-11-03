@@ -454,7 +454,7 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-外部キーを削除するには、`dropForeign`メソッドを使用します。他のインデックスで使用されるものと似た命名規則が、外部キーにも使用されています。つまりテーブル名とカラム名をつなげ、"_foreign"を最後につけた名前になります。
+外部キーを削除するには、`dropForeign`メソッドを使用します。他のインデックスで使用されるものと似た命名規則が、外部キーにも使用されています。つまりテーブル名とカラム名をつなげ、"\\_foreign"を最後につけた名前になります。
 
     $table->dropForeign('posts_user_id_foreign');
 
@@ -468,4 +468,4 @@ Laravelはデータベースレベルの整合性を強制するために、テ�
 
     Schema::disableForeignKeyConstraints();
 
-> {note} デフォルト状態では、SQLiteは外部キー制約が利用できません。SQLiteを使用する場合は、マイグレーションで外部キーを作成する前に、確実に外部キーサポートを有効にしてください。
+> {note} デフォルト状態では、SQLiteは外部キー制約が利用できません。SQLiteを使用する場合は、マイグレーションで外部キーを作成する前に、確実に[外部キーサポートを有効](/docs/{{version}}/database#configuration)にしてください。

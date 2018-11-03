@@ -39,7 +39,7 @@ Laravelは[Composer](https://getcomposer.org)を依存パッケージの管理�
 
 最初にComposerを使用し、Laravelインストーラをダウンロードします。
 
-    composer global require "laravel/installer"
+    composer global require laravel/installer
 
 皆さんのシステムの、どこへlaravel実行ファイルが設置されても動作するように、グローバルなComposerのbinディレクトリを`$PATH`へ登録してください。このディレクトリはオペレーティングシステムにより場所が異なります。通常は、以下の場所です。
 

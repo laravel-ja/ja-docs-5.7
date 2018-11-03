@@ -6,6 +6,7 @@
     - [保護下のルート](#protecting-routes)
 - [ビュー](#verification-views)
 - [メール確認後](#after-verifying-emails)
+- [イベント](#events)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -67,3 +68,19 @@
 メールアドレスを確認後、ユーザーを自動的に`/home`ヘリダイレクトします。`VerificationController`の`redirectTo`メソッドかプロパティにより、確認後のリダイレクト先をカスタマイズできます。
 
     protected $redirectTo = '/dashboard';
+
+<a name="events"></a>
+## イベント
+
+メールの確認過程で、Laravelは[イベント](/docs/{{version}}/events)をディスパッチします。`EventServiceProvider`の中で、これらのイベントにリスナを指定できます。
+
+    /**
+     * アプリケーションにマップするイベントリスナ
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Illuminate\Auth\Events\Verified' => [
+            'App\Listeners\LogVerifiedUser',
+        ],
+    ];

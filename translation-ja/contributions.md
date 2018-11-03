@@ -33,6 +33,7 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 - [Laravel Passport](https://github.com/laravel/passport)
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
+- [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com)
 </div>
 
@@ -76,6 +77,8 @@ Laravelは[PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/
      * @param  \Closure|string|null  $concrete
      * @param  bool  $shared
      * @return void
+     *
+     * @throws \Exception
      */
     public function bind($abstract, $concrete = null, $shared = false)
     {

@@ -34,6 +34,13 @@ LaravelはSQLを直接使用する場合でも、[Fluentクエリビルダ](/doc
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
+SQLiteで外部キー制約を有効にするには、`config/database.php`設定ファイルに`foreign_key_constraints`オプションを追加します。
+
+    'sqlite' => [
+        // ...
+        'foreign_key_constraints' => true,
+    ],
+
 <a name="read-and-write-connections"></a>
 ### Read／Write接続
 

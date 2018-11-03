@@ -877,6 +877,7 @@ Laravelでは、現在のデフォルト言語とは別のローケルで、通�
         // $event->channel
         // $event->notifiable
         // $event->notification
+        // $event->response
     }
 
 <a name="custom-channels"></a>

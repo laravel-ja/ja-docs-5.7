@@ -130,6 +130,28 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
 
 このインターフェイスを実装してる場合は、メソッドを皆さんの実装へ追加してください。
 
+#### `Login`イベント
+
+**影響の可能性： とても低い**
+
+`Illuminate\Auth\Events\Login`の`__construct`メソッドに、新しく`$guard`引数が追加されました。
+
+    /**
+     * 新しいイベントインスタンスの生成
+     *
+     * @param  string  $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  bool  $remember
+     * @return void
+     */
+    public function __construct($guard, $user, $remember)
+
+アプリケーションの中で、このイベントを独自にディスパッチしている場合は、イベントのコンストラクタへこの新しい引数を渡す必要があります。以下の例では、フレームワークデフォルトのガードをログインイベントへ渡しています。
+
+    use Illuminate\Auth\Events\Login;
+
+    event(new Login(config('auth.defaults.guard'), $user, $remember))
+
 ### Blade
 
 #### `or`操作子
@@ -150,7 +172,7 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
 
 新しく`data`ディレクトリが`storage/framework/cache`へ追加されました。このディレクトリをアプリケーションに作成してください。
 
-    mkdir -p storage/framework/cache/data;
+    mkdir -p storage/framework/cache/data
 
 次に、新しく作成した`data`ディレクトリへ、[.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore)ファイルを追加してください。
 

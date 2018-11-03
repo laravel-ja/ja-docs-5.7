@@ -43,6 +43,14 @@ Mailgunドライバを使用する場合、最初にGuzzleをインストール�
         'secret' => 'your-mailgun-key',
     ],
 
+"US" [Mailgunリージョン](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions)を使用しない場合は、`services`設定ファイルで、リージョンのエンドポイントを定義してください。
+
+    'mailgun' => [
+        'domain' => 'your-mailgun-domain',
+        'secret' => 'your-mailgun-key',
+        'endpoint' => 'api.eu.mailgun.net',
+    ],
+
 #### SparkPostドライバ
 
 SparkPostドライバを使用するには、最初にGuzzleをインストールし、次に`config/mail.php`設定ファイル中の`driver`オプションを`sparkpost`に設定してください。`config/services.php`設定ファイルに以下のオプションが含まれているか確認してください。

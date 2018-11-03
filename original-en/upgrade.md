@@ -130,6 +130,28 @@ The `raw` method was changed from `protected` to `public` visibility. In additio
 
 If you are implementing this interface, you should add this method to your implementation.
 
+#### The `Login` Event
+
+**Likelihood Of Impact: Very Low**
+
+The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$guard` argument:
+
+    /**
+     * Create a new event instance.
+     *
+     * @param  string  $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  bool  $remember
+     * @return void
+     */
+    public function __construct($guard, $user, $remember)
+
+If you are dispatching this event manually within your application, you'll need to pass this new argument into the event's constructor. The following example passes the default framework guard to the Login event:
+
+    use Illuminate\Auth\Events\Login;
+
+    event(new Login(config('auth.defaults.guard'), $user, $remember))
+
 ### Blade
 
 #### The `or` Operator
@@ -150,7 +172,7 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
 
 A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application:
 
-    mkdir -p storage/framework/cache/data;
+    mkdir -p storage/framework/cache/data
 
 Then, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory:
 

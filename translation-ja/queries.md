@@ -112,13 +112,16 @@ LaravelクエリビルダはアプリケーションをSQLインジェクショ�
         return false;
     });
 
-分割された結果を主キーで並び替えることが多いため、簡単にできる`chunkById`メソッドも使用できます。
+結果をチャンクしつつデータベースレコードを更新すると、チャンク結果が意図しない変化を起こす可能性があります。そのため、チャンク結果を更新する場合は、常に代わりの`chunkById`メソッドを使用するのが最善です。このメソッドは自動的にレコードの主キーに基づいて結果を自動的にページ割りします。
 
-    DB::table('users')->chunkById(100, function ($users) {
-        foreach ($users as $user) {
-            //
-        }
-    });
+    DB::table('users')->where('active', false)
+        ->chunkById(100, function ($users) {
+            foreach ($users as $user) {
+                DB::table('users')
+                    ->where('id', $user->id)
+                    ->update(['active' => true]);
+            }
+        });
 
 > {note} chunkのコールバックの中で、レコードを更新／削除することにより主キーや外部キーが変化すると、chunkクエリに影響を及ぼします。分割結果にレコードが含まれない可能性が起きます。
 

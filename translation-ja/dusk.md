@@ -49,8 +49,6 @@ Laravel Dusk（ダースク：夕暮れ）は、利用が簡単なブラウザ�
 
     composer require --dev laravel/dusk
 
-Duskをインストールしたら、`Laravel\Dusk\DuskServiceProvider`サービスプロバイダを登録する必要があります。通常、Laravelの自動サービスプロバイダ登録により、自動的に行われます。
-
 > {note} 本番環境にDuskをインストールしてはいけません。インストールすると、アプリケーションに対する未認証でのアクセスを許すようになります。
 
 Duskパッケージをインストールし終えたら、`dusk:install` Artisanコマンドを実行します。
@@ -1269,31 +1267,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
-#### CircleCI 1.0
-
-CircleCI1.0を使用し、Duskテストを実行する場合、以下の設定ファイルを手始めに利用できます。TravisCIと同様に、`php artisan serve`コマンドを使用し、PHP組み込みWebサーバを起動できます。
-
-    dependencies:
-      pre:
-          - curl -L -o google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          - sudo dpkg -i google-chrome.deb
-          - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
-          - rm google-chrome.deb
-
-    test:
-        pre:
-            - "./vendor/laravel/dusk/bin/chromedriver-linux":
-                background: true
-            - cp .env.testing .env
-            - "php artisan serve":
-                background: true
-
-        override:
-            - php artisan dusk
-
-#### CircleCI 2.0
-
-DuskテストにCircleCI2.0を使用する場合、ビルドに以下のステップを追加してください。
+DustテストにCircleCIを使用する場合、以下の設定ファイルを手始めに利用できます。TravisCIと同様に、`php artisan serve`コマンドを使用し、PHP組み込みWebサーバを起動できます。
 
      version: 2
      jobs:

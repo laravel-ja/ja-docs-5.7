@@ -332,6 +332,16 @@ Laravelへイベントをブロードキャストすることを知らせるた�
 
     Broadcast::routes($attributes);
 
+#### 認可エンドポイントのカスタマイズ
+
+デフォルトでは、チャンネルアクセスの認可にEchoは`/broadcasting/auth`エンドポイントを使用します。しかしながら、Echoインスタンスへ`authEndpoint`設定オプションを渡せば、独自の認可エンドポイントを指定できます。
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+        authEndpoint: '/custom/endpoint/auth'
+    });
+
 <a name="defining-authorization-callbacks"></a>
 ### 認証コールバック定義
 
@@ -467,6 +477,18 @@ Echoがインストールできたら、アプリケーションのJavaScriptで
         key: 'your-pusher-key',
         cluster: 'eu',
         encrypted: true
+    });
+
+#### 既存クライアントインスタンスの利用
+
+Echoで使用したいPusherやSocket.ioクライアントを既に用意してあれば、`client`設定オプションによりEchoへ指定できます。
+
+    const client = require('pusher-js');
+
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: 'your-pusher-key',
+        client: client
     });
 
 <a name="listening-for-events"></a>

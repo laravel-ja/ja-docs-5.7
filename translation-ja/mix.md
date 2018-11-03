@@ -284,7 +284,7 @@ Webpack設定をすべてカスタマイズしたい場合は、`node_modules/la
 
 ディレクトリのコピー時は、`copy`メソッドはディレクトリ構造をフラットにします。元の構造を保持したい場合は、`copyDirectory`メソッドを代わりに使用してください。
 
-    mix.copyDirectory('assets/img', 'public/img');
+    mix.copyDirectory('resources/img', 'public/img');
 
 <a name="versioning-and-cache-busting"></a>
 ## バージョン付け／キャッシュ対策
