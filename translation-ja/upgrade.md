@@ -428,7 +428,7 @@ Markdownのmailableテンプレートのためのデフォルトテーマスタ�
 
 **影響の可能性： 高い**
 
-`Route::redirect`目ドッドは、`302`HTTPステータスコードを返すようになりました。`301`リダイレクションを行う、`permanentRedirect`メソッドが追加されました。
+`Route::redirect`メソッドは、`302`HTTPステータスコードを返すようになりました。`301`リダイレクションを行う、`permanentRedirect`メソッドが追加されました。
 
     // Return a 302 redirect...
     Route::redirect('/foo', '/bar');
