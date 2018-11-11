@@ -720,8 +720,8 @@ Or, if you defined the global scope using a Closure:
         /**
          * 指定したタイプのユーザーだけを含むクエリのスコープ
          *
-         * @param \Illuminate\Database\Eloquent\Builder $query
-         * @param mixed $type
+         * @param  \Illuminate\Database\Eloquent\Builder $query
+         * @param  mixed $type
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeOfType($query, $type)

@@ -365,6 +365,8 @@ HTTPルートは定義していませんが、このファイルはアプリケ�
     $users = App\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
+    
+    $bar->start();
 
     foreach ($users as $user) {
         $this->performTask($user);

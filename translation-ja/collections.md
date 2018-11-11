@@ -138,6 +138,7 @@
 [shift](#method-shift)
 [shuffle](#method-shuffle)
 [slice](#method-slice)
+[some](#method-some)
 [sort](#method-sort)
 [sortBy](#method-sortby)
 [sortByDesc](#method-sortbydesc)
@@ -1530,6 +1531,11 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
 sliceメソッドはデフォルトでキー値を保持したまま返します。オリジナルのキーを保持したくない場合は、[`values`](#method-values)メソッドを使えば、インデックスし直されます。
 
+<a name="method-some"></a>
+#### `some()` {#collection-method}
+
+[`contains`](#method-contains)メソッドのエイリアスです。
+
 <a name="method-sort"></a>
 #### `sort()` {#collection-method}
 
@@ -2121,7 +2127,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 <a name="higher-order-messages"></a>
 ## Higher Order Message
 
-コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)コレクションメソッドでhigher order messageが使用できます。
+コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)コレクションメソッドでhigher order messageが使用できます。
 
 各higher order messageへは、コレクションインスタンスの動的プロパティとしてアクセスできます。例として、コレクション中の各オブジェクトメソッドを呼び出す、`each` higher order messageを使用してみましょう。
 

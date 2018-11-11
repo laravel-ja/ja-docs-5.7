@@ -71,7 +71,7 @@ Scoutを厳格（リアルタイム）に利用する必要が無いのであれ
 
 Algoliaドライバを使用する場合、Algolia `id`と`secret`接続情報を`config/scout.php`設定ファイルで設定する必要があります。接続情報を設定し終えたら、Algolia PHP SDKをComposerパッケージマネージャで、インストールする必要があります。
 
-    composer require algolia/algoliasearch-client-php
+    composer require algolia/algoliasearch-client-php:^1.27
 
 <a name="configuration"></a>
 ## 設定
