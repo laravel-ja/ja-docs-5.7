@@ -11,9 +11,9 @@
 
 Laravel TelescopeはLaravelフレームワークのエレガントなデバッグアシスタントです。Telescopeはアプリケーションへ送信されたリクエスト、例外、ログエンティティ、データクエリ、キュージョブ、メール、通知、キャッシュ操作、スケジュールされたタスク、様々なダンプなどを提示します。TelescopeはLaravelローカル開発環境における、素晴らしいコンパニオンです。
 
-<p align="center">
-<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1539110860/Screen_Shot_2018-10-09_at_1.47.23_PM.png" width="600" height="347">
-</p>
+<div align="center">
+<img src="/img/TelescopeTest.png" width="100%">
+</div>
 
 <a name="installation"></a>
 ## インストレーション
