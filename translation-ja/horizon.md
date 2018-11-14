@@ -17,6 +17,10 @@ Horizon（水平線、展望）は、Laravelで動作するRedisキューのた�
 
 一つのシンプルな設定ファイルにすべてのワーカ設定を保存するため、チーム全体がコラボレート可能なソースコントロール下に、設定を保持できます。
 
+<p align="center">
+<img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
+</p>
+
 <a name="installation"></a>
 ## インストール
 
@@ -26,9 +30,9 @@ Composerを使い、LaravelプロジェクトにHorizonをインストールし�
 
     composer require laravel/horizon
 
-Horizonをインストールしたら、`vendor:publish` Artisanコマンドを使用し、アセットを公開します。
+Horizonをインストールしたら、`horizon:install` Artisanコマンドを使用し、アセットを公開します。
 
-    php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
+    php artisan horizon:install
 
 <a name="configuration"></a>
 ### 設定
@@ -55,11 +59,23 @@ Horizonでは３つのバランシング戦略が選択できます。`simple`�
 <a name="dashboard-authentication"></a>
 ### ダッシュボードの認可
 
-Horizonは、`/horizon`でダッシュボードを表示します。デフォルトでは`local`環境でのみ、このダッシュボードへアクセスできます。ダッシュボードへ更に多くのアクセスポリシーを割り当てるには、`Horizon::auth`メソッドを使用する必要があります。`auth`メソッドは、`true`か`false`を返すコールバックを引数に取り、そのユーザーがHorizonダッシュボードへアクセスできるかどうかを指示します。通常、`AppServiceProvider`の`boot`メソッドで、`Horizon::auth`を呼び出します。
+Horizonは、`/horizon`でダッシュボードを表示します。デフォルトでは`local`環境でのみ、このダッシュボードへアクセスできます。`app/Providers/HorizonServiceProvider.php`ファイルの中に、`gate`メソッドが存在しています。この認可ゲートは**local以外**の環境における、Horizonへのアクセスをコントロールします。Horizonへのアクセスを必要に応じ制限するために、自由に変更してください。
 
-    Horizon::auth(function ($request) {
-        // trueかfalseを返す
-    });
+    /**
+     * Horizonゲートの登録
+     *
+     * このゲートはlocal以外の環境で、誰がHorizonへアクセスできるか決定している。
+     *
+     * @return void
+     */
+    protected function gate()
+    {
+        Gate::define('viewHorizon', function ($user) {
+            return in_array($user->email, [
+                'taylor@laravel.com',
+            ]);
+        });
+    }
 
 <a name="running-horizon"></a>
 ## Horizonの実行
@@ -175,7 +191,7 @@ queueableオブジェクトのタグを任意に定義したい場合は、そ�
 
 > **注意：** 通知を利用する前に、プロジェクトへ`guzzlehttp/guzzle` Composerパッケージを追加してください。HorizonでSMSを通知する設定の場合は、[Nexmo通知ドライバーの動作要件](https://laravel.com/docs/{{version}}/notifications#sms-notifications)についても、確認する必要があります。
 
-あるキューが長時間waitしている時に、通知を受け取りたい場合は、`Horizon::routeSlackNotificationsTo`や、`Horizon::routeSlackNotificationsTo`、`Horizon::routeSmsNotificationsTo`メソッドを利用してください。これらのメソッドは、`AppServiceProvider`から呼び出すのが良いでしょう。
+あるキューが長時間waitしている時に、通知を受け取りたい場合は、`Horizon::routeSlackNotificationsTo`や、`Horizon::routeSlackNotificationsTo`、`Horizon::routeSmsNotificationsTo`メソッドを利用してください。これらのメソッドは、`HorizonServiceProvider`から呼び出すのが良いでしょう。
 
     Horizon::routeMailNotificationsTo('example@example.com');
     Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
