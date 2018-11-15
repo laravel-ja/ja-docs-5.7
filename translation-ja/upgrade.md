@@ -166,7 +166,7 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
     // Laravel 5.7
     {{ $foo ?? 'default' }}
 
-### Cacキャッシュhe
+### Cache
 
 **影響の可能性： とても高い**
 
