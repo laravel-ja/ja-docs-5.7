@@ -3,7 +3,7 @@
 - [イントロダクション](#introduction)
 - [インストール](#installation)
     - [設定](#configuration)
-    - [ダッシュボードの認可](#dashboard-authentication)
+    - [ダッシュボードの認可](#dashboard-authorization)
 - [Horizonの実行](#running-horizon)
     - [Horizonのデプロイ](#deploying-horizon)
 - [タグ](#tags)
@@ -56,7 +56,7 @@ Horizonでは３つのバランシング戦略が選択できます。`simple`�
         'failed' => 10080,
     ],
 
-<a name="dashboard-authentication"></a>
+<a name="dashboard-authorization"></a>
 ### ダッシュボードの認可
 
 Horizonは、`/horizon`でダッシュボードを表示します。デフォルトでは`local`環境でのみ、このダッシュボードへアクセスできます。`app/Providers/HorizonServiceProvider.php`ファイルの中に、`gate`メソッドが存在しています。この認可ゲートは**local以外**の環境における、Horizonへのアクセスをコントロールします。Horizonへのアクセスを必要に応じ制限するために、自由に変更してください。

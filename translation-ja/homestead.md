@@ -152,7 +152,7 @@ Homesteadリポジトリをクローンしたら、`Homestead.yaml`設定ファ�
           to: /home/vagrant/code
           type: "nfs"
 
-> {note} NFSを使用する場合は、[vagrant-bindfs](https://github.com/gael-ian/vagrant-bindfs)プラグインのインストールを考慮してください。このプラグインは、Homestead下のファイルとディレクトリのユーザー／グループパーミッションを正しく維持します。
+> {note} NFSを使用する場合は、[vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd)プラグインのインストールを考慮してください。このプラグインは、Homestead下のファイルとディレクトリのユーザー／グループパーミッションを正しく維持します。
 
 さらに、Vagrantの[同期フォルダ](https://www.vagrantup.com/docs/synced-folders/basic_usage.html)でサポートされている任意のオプションを、`options`キーの下に列挙して渡すことができます。
 

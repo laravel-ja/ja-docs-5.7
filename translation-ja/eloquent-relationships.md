@@ -336,7 +336,7 @@ Eloquentは、`Comment`モデルに対する外部キーを自動的に決める
     class Role extends Model
     {
         /**
-         * 役目を所有するユーザー
+         * 役目に所属しているユーザー
          */
         public function users()
         {
@@ -355,6 +355,30 @@ Eloquentは、`Comment`モデルに対する外部キーを自動的に決める
     class UserRole extends Pivot
     {
         //
+    }
+
+もちろん、中間テーブルからカラムを取得するために、`using`と`withPivot`を組み合わせられます。たとえば、`withPivot`メソッドにカラム名を渡すことにより、`UserRole`ピボットテーブルから`created_by`と`updated_by`カラムを取得してみましょう。
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Role extends Model
+    {
+        /**
+         * 役目に所属しているユーザー
+         */
+        public function users()
+        {
+            return $this->belongsToMany('App\User')
+                            ->using('App\UserRole')
+                            ->withPivot([
+                                'created_by',
+                                'updated_by'
+                            ]);
+        }
     }
 
 <a name="has-many-through"></a>

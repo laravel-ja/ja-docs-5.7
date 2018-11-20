@@ -26,8 +26,9 @@ Laravelフレームワークを動作させるには多少のシステム要件�
 - Mbstring PHP拡張
 - Tokenizer PHP拡張
 - XML PHP拡張
-- Ctype PHP Extension
-- JSON PHP Extension
+- Ctype PHP拡張
+- JSON PHP拡張
+- BCMath PHP拡張
 </div>
 
 <a name="installing-laravel"></a>

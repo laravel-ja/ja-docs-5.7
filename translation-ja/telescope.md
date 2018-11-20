@@ -68,9 +68,13 @@ Telescopeのアセットを公開すると、主となる設定ファイルが`c
 <a name="data-pruning"></a>
 ### データの刈り込み
 
-データを刈り込まないと、`telescope_entries`テーブルはとても早くレコードが集積してしまいます。これを軽減するために、`telescope:prune` Artisanコマンドを毎日実行するように、スケジュールすべきでしょう。
+データを刈り込まないと、`telescope_entries`テーブルへとても早くレコードが集積してしまいます。これを軽減するために、`telescope:prune` Artisanコマンドを毎日実行するように、スケジュールすべきでしょう。
 
     $schedule->command('telescope:prune')->daily();
+
+デフォルトでは、24時間を過ぎているすべてのエンティティが削除されます。Telescopeデータをどの期間保持するかを指定するために、コマンド呼び出し時に`hours`オプションが使えます。
+
+    $schedule->command('telescope:prune --hours=48')->daily();
 
 <a name="dashboard-authorization"></a>
 ## ダッシュボードの認可

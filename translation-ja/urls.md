@@ -67,6 +67,16 @@ Laravelはアプリケーションに対するURL生成の手助けとなる、�
 
     echo route('post.show', ['post' => $post]);
 
+`route`ヘルパは、複数のパラメータを伴うルートのURLを生成するためにも使用できます。
+
+    Route::get('/post/{post}/comment/{comment}', function () {
+        //
+    })->name('comment.show');
+
+    echo route('comment.show', ['post' => 1, 'comment' => 3]);
+
+    // http://example.com/post/1/comment/3
+
 <a name="signed-urls"></a>
 ### 署名付きURL
 

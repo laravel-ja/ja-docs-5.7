@@ -3,6 +3,7 @@
 - [イントロダクション](#introduction)
 - [モデル定義](#defining-models)
     - [Eloquentモデル規約](#eloquent-model-conventions)
+    - [デフォルト属性値](#default-attribute-values)
 - [モデルの取得](#retrieving-models)
     - [コレクション](#collections)
     - [結果の分割](#chunking-results)
@@ -153,6 +154,29 @@ Eloquentモデルはデフォルトとして、アプリケーションに設定
          * @var string
          */
         protected $connection = 'connection-name';
+    }
+
+<a name="default-attribute-values"></a>
+### デフォルト属性値
+
+あるモデルの属性にデフォルト値を指定したい場合は、そのモデルに`$attributes`プロパティを定義してください。
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Flight extends Model
+    {
+        /**
+         * 属性に対するモデルのデフォルト値
+         *
+         * @var array
+         */
+        protected $attributes = [
+            'delayed' => false,
+        ];
     }
 
 <a name="retrieving-models"></a>
