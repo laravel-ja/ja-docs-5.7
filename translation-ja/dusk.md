@@ -8,6 +8,7 @@
     - [テストの実行](#running-tests)
     - [環境の処理](#environment-handling)
     - [ブラウザの生成](#creating-browsers)
+    - [ブラウザマクロ](#browser-macros)
     - [認証](#authentication)
     - [データベースマイグレーション](#migrations)
 - [要素の操作](#interacting-with-elements)
@@ -64,6 +65,8 @@ Duskパッケージをインストールし終えたら、`dusk:install` Artisan
 `dusk`コマンドで最後に実行したテストが失敗した場合、`dusk:fails`コマンドを使用し、失敗したテストを再実行することにより、時間を節約できます。
 
     php artisan dusk:fails
+
+> {note} Dusk実行には、実行可能な`chromedriver`バイナリが必要です。Dusk実行時に問題がある場合は、このバイナリを実行可能に確実にするために、`chmod -R 0755 vendor/laravel/dusk/bin`コマンドを実行してみてください。
 
 <a name="using-other-browsers"></a>
 ### 他ブラウザの使用
@@ -229,6 +232,43 @@ PHPUnitテストランナが通常受け付ける引数は、`dusk`コマンド�
 ブラウザウィンドウを最大化するには、`maximize`メソッドを使います。
 
     $browser->maximize();
+
+<a name="browser-macros"></a>
+### ブラウザマクロ
+
+様々なテストで再利用可能な、カスタムブラウザメソッドを定義したい場合は、`Browser`クラスの`macro`メソッドを使用してください。
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Dusk\Browser;
+    use Illuminate\Support\ServiceProvider;
+
+    class DuskServiceProvider extends ServiceProvider
+    {
+        /**
+         * Duskのブラウザマクロの登録
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Browser::macro('scrollToElement', function ($element = null) {
+                $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
+
+                return $this;
+            });
+        }
+    }
+
+`macro`関数の第１引数は名前で、第２引数はクロージャです。このクロージャは、`Browser`実装上でメソッドとしてマクロが呼び出された時に、実行されます。
+
+    $this->browse(function ($browser) use ($user) {
+        $browser->visit('/pay')
+                ->scrollToElement('#credit-card-details')
+                ->assertSee('Enter Credit Card Details');
+    });
 
 <a name="authentication"></a>
 ### 認証

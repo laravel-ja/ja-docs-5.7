@@ -549,7 +549,7 @@ Homesteadをカスタマイズすると、Ubuntuはパッケージのオリジ�
 
     sudo apt-get -y \
         -o Dpkg::Options::="--force-confdef" \
-        -o pkg::Options::="--force-confold" \
+        -o Dpkg::Options::="--force-confold" \
         install your-package
 
 <a name="updating-homestead"></a>

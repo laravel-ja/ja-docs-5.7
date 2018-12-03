@@ -120,11 +120,15 @@ Laravelは組み込み済みの[認証](/docs/{{version}}/authentication)サー�
 
 `before`コールバックでNULL以外の結果を返すと、チェックの結果とみなされます。
 
-`after`メソッドで、すべての認可チャックの後で実行されるコールバックを定義することも可能です。しかしながら、`after`のコールバックから、認可チェックの結果を変更できません。
+`after`メソッドで、すべての認可チャックの後で実行されるコールバックを定義することも可能です。
 
     Gate::after(function ($user, $ability, $result, $arguments) {
-        //
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
     });
+
+`before`チェックと同様に、`after`コールバックからNULLでない結果を返せば、その結果はチェック結果として取り扱われます。
 
 <a name="creating-policies"></a>
 ## ポリシー作成
@@ -372,6 +376,30 @@ Laravelアプリケーションに含まれる`User`モデルは、アクショ�
 
         // 現在のユーザーはブログポストを生成できる
     }
+
+#### リソースコントローラの認可
+
+[リソースコントローラ](/docs/{{version}}/controllers##resource-controllers)を活用している場合、コントローラのコンストラクタの中で、`authorizeResource`メソッドを使用できます。このメソッドはリソースコントローラのメソッドへ適切な`can`ミドルウェア定義を付加します。
+
+`authorizeResource`メソッドは最初の引数にモデルのクラス名を受け取ります。モデルのIDを含むルート／リクエストパラメータ名を第２引数に受け取ります。
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use App\Post;
+    use Illuminate\Http\Request;
+    use App\Http\Controllers\Controller;
+
+    class PostController extends Controller
+    {
+        public function __constructor()
+        {
+            $this->authorizeResource(Post::class, 'post');
+        }
+    }
+
+> {tip} 指定するモデルのポリシークラスを手っ取り早く生成するには、`--model`オプションを付けて`policy:make`コマンドを実行します。`php artisan policy:make --model=Post`
 
 <a name="via-blade-templates"></a>
 ### Bladeテンプレートによる認可

@@ -76,7 +76,15 @@ Laravelの全ルートは、`routes`ディレクトリ下に設置されてい�
 
 他のURIへリダイレクトするルートを定義する場合は、`Route::redirect`メソッドを使用します。このメソッドは便利な短縮形を提供しているので、単純なリダイレクトを実行するために、完全なルートやコントローラを定義する必要はありません。
 
+    Route::redirect('/here', '/there');
+
+`Route::redirect`はデフォルトで、`302`ステータスコードを返します。オプションの第３引数を利用し、ステータスコードをカスタマイズできます。
+
     Route::redirect('/here', '/there', 301);
+
+`Route::permananentRedirect`メソッドを使えば、`301`ステータスコードが返されます。
+
+    Route::permanentRedirect('/here', '/there');
 
 <a name="view-routes"></a>
 ### ビュールート
@@ -159,6 +167,17 @@ Laravelの全ルートは、`routes`ディレクトリ下に設置されてい�
     Route::get('user/{id}', function ($id) {
         // {id}が数値の場合のみ実行される
     });
+
+<a name="parameters-encoded-forward-slashes"></a>
+#### スラッシュのエンコード
+
+Laravelのルーティングコンポーネントは、`/`を除くすべての文字を許可しています。プレースホルダの一部として、明確に`/`を許可する場合は、`where`で正規表現の条件を指定します。
+
+    Route::get('search/{search}', function ($search) {
+        return $search;
+    })->where('search', '.*');
+
+> {note} スラッシュのエンコードは、最後のルートセグメントでのみサポートしています。
 
 <a name="named-routes"></a>
 ## 名前付きルート
@@ -348,6 +367,8 @@ Laravelはタイプヒントされた変数名とルートセグメント名が�
     Route::fallback(function () {
         //
     });
+
+> {note} フォールバックルートは、アプリケーションのルート登録で常に一番最後に行わなければなりません。
 
 <a name="rate-limiting"></a>
 ## レート制限

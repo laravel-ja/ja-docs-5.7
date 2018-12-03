@@ -445,7 +445,7 @@ If needed, you may use custom error messages for validation instead of the defau
 
     $validator = Validator::make($input, $rules, $messages);
 
-In this example, the `:attribute` place-holder will be replaced by the actual name of the field under validation. You may also utilize other place-holders in validation messages. For example:
+In this example, the `:attribute` placeholder will be replaced by the actual name of the field under validation. You may also utilize other placeholders in validation messages. For example:
 
     $messages = [
         'same'    => 'The :attribute and :other must match.',
@@ -456,7 +456,7 @@ In this example, the `:attribute` place-holder will be replaced by the actual na
 
 #### Specifying A Custom Message For A Given Attribute
 
-Sometimes you may wish to specify a custom error messages only for a specific field. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
+Sometimes you may wish to specify a custom error message only for a specific field. You may do so using "dot" notation. Specify the attribute's name first, followed by the rule:
 
     $messages = [
         'email.required' => 'We need to know your e-mail address!',
@@ -578,6 +578,7 @@ Below is a list of all available validation rules and their function:
 [Required Without All](#rule-required-without-all)
 [Same](#rule-same)
 [Size](#rule-size)
+[Starts With](#rule-starts-with)
 [String](#rule-string)
 [Timezone](#rule-timezone)
 [Unique (Database)](#rule-unique)
@@ -970,6 +971,11 @@ The given _field_ must match the field under validation.
 
 The field under validation must have a size matching the given _value_. For string data, _value_ corresponds to the number of characters. For numeric data, _value_ corresponds to a given integer value. For an array, _size_ corresponds to the `count` of the array. For files, _size_ corresponds to the file size in kilobytes.
 
+<a name="rule-starts-with"></a>
+#### starts_with:_foo_,_bar_,...
+
+The field under validation must start with one of the given values.
+
 <a name="rule-string"></a>
 #### string
 
@@ -1227,7 +1233,7 @@ You will also need to define an error message for your custom rule. You can do s
 
     // The rest of the validation error messages...
 
-When creating a custom validation rule, you may sometimes need to define custom place-holder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
+When creating a custom validation rule, you may sometimes need to define custom placeholder replacements for error messages. You may do so by creating a custom Validator as described above then making a call to the `replacer` method on the `Validator` facade. You may do this within the `boot` method of a [service provider](/docs/{{version}}/providers):
 
     /**
      * Bootstrap any application services.

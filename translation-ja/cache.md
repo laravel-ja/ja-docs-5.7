@@ -243,7 +243,7 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
     cache(['key' => 'value'], now()->addSeconds(10));
 
-`cache`関数を引数なしで呼び出すと、`Illuminate\Contracts\Cache\Factory`を実装したインスタンスが帰ってきます。これを使い、すべてのキャッシュメソッドを呼び出せます。
+`cache`関数を引数なしで呼び出すと、`Illuminate\Contracts\Cache\Factory`を実装したインスタンスが返ってきます。これを使い、他のキャッシュメソッドを呼び出せます。
 
     cache()->remember('users', $minutes, function () {
         return DB::table('users')->get();

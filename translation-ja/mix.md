@@ -298,7 +298,7 @@ Webpack設定をすべてカスタマイズしたい場合は、`node_modules/la
 
 バージョン付されたファイルを生成した後は、適切にバージョン付けされたアセットのURLを生成するため、Laravelのグローバル`mix`関数を[ビュー](/docs/{{version}}/views)の中で使用してください。
 
-    <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
+    <script src="{{ mix('/js/app.js') }}"></script>
 
 バージョン付けしたファイルは、通常開発に必要ないため、`npm run production`を実行するときのみ、バージョン付けするように指示したいと思うでしょう。
 

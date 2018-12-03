@@ -456,7 +456,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 
 #### 指定フィールドにカスタムメッセージ指定
 
-時々特定のフィールドに対するカスタムエラーメッセージを指定したい場合があります。「ドット」記法を使用し行います。属性名が最初で、続いてルールをつなげます。
+ときどき、特定のフィールドに対してカスタムエラーメッセージを指定したい場合があります。「ドット」記法を使用し行います。最初が属性名で、続いてルールをつなげます。
 
     $messages = [
         'email.required' => 'We need to know your e-mail address!',
@@ -578,6 +578,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 [全指定フィールド非存在時必須](#rule-required-without-all)
 [同一](#rule-same)
 [サイズ](#rule-size)
+[文字列開始](#rule-starts-with)
 [文字列](#rule-string)
 [タイムゾーン](#rule-timezone)
 [一意（データベース）](#rule-unique)
@@ -969,6 +970,11 @@ MIMEタイプと対応する拡張子の完全なリストは、[https://svn.apa
 #### size:_値_
 
 フィールドは指定された*値*と同じサイズであることをバリデートします。文字列の場合、*値*は文字長です。数値項目の場合、*値*は整数値です。配列の場合、*値*は配列の個数(`count`)です。ファイルの場合、*値*はキロバイトのサイズです。
+
+<a name="rule-starts-with"></a>
+#### starts_with:_foo_,_bar_,...
+
+フィールドが、指定した値のどれかで始まることをバリデートします。
 
 <a name="rule-string"></a>
 #### string

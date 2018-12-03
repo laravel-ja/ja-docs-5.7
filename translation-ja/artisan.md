@@ -1,6 +1,7 @@
 # Artisanコンソール
 
 - [イントロダクション](#introduction)
+    - [Tinker（REPL）](#tinker)
 - [コマンド記述](#writing-commands)
     - [コマンド生成](#generating-commands)
     - [コマンド構造](#command-structure)
@@ -29,11 +30,32 @@ ArtisanはLaravelに含まれているコマンドラインインターフェイ
 
     php artisan help migrate
 
-#### Laravel REPL
+<a name="tinker"></a>
+### Tinker（REPL）
 
 全てのLaravelアプリケーションには、[PsySH](https://github.com/bobthecow/psysh)パッケージによるREPLである、Tinkerが含まれています。Tinkerにより、Laravel全体のEloquent ORM、ジョブ、イベントなどをコマンドラインから操作できます。Tinker環境に入るには、`tinker` Artisanコマンドを実行します。
 
     php artisan tinker
+
+`vendor:publish`コマンドにより、Tinkerの設定ファイルを公開することもできます。
+
+    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
+#### コマンドホワイトリスト
+
+Tinkerのシェルで利用可能なArtisanコマンドを指定するため、ホワイトリストが用意されています。デフォルトでは、`clear-compiled`、`down`、`env`、`inspire`、`migrate`、`optimize`、`up`コマンドが実行できます。ホワイトリストにコマンドを追加したい場合は、`tinker.php`設定ファイルの`commands`配列へ追加してください。
+
+    'commands' => [
+        // App\Console\Commands\ExampleCommand::class,
+    ],
+
+#### エイリアスブラックリスト
+
+通常、Tinkerは要求されたクラスのエイリアスを自動的に定義します。しかし、エイリアスを定義したくないクラスもあるでしょう。そのためには、`tinker.php`設定ファイルの`dont_alias`配列にクラスをリストしてください。
+
+    'dont_alias' => [
+        App\User::class,
+    ],
 
 <a name="writing-commands"></a>
 ## コマンド記述
@@ -365,7 +387,7 @@ HTTPルートは定義していませんが、このファイルはアプリケ�
     $users = App\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
-    
+
     $bar->start();
 
     foreach ($users as $user) {

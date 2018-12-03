@@ -104,7 +104,7 @@
 
 ビューコンポーザはビューがレンダーされる時に呼び出される、コールバックかクラスメソッドのことです。ビューがレンダーされるたびに結合したい情報があるなら、ビューコンポーザがロジックを一箇所にまとめるのに役立ちます。
 
-この例の[サービスプロバイダ](/docs/{{version}}/providers)の中に、ビューコンポーザを組み込みましょう。`View`ファサードの裏で動作している、`Illuminate\Contracts\View\Factory`契約の実装にアクセスします。Laravelはデフォルトのビューコンポーザ置き場を用意していないことに注意してください。お好きな場所に置くことができます。たとえば、`app\Http\ViewComposers`ディレクトリを作成することもできます。
+この例の[サービスプロバイダ](/docs/{{version}}/providers)の中に、ビューコンポーザを組み込みましょう。`View`ファサードの裏で動作している、`Illuminate\Contracts\View\Factory`契約の実装にアクセスします。Laravelはデフォルトのビューコンポーザ置き場を用意していないことに注意してください。お好きな場所に置くことができます。たとえば、`app/Http/View/Composers`ディレクトリを作成することもできます。
 
     <?php
 
@@ -113,7 +113,7 @@
     use Illuminate\Support\Facades\View;
     use Illuminate\Support\ServiceProvider;
 
-    class ComposerServiceProvider extends ServiceProvider
+    class ViewServiceProvider extends ServiceProvider
     {
         /**
          * コンテナ結合の登録
@@ -124,7 +124,7 @@
         {
             // クラスベースのコンポーザを使用する
             View::composer(
-                'profile', 'App\Http\ViewComposers\ProfileComposer'
+                'profile', 'App\Http\View\Composers\ProfileComposer'
             );
 
             // クロージャベースのコンポーザを使用する
@@ -150,7 +150,7 @@
 
     <?php
 
-    namespace App\Http\ViewComposers;
+    namespace App\Http\View\Composers;
 
     use Illuminate\View\View;
     use App\Repositories\UserRepository;
@@ -198,7 +198,7 @@
 
     View::composer(
         ['profile', 'dashboard'],
-        'App\Http\ViewComposers\MyViewComposer'
+        'App\Http\View\Composers\MyViewComposer'
     );
 
 全ビューコンポーザに適用できるように、`composer`メソッドでは`*`をワイルドカードとして使用できます。
@@ -211,4 +211,4 @@
 
 ビュー**クリエイター**は、ビューコンポーザとほぼ同じ働きをします。しかし、ビューがレンダーされるまで待つのではなく、インスタンス化されるとすぐに実行されます。ビュークリエイターを登録するには、`creator`メソッドを使います。
 
-    View::creator('profile', 'App\Http\ViewCreators\ProfileCreator');
+    View::creator('profile', 'App\Http\View\Creators\ProfileCreator');

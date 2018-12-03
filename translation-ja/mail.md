@@ -380,7 +380,7 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
     <body>
         ここに画像：
 
-        <img src="{{ $message->embed($pathToFile) }}">
+        <img src="{{ $message->embed($pathToImage) }}">
     </body>
 
 > {note} Markdownメッセージでは、`$message`変数は使用できません。

@@ -7,8 +7,11 @@
     - [１対多（逆）](#one-to-many-inverse)
     - [多対多](#many-to-many)
     - [Has Many Through](#has-many-through)
-    - [ポリモーフィックリレーション](#polymorphic-relations)
-    - [ポリモーフィック関係の多対多](#many-to-many-polymorphic-relations)
+- [ポリモーフィックリレーション](#polymorphic-relationships)
+    - [１対１](#one-to-one-polymorphic-relations)
+    - [１対多](#one-to-many-polymorphic-relations)
+    - [多対多](#many-to-many-polymorphic-relations)
+    - [カスタムポリモーフィックタイプ](#custom-polymorphic-types)
 - [リレーションのクエリ](#querying-relations)
     - [リレーションメソッド 対 動的プロパティ](#relationship-methods-vs-dynamic-properties)
     - [存在するリレーションのクエリ](#querying-relationship-existence)
@@ -29,12 +32,15 @@
 
 データベーステーブルは大抵の場合他のものと関連しています。たとえばブログ投稿（ポスト）は多くのコメントを持つか、それを投稿したユーザーと関連しています。Eloquentはそうしたリレーションを簡単に管理し操作できるようにするとともに、様々なタイプのリレーションをサポートしています。
 
+<div class="content-list" markdown="1">
 - [１対１](#one-to-one)
 - [１対多](#one-to-many)
 - [多対多](#many-to-many)
 - [Has Many Through](#has-many-through)
-- [ポリモーフィックリレーション](#polymorphic-relations)
-- [ポリモーフィック関係の多対多](#many-to-many-polymorphic-relations)
+- [１対１（ポリモーフィック）](#one-to-one-polymorphic-relations)
+- [１対多（ポリモーフィック）](#one-to-many-polymorphic-relations)
+- [多対多（ポリモーフィック）](#many-to-many-polymorphic-relations)
+</div>
 
 <a name="defining-relationships"></a>
 ## リレーションの定義
@@ -123,7 +129,7 @@ Eloquentは親の`id`カラム（もしくはカスタム`$primaryKey`）と一�
 <a name="one-to-many"></a>
 ### １対多
 
-「１対多」リレーションは一つのモデルが他の多くのモデルを所有する関係を定義するために使います。ブログポストが多くのコメントを持つのが一例です。他のEloquentリレーションと同様に１対多リレーションはEloquentモデルの関数として定義します。
+１対多リレーションは一つのモデルが他の多くのモデルを所有する関係を定義するために使います。ブログポストが多くのコメントを持つのが一例です。他のEloquentリレーションと同様に１対多リレーションはEloquentモデルの関数として定義します。
 
     <?php
 
@@ -440,12 +446,99 @@ has many through（〜経由の多対多）リレーションは、仲介する�
         }
     }
 
-<a name="polymorphic-relations"></a>
-### ポリモーフィック関係
+<a name="polymorphic-relationships"></a>
+## ポリモーフィックリレーション
+
+ポリモーフィック（Polymorphic：多様性）リレーションは一つの関係で、対象となるモデルを複数のモデルに所属させます。
+
+<a name="one-to-one-polymorphic-relations"></a>
+### １対１（ポリモーフィック）
 
 #### テーブル構造
 
-ポリモーフィック（Polymorphic：多様性）リレーションは一つの関係で、複数のモデルに所属させます。たとえば、アプリケーションのユーザーがポスト(post:記事)と動画(video)に「コメント(comment)」できるとしましょう。最初にこのリレーションを構築するために必要な構造を確認してください。
+１対１ポリモーフィックリレーションは、１対１リレーションと似ています。しかしながら一つの関連付けで、対象モデルが複数のタイプのモデルに所属できる点が異なります。たとえば、ブログの`Post`と`User`が、`Image`モデルに対してポリモーフィックリレーションを共有しているとしましょう。１対１ポリモーフィックリレーションを使えば、１つでブログポストとユーザーアカウント両方に対し使用できる、画像のリストを利用できます。最初に、テーブル構造を見てみましょう。
+
+    posts
+        id - integer
+        name - string
+
+    users
+        id - integer
+        name - string
+
+    images
+        id - integer
+        url - string
+        imageable_id - integer
+        imageable_type - string
+
+`imageable_id`と`imageable_type`カラムに注目してください。`imageable_id`カラムは、ポストかユーザーのID値を含みます。一方の`imageable_type`カラムは、親モデルのクラス名を含みます。`imageable`関係がアクセスされた場合に、Eloquentにより`imageable_type`カラムは親のモデルがどんな「タイプ」であるかを決めるために使用されます。
+
+#### モデル構造
+
+次に、このリレーションを構築するために必要なモデルの定義を確認しましょう。
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Image extends Model
+    {
+        /**
+         * 所有している全imageableモデルの取得
+         */
+        public function imageable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+    class Post extends Model
+    {
+        /**
+         * ポストのイメージを所得
+         */
+        public function image()
+        {
+            return $this->morphOne('App\Image', 'imageable');
+        }
+    }
+
+    class User extends Model
+    {
+        /**
+         * ユーザーのイメージを所得。
+         */
+        public function image()
+        {
+            return $this->morphOne('App\Image', 'imageable');
+        }
+    }
+
+#### リレーションの取得
+
+データベーステーブルとモデルが定義できたら、モデルを使いリレーションへアクセスできます。例として、ポストに対するイメージを取得してみましょう。`image`動的プロパティが使用できます。
+
+    $post = App\Post::find(1);
+
+    $image = $post->image;
+
+`morphTo`を実行する名前のメソッドでアクセスすることで、ポリモーフィックモデルから親を取得することもできます。この場合、`Image`モデル上の`imageable`メソッドです。では、このメソッドを動的プロパティとして呼び出してみましょう。
+
+    $image = App\Image::find(1);
+
+    $imageable = $image->imageable;
+
+`Image`モデル上の`imageable`リレーションは、そのイメージを所有しているモデルのタイプにより、`Post`か`User`インスタンスのどちらかを返します。
+
+<a name="one-to-many-polymorphic-relations"></a>
+### １対多（ポリモーフィック）
+
+#### テーブル構造
+
+１対多ポリモーフィックリレーションは、シンプルな１対多リレーションと似ています。しかしながら一つの関連付けで、対象モデルが複数のタイプのモデルに所属できる点が異なります。たとえば、アプリケーションのユーザーが、ポストと動画の両方に「コメント」できるようにすると想像してください。ポリモーフィックリレーションを使用すれば、両方のシナリオに対し一つの`comments`テーブルで対処できます。最初に、このリレーションを構築するために必要な、テーブル構造を確認しましょう。
 
     posts
         id - integer
@@ -462,8 +555,6 @@ has many through（〜経由の多対多）リレーションは、仲介する�
         body - text
         commentable_id - integer
         commentable_type - string
-
-`comments`テーブルには２つの重要な`commentable_id`と`commentable_type`カラムがあります。`commentable_id`カラムはポストかビデオのID値を保持します。一方の`commentable_type`カラムには、所有しているモデルのクラス名が保存されます。`commentable`関係にアクセスされた時に、所有してるのはどちらの「タイプ」のモデルなのか、ORMが決めるために`commentable_type`カラムが存在しています。
 
 #### モデル構造
 
@@ -508,7 +599,7 @@ has many through（〜経由の多対多）リレーションは、仲介する�
         }
     }
 
-#### ポリモーフィックリレーションの取得
+#### リレーションの取得
 
 データベーステーブルとモデルが定義できたら、モデルを使いリレーションにアクセスできます。たとえば、あるポストの全コメントへアクセスするには、`comments`動的プロパティを使います。
 
@@ -526,25 +617,12 @@ has many through（〜経由の多対多）リレーションは、仲介する�
 
 `Comment`モデルの`commentable`関係は、`Post`か`video`インスタンスのどちらかを返します。そのコメントを所有しているモデルのタイプにより決まります。
 
-#### カスタムポリモーフィックリレーション
-
-関連付けられたモデルのタイプを保存するため、デフォルトでLaravelははっきりと識別できるクラス名を使います。たとえば上記の例で、`Comment`が`Post`か`Video`に所属しているとすると、`commentable_type`はデフォルトで`App\Post`か`App\Video`のどちらかになるでしょう。しかし、データーベースをアプリケーションの内部構造と分離したい場合もあります。その場合、リレーションの"morph map"を定義し、クラス名の代わりに使用する、各モデルに関連づいたテーブル名をEloquentへ指示することができます。
-
-    use Illuminate\Database\Eloquent\Relations\Relation;
-
-    Relation::morphMap([
-        'posts' => 'App\Post',
-        'videos' => 'App\Video',
-    ]);
-
-`morphMap`は、`AppServiceProvider`の`boot`関数で登録できますし、お望みであれば独立したサービスプロバイダを作成し、その中で行うこともできます。
-
 <a name="many-to-many-polymorphic-relations"></a>
-### ポリモーフィック関係の多対多
+### 多対多（ポリモーフィック）
 
 #### テーブル構造
 
-伝統的なポリモーフィックリレーションに加え、「多対多」のポリモーフィックリレーションも指定することができます。たとえばブログの`Post`と`Video`モデルは`Tag`モデルに対するポリモーフィックリレーションを共有できます。多対多ポリモーフィックリレーションを使うことで、ブログポストとビデオの両者に所有されている一意のタグのリストを取得できます。最初にテーブル構造を確認しましょう。
+多対多ポリモーフィックリレーションは、`morphOne`や`morphMany`リレーションより、少々複雑です。例として、ブログの`Post`と`Video`モデルが`Tag`モデルに対し、ポリモーフィックリレーションを共有しているとしましょう。多対多ポリモーフィックリレーションにより、一つのユニークなタグリストをブログポストと動画両方で共有できます。最初に、テーブル構造を確認してください。
 
     posts
         id - integer
@@ -630,6 +708,20 @@ has many through（〜経由の多対多）リレーションは、仲介する�
     foreach ($tag->videos as $video) {
         //
     }
+
+<a name="custom-polymorphic-types"></a>
+### カスタムポリモーフィックタイプ
+
+関連付けたモデルのタイプを保存するため、Laravelはデフォルトではっきりと識別できるクラス名を使います。たとえば上記の例で、`Comment`が`Post`か`Video`に所属しているとすると、`commentable_type`はデフォルトで`App\Post`か`App\Video`のどちらかになるでしょう。しかし、データーベースをアプリケーションの内部構造と分離したい場合もあります。その場合、リレーションの"morph map"を定義し、クラス名の代わりに使用する、各モデルに関連づいたテーブル名をEloquentへ指示することができます。
+
+    use Illuminate\Database\Eloquent\Relations\Relation;
+
+    Relation::morphMap([
+        'posts' => 'App\Post',
+        'videos' => 'App\Video',
+    ]);
+
+`morphMap`は、`AppServiceProvider`の`boot`関数で登録できますし、お望みであれば独立したサービスプロバイダを作成し、その中で行うこともできます。
 
 <a name="querying-relations"></a>
 ## リレーションのクエリ
@@ -752,6 +844,14 @@ Eloquentリレーションは全てメソッドとして定義されているた
     echo $posts[0]->comments_count;
 
     echo $posts[0]->pending_comments_count;
+
+`select`文に`withCount`を組み合わせる場合は、`select`文の後で`withCount`を呼び出してください。
+
+    $query = App\Post::select(['title', 'body'])->withCount('comments');
+
+    echo $posts[0]->title;
+    echo $posts[0]->body;
+    echo $posts[0]->comments_count;
 
 <a name="eager-loading"></a>
 ## Eagerロード
