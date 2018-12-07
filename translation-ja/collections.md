@@ -157,9 +157,13 @@
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
 [unless](#method-unless)
+[unlessEmpty](#method-unlessempty)
+[unlessNotEmpty](#method-unlessnotempty)
 [unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
+[whenEmpty](#method-whenempty)
+[whenNotEmpty](#method-whennotempty)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
 [whereIn](#method-wherein)
@@ -1926,6 +1930,16 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
 `unless`の逆の動作は、[`when`](#method-when)メソッドです。
 
+<a name="method-unlessempty"></a>
+#### `unlessEmpty()` {#collection-method}
+
+[`whenNotEmpty`](#method-whennotempty)メソッドのエイリアスです。
+
+<a name="method-unlessnotempty"></a>
+#### `unlessNotEmpty()` {#collection-method}
+
+[`whenEmpty`](#method-whenempty)メソッドのエイリアスです。
+
 <a name="method-unwrap"></a>
 #### `unwrap()` {#collection-method}
 
@@ -1984,6 +1998,88 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
     // [1, 2, 3, 4]
 
 `when`の逆の動作は、[`unless`](#method-unless)メソッドです。
+
+<a name="method-whenempty"></a>
+#### `whenEmpty()` {#collection-method}
+
+`whenEmpty`メソッドは、コレクションが空の場合に、指定したコールバックを実行します。
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom']
+
+
+    $collection = collect();
+
+    $collection->whenEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['adam']
+
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom', 'taylor']
+
+`whenEmpty`の逆の動作は、[`whenNotEmpty`](#method-whennotempty)メソッドです。
+
+<a name="method-whennotempty"></a>
+#### `whenNotEmpty()` {#collection-method}
+
+`whenNotEmpty`メソッドは、コレクションがから出ない場合に、指定したコールバックを実行します。
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom', 'adam']
+
+
+    $collection = collect();
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // []
+
+
+    $collection = collect();
+
+    $collection->whenNotEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+
+    // ['taylor']
+
+`whenNotEmpty`の逆の動作は、[`whenEmpty`](#method-whenempty)メソッドです。
 
 <a name="method-where"></a>
 #### `where()` {#collection-method}

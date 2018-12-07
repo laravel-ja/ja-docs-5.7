@@ -164,6 +164,14 @@ Redisキューを使用する場合、ワーカのループの繰り返しとRed
 
 `handle`メソッドはキューによりジョブが処理されるときに呼びだされます。ジョブの`handle`メソッドにタイプヒントにより依存を指定できることに注目してください。Laravelの[サービスコンテナ](/docs/{{version}}/container)が自動的に依存を注入します。
 
+もし、どのようにコンテナが依存を`handle`メソッドへ注入するかを完全にコントロールしたい場合は、コンテナの`bindMethod`メソッドを使用します。`bindMethod`メソッドは、ジョブとコンテナを受け取るコールバックを引数にします。コールバックの中で、お望みのまま自由に`handle`メソッドを起動できます。通常は、[サービスプロバイダ](/docs/{{version}}/providers)からこのメソッドを呼び出すべきでしょう。
+
+    use App\Jobs\ProcessPodcast;
+
+    $this->app->bindMethod(ProcessPodcast::class.'@handle', function ($job, $app) {
+        return $job->handle($app->make(AudioProcessor::class));
+    });
+
 > {note} Rawイメージコンテンツのようなバイナリデータは、キュージョブへ渡す前に、`base64_encode`関数を通してください。そうしないと、そのジョブはキューへ設置する前にJSONへ正しくシリアライズされません。
 
 <a name="dispatching-jobs"></a>

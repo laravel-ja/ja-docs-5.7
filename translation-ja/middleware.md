@@ -6,7 +6,7 @@
     - [グローバルミドルウェア](#global-middleware)
     - [ルートへの結合](#assigning-middleware-to-routes)
     - [ミドルウェアグループ](#middleware-groups)
-    - [ミドルウェアの順位付け](sorting-middleware)
+    - [ミドルウェアの優先付け](#sorting-middleware)
 - [ミドルウェアパラメーター](#middleware-parameters)
 - [終了処理ミドルウェア](#terminable-middleware)
 
@@ -187,7 +187,7 @@ WebのUIとAPIルートへ適用できる、一般的なミドルウェアを含
 > {tip} `RouteServiceProvider`により、`routes/web.php`ファイルでは、`web`ミドルウェアグループが自動的に適用されます。
 
 <a name="sorting-middleware"></a>
-### ミドルウェアの順位付け
+### ミドルウェアの優先付け
 
 まれに、特定の順番でミドルウェアを実行する必要がある必要がありますが、ルートへミドルウェアを指定する時に順番をコントロールできません。このような場合、`app/Http/Kernel.php`ファイルの`$middlewarePriority`プロパティを使用し、ミドルウェアの優先度を指定できます。
 

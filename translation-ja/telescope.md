@@ -5,6 +5,25 @@
     - [設定](#configuration)
     - [データの刈り込み](#data-pruning)
 - [ダッシュボードの認可](#dashboard-authorization)
+- [フィルタリング](#filtering)
+    - [エンティティ](#filtering-entries)
+    - [バッチ](#filtering-batches)
+- [利用可能なワッチャー](#available-watchers)
+    - [Cacheワッチャー](#cache-watcher)
+    - [Commandワッチャー](#command-watcher)
+    - [Dumpワッチャー](#dump-watcher)
+    - [Eventワッチャー](#event-watcher)
+    - [Exceptionワッチャー](#exception-watcher)
+    - [Gateワッチャー](#gate-watcher)
+    - [Jobワッチャー](#job-watcher)
+    - [Logワッチャー](#log-watcher)
+    - [Mailワッチャー](#mail-watcher)
+    - [Modelワッチャー](#model-watcher)
+    - [Notificationワッチャー](#notification-watcher)
+    - [Queryワッチャー](#query-watcher)
+    - [Redisワッチャー](#redis-watcher)
+    - [Requestワッチャー](#request-watcher)
+    - [Scheduleワッチャー](#schedule-watcher)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -12,7 +31,7 @@
 Laravel TelescopeはLaravelフレームワークのエレガントなデバッグアシスタントです。Telescopeはアプリケーションへ送信されたリクエスト、例外、ログエンティティ、データクエリ、キュージョブ、メール、通知、キャッシュ操作、スケジュールされたタスク、様々なダンプなどを提示します。TelescopeはLaravelローカル開発環境における、素晴らしいコンパニオンです。
 
 <div align="center">
-<img src="/img/TelescopeTest.png" width="100%">
+<img src="/img/telescope.png" width="100%">
 </div>
 
 <a name="installation"></a>
@@ -24,7 +43,7 @@ LaravelプロジェクトへTelescopeをインストールするには、Compose
 
     composer require laravel/telescope
 
-Telescopeを新ストールしたら、`telescope:install` Artisanコマンドを使用し、アセットを公開してください。Telescopeのインストールが終わったら、`migrate`コマンドも実行する必要があります。
+Telescopeをインストールしたら、`telescope:install` Artisanコマンドを使用し、アセットを公開してください。Telescopeのインストールが終わったら、`migrate`コマンドも実行する必要があります。
 
     php artisan telescope:install
 
@@ -43,6 +62,8 @@ Telescopeをローカル環境でのみ使用する場合は、`--dev`フラグ�
     composer require laravel/telescope --dev
 
 `telescope:install`実行後、`app`設定ファイルから`TelescopeServiceProvider`サービスプロバイダの登録を削除する必要があります。`app`設定ファイルで登録する代わりに、このサービスプロバイダを`AppServiceProvider`の`register`メソッドで登録してください。
+
+    use Laravel\Telescope\TelescopeServiceProvider::class;
 
     /**
      * 全アプリケーションサービスの登録
@@ -79,7 +100,7 @@ Telescopeのアセットを公開すると、主となる設定ファイルが`c
 <a name="dashboard-authorization"></a>
 ## ダッシュボードの認可
 
-Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示します。デフォルトでは、`local`環境でのみこのダッシュボードへアクセスできます。`app/Providers/TelescopeServiceProvider.php`ファイルの中に、`gate`メソッドが存在しています。この認可ゲートで、Telescopeの**local以外**でのアクセスをコントロールできます。Telescopeに対するアクセスを宣言する必要に応じ、このゲートを自由に変更してください。
+Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示します。デフォルトでは`local`環境からのみ、このダッシュボードへアクセスできます。`app/Providers/TelescopeServiceProvider.php`ファイルの中に、`gate`メソッドが存在しています。この認可ゲートで、Telescopeの**local以外**でのアクセスをコントロールできます。Telescopeに対するアクセスを宣言する必要に応じ、このゲートを自由に変更してください。
 
     /**
      * Telescopeゲートの登録
@@ -96,3 +117,200 @@ Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示�
             ]);
         });
     }
+
+<a name="filtering"></a>
+## フィルタリング
+
+<a name="filtering-entries"></a>
+### エンティティ
+
+`TelescopeServiceProvider`の中で登録されている`filter`コールバックにより、Telescopeが保存するデータをフィルタリングできます。デフォルトでは、このコールバックは`local`環境、例外、失敗したジョブ、スケジュール済みタスク、他の全環境においてモニター対象とタグ付けされたデータを記録します。
+
+    /**
+     * 全アプリケーションサービスの登録
+     *
+     * @return void
+     */
+	public function register()
+	{
+        $this->hideSensitiveRequestDetails();
+
+        Telescope::filter(function (IncomingEntry $entry) {
+            if ($this->app->isLocal()) {
+                return true;
+            }
+
+            return $entry->isReportableException() ||
+                $entry->isFailedJob() ||
+                $entry->isScheduledTask() ||
+                $entry->hasMonitoredTag();
+        });
+	}
+
+<a name="filtering-batches"></a>
+### バッチ
+
+`fileter`コールバックで個別のエンティティのデータをフィルタリングできますが、指定したリクエストやコンソールコマンドの全データをフィルタリングするコールバックを`filterBatch`メソッドにより登録できます。コールバックが`true`を返すと、Telescopeによりすべてのエンティティが保存されます。
+
+    use Illuminate\Support\Collection;
+
+    /**
+     * 全アプリケーションサービスの登録
+     *
+     * @return void
+     */
+	public function register()
+	{
+        $this->hideSensitiveRequestDetails();
+
+        Telescope::filterBatch(function (Collection $entries) {
+            if ($this->app->isLocal()) {
+                return true;
+            }
+
+            return $entries->contains(function ($entry) {
+                return $entry->isReportableException() ||
+                    $entry->isFailedJob() ||
+                    $entry->isScheduledTask() ||
+                    $entry->hasMonitoredTag();
+                });
+        });
+	}
+
+<a name="available-watchers"></a>
+## 利用可能なワッチャー
+
+Telescopeのワッチャーは、リクエストやコマンドが実行されると、アプリケーションデータを収集します。`config/telescope.php`設定ファイルで、ワッチャーのリストを有効にすることにより、カスタマイズできます。
+
+    'watchers' => [
+        Watchers\CacheWatcher::class => true,
+        Watchers\CommandWatcher::class => true,
+        ...
+    ],
+
+いくつかのワッチャーには、追加のカスタマイズオプションが用意されています。
+
+    'watchers' => [
+        Watchers\QueryWatcher::class => [
+            'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
+            'slow' => 100,
+        ],
+        ...
+    ],
+
+<a name="cache-watcher"></a>
+### Cacheワッチャー
+
+Cacheワッチャーは、キャッシュキーのヒット、不一致、削除時にデータを記録します。
+
+<a name="command-watcher"></a>
+### Commandワッチャー
+
+Commandワッチャーは、Artisanコマンドが実行されたときの引数、オプション、終了コード、出力コードを記録します。このワッチャーの対象から特定のコマンドを外したい場合は、`config/telescope.php`ファイルの`ignore`オプションの中で、除外するコマンドを指定してください。
+
+    'watchers' => [
+        Watchers\CommandWatcher::class => [
+            'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
+            'ignore' => ['key:generate'],
+        ],
+        ...
+    ],
+
+<a name="dump-watcher"></a>
+### Dumpワッチャー
+
+Dumpワッチャーは、Telescope中の変数のダンプを記録し、表示します。Laravelを使ってるなら、グローバル`dump`関数を使用し変数をダンプできます。記録される時点でDumpワッチャータブは、ブラウザで開かれていなければなりません。開かれてなければ、ワッチャーはダンプを無視します。
+
+<a name="event-watcher"></a>
+### Eventワッチャー
+
+Eventワッチャーは、アプリケーションで発行されたすべてのイベントのペイロード（本体）、リスナ、ブロードキャストデータを記録します。Eventワッチャーは、Laravelフレームワーク内部のイベントを無視します。
+
+<a name="exception-watcher"></a>
+### Exceptionワッチャー
+
+Exceptionワッチャーはアプリケーションで投げられた、reportableな全例外のデータとスタックトレースを記録します。
+
+<a name="gate-watcher"></a>
+### Gateワッチャー
+
+Gateワッチャーは、アプリケーションのゲートとポリシーチェックによる、データと結果を記録します。特定のアビリティをこのワッチャーで記録されないようにしたい場合は、`config/telescope.php`ファイルの`ignore_abilities`オプションで指定してください。
+
+    'watchers' => [
+        Watchers\GateWatcher::class => [
+            'enabled' => env('TELESCOPE_GATE_WATCHER', true),
+            'ignore_abilities' => ['viewNova'],
+        ],
+        ...
+    ],
+
+<a name="job-watcher"></a>
+### Jobワッチャー
+
+Jobワッチャーは、アプリケーションでディスパッチされた全ジョブのデータと状態を記録します。
+
+<a name="log-watcher"></a>
+### Logワッチャー
+
+Logワッチャーは、アプリケーションにより書き出されたすべてのログデータを記録します。
+
+<a name="mail-watcher"></a>
+### Mailワッチャー
+
+Mailワッチャーにより、メールのプレビューに加え、関連するデータをブラウザで確認することができます。さらに、`.eml`ファイルとしてメールをダウンロードできます。
+
+<a name="model-watcher"></a>
+### Modelワッチャー
+
+Modelワッチャーは、Eloquentの`created`、`updated`、`restored`、`deleted`イベントがディスパッチされた時点のモデルの変更を記録します。このワッチャーの`events`オプションにより、どのモデルイベントを記録するかを指定できます。
+
+    'watchers' => [
+        Watchers\ModelWatcher::class => [
+            'enabled' => env('TELESCOPE_MODEL_WATCHER', true),
+            'events' => ['eloquent.created*', 'eloquent.updated*'],
+        ],
+        ...
+    ],
+
+<a name="notification-watcher"></a>
+### Notificationワッチャー
+
+Notificationワッチャーは、アプリケーションにより送信された全通知を記録します。通知がメールを送信し、Mailワッチャーが有効になっていれば、Mailワッチャー画面によりプレビューも利用できます。
+
+<a name="query-watcher"></a>
+### Queryワッチャー
+
+Queryワッチャーは、アプリケーションにより実行された全クエリのSQL文とバインド、実行時間を記録します。このワッチャーは、100msよりも遅いクエリを`slow`としてタグ付けします。ワッチャーの`slow`オプションにより、このスロークエリの判定時間をカスタマイズできます。
+
+    'watchers' => [
+        Watchers\QueryWatcher::class => [
+            'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
+            'slow' => 50,
+        ],
+        ...
+    ],
+
+<a name="redis-watcher"></a>
+### Redisワッチャー
+
+> {note} Redisワッチャーを利用するには、Redisイベントを有効にする必要があります。`app/Providers/AppServiceProvider.php`ファイルの`boot`メソッドの中で、`Redis::enableEvents()`を呼び出すことで有効にできます。
+
+Redisワッチャーはアプリケーションで実行された全Redisコマンドを記録します。Redisをキャッシュで利用する場合、キャッシュコマンドもRedisワッチャーにより記録されます。
+
+<a name="request-watcher"></a>
+### Requestワッチャー
+
+Requestワッチャーはアプリケーションにより処理された全リクエスト、ヘッダ、セッション、レスポンスデータを記録します。`size_limit`オプションでKB単位でレスポンデータを制限できます。
+
+    'watchers' => [
+        Watchers\RequestWatcher::class => [
+            'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
+            'size_limit' => env('TELESCOPE_RESPONSE_SIZE_LIMIT', 64),
+        ],
+        ...
+    ],
+
+<a name="schedule-watcher"></a>
+### Scheduleワッチャー
+
+Scheduleワッチャーは、アプリケーションで実行された全スケジュール済みタスクのコマンドと出力を記録します。

@@ -393,13 +393,13 @@ Laravelアプリケーションに含まれる`User`モデルは、アクショ�
 
     class PostController extends Controller
     {
-        public function __constructor()
+        public function __construct()
         {
             $this->authorizeResource(Post::class, 'post');
         }
     }
 
-> {tip} 指定するモデルのポリシークラスを手っ取り早く生成するには、`--model`オプションを付けて`policy:make`コマンドを実行します。`php artisan policy:make --model=Post`
+> {tip} 指定するモデルのポリシークラスを手っ取り早く生成するには、`--model`オプションを付け`make:policy`コマンドを実行します。`php artisan make:policy --model=Post`
 
 <a name="via-blade-templates"></a>
 ### Bladeテンプレートによる認可
