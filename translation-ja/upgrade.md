@@ -422,6 +422,12 @@ Markdownのmailableテンプレートのためのデフォルトテーマスタ�
 
 `QUEUE_DRIVER`環境変数は、`QUEUE_CONNECTION`へリネームされました。意図的に皆さんの`config/queue.php`設定ファイルをLaravel5.7の内容へ合わせようとしない限り、アップグレードしている既存のアプリケーションには影響ありません。
 
+#### `WorkCommand`オプション
+
+**影響の可能性： とても低い**
+
+`WorkCommand`へ`stop-when-empty`オプションが追加されました。このコマンドを拡張している場合は、クラスの`$signature`プロパティへ`stop-when-empty`を追加する必要があります。
+
 ### ルート
 
 #### `Route::redirect`メソッド

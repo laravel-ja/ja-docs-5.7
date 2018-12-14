@@ -25,6 +25,7 @@
     - [アクセストークンの受け渡し](#passing-the-access-token)
 - [トークンのスコープ](#token-scopes)
     - [スコープの定義](#defining-scopes)
+    - [デフォルトスコープ](#default-scope)
     - [トークンへのスコープ割り付け](#assigning-scopes-to-tokens)
     - [スコープのチェック](#checking-scopes)
 - [APIをJavaScriptで利用](#consuming-your-api-with-javascript)
@@ -652,6 +653,18 @@ Passportにより保護されているルートを呼び出す場合、あなた
     Passport::tokensCan([
         'place-orders' => 'Place orders',
         'check-status' => 'Check order status',
+    ]);
+
+<a name="default-scope"></a>
+### デフォルトスコープ
+
+クライアントが特定のスコープを要求しない場合は、`setDefaultScope`メソッドを使用しそのトークンにデフォルトスコープを付加するように、Passportサーバを設定できます。通常、このメソッドは`AuthServiceProvider`の`boot`メソッドで呼び出す必要があります。
+
+    use Laravel\Passport\Passport;
+
+    Passport::setDefaultScope([
+        'check-status',
+        'place-orders',
     ]);
 
 <a name="assigning-scopes-to-tokens"></a>

@@ -25,6 +25,7 @@
     - [Passing The Access Token](#passing-the-access-token)
 - [Token Scopes](#token-scopes)
     - [Defining Scopes](#defining-scopes)
+    - [Default Scope](#default-scope)
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
@@ -652,6 +653,18 @@ You may define your API's scopes using the `Passport::tokensCan` method in the `
     Passport::tokensCan([
         'place-orders' => 'Place orders',
         'check-status' => 'Check order status',
+    ]);
+
+<a name="default-scope"></a>
+### Default Scope
+
+If a client does not request any specific scopes, you may configure your Passport server to attach a default scope to the token using the `setDefaultScope` method. Typically, you should call this method from the `boot` method of your `AuthServiceProvider`:
+
+    use Laravel\Passport\Passport;
+
+    Passport::setDefaultScope([
+        'check-status',
+        'place-orders',
     ]);
 
 <a name="assigning-scopes-to-tokens"></a>

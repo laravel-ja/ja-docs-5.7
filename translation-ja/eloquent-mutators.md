@@ -99,7 +99,7 @@
 <a name="date-mutators"></a>
 ## 日付ミューテタ
 
-デフォルトでEloquentは`created_at`と`updated_at`カラムを[Carbon](https://github.com/briannesbitt/Carbon)インスタンスへ変換します。CarbonはPHPネイティブの`DateTime`クラスを拡張しており、便利なメソッドを色々と提供しています。モデルの`$dates`プロパティをオーバーライドすることで、どのフィールドを自動的に変形するのか、逆にこのミューテタを適用しないのかをカスタマイズできます。
+デフォルトでEloquentは`created_at`と`updated_at`カラムを[Carbon](https://github.com/briannesbitt/Carbon)インスタンスへ変換します。CarbonはPHPネイティブの`DateTime`クラスを拡張しており、便利なメソッドを色々と提供しています。モデルの`$dates`プロパティをセットすることにより、データ属性を追加できます。
 
     <?php
 
@@ -115,13 +115,13 @@
          * @var array
          */
         protected $dates = [
-            'created_at',
-            'updated_at',
-            'deleted_at'
+            'seen_at',
         ];
     }
 
-カラムが日付だと推定される場合、値はUnixタイムスタンプ、日付文字列(`Y-m-d`)、日付時間文字列、それにもちろん`DateTime`や`Carbon`インスタンスを値としてセットでき、日付は自動的に正しくデータベースへ保存されます。
+> {tip} モデルの`$timestamps`プロパティを`false`へセットすることにより、デフォルトの`created_at`と`updated_at`タイムスタンプを無効にできます。
+
+日付だと推定されるカラムで、値はUnixタイムスタンプ、日付文字列(`Y-m-d`)、日付時間文字列、それにもちろん`DateTime`や`Carbon`インスタンスを値としてセットできます。日付の値は自動的に正しく変換され、データベースへ保存されます。
 
     $user = App\User::find(1);
 

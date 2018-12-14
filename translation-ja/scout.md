@@ -262,6 +262,20 @@ Eloquentモデルをバッチ処理するが、検索インデックスへモデ
         return $this->isPublished();
     }
 
+`shouldBeSearchable`メソッドは、`save`メソッド、クエリ、リレーションによるモデル操作の場合のみ適用されます。`searchable`メソッドを使用し、直接searchableなモデルかコレクションを作成する場合は、`shouldBeSearchable`メソッドの結果をオーバーライドします。
+
+    // "shouldBeSearchable"が利用される
+    App\Order::where('price', '>', 100)->searchable();
+
+    $user->orders()->searchable();
+
+    $order->save();
+
+    // "shouldBeSearchable"はオーバーライドされる
+    $orders->searchable();
+
+    $order->searchable();
+
 <a name="searching"></a>
 ## 検索
 

@@ -666,7 +666,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 <a name="rule-date"></a>
 #### date
 
-パリデーションされる値はPHP関数の`strtotime`を使用し確認されます。
+パリデーションされる値はPHP関数の`strtotime`により、有効で相対日付ではないことをバリデートします。
 
 <a name="rule-date-equals"></a>
 #### date_equals:_日付_
