@@ -25,7 +25,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravelは人気の高い[SwiftMailer](https://swiftmailer.symfony.com/)ライブラリーのクリーンでシンプルなAPIを提供しています。SMTP、Mailgun、SparkPost、Amazon SES、PHPの`mail`機能、`sendmail`ドライバーを提供しており、選択したローカルやクラウドベースのサービスを使い、素早くメール送信が開始できるようにしています。
+Laravelは人気の高い[SwiftMailer](https://swiftmailer.symfony.com/)ライブラリーのクリーンでシンプルなAPIを提供しています。SMTP、Mailgun、SparkPost、Amazon SES、`sendmail`ドライバーを提供しており、選択したローカルやクラウドベースのサービスを使い、素早くメール送信が開始できるようにしています。
 
 <a name="driver-prerequisites"></a>
 ### ドライバの動作要件

@@ -138,17 +138,17 @@ Passport Vueコンポーネントを公開（Laravel用語で開発者が変更�
 
     Vue.component(
         'passport-clients',
-        require('./components/passport/Clients.vue')
+        require('./components/passport/Clients.vue').default
     );
 
     Vue.component(
         'passport-authorized-clients',
-        require('./components/passport/AuthorizedClients.vue')
+        require('./components/passport/AuthorizedClients.vue').default
     );
 
     Vue.component(
         'passport-personal-access-tokens',
-        require('./components/passport/PersonalAccessTokens.vue')
+        require('./components/passport/PersonalAccessTokens.vue').default
     );
 
 コンポーネントを登録したら、アセットを再コンパイルするため`npm run dev`を確実に実行してください。アセットの再コンパイルが済んだら、クライアントとパーソナルアクセストークンを作成し始めるために、アプリケーションのテンプレートへコンポーネントを指定しましょう。

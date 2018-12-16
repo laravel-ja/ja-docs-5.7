@@ -1349,7 +1349,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-info"></a>
 #### `info()` {#collection-method}
 
-`info`関数は[ログ](/docs/{{version}}/errors#logging)へ情報(information)を書き出します。
+`info`関数は[ログ](/docs/{{version}}/logging)へ情報(information)を書き出します。
 
     info('Some helpful information!');
 
@@ -1360,7 +1360,7 @@ NULL値を指定すると、空の配列が返ってきます。
 <a name="method-logger"></a>
 #### `logger()` {#collection-method}
 
-`logger`関数は、`debug`レベルのメッセージを[ログ](/docs/{{version}}/errors#logging)へ書き出します。
+`logger`関数は、`debug`レベルのメッセージを[ログ](/docs/{{version}}/logging)へ書き出します。
 
     logger('Debug message');
 

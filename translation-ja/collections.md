@@ -1780,7 +1780,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 このメソッドはファクトリと組み合わせ、[Eloquent](/docs/{{version}}/eloquent)モデルを生成する場合に便利です。
 
     $categories = Collection::times(3, function ($number) {
-        return factory(Category::class)->create(['name' => 'Category #'.$number]);
+        return factory(Category::class)->create(['name' => "Category No. $number"]);
     });
 
     $categories->all();
