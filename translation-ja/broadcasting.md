@@ -511,7 +511,11 @@ Echoで使用したいPusherやSocket.ioクライアントを既に用意して�
 <a name="leaving-a-channel"></a>
 ### チャンネルの離脱
 
-チャンネルを離脱するには、Echoインスタンスの`leave`メソッドを呼び出してください。
+チャンネルを離脱するには、Echoインスタンスの`leaveChannel`メソッドを呼び出してください。
+
+    Echo.leaveChannel('orders');
+
+チャンネルを離脱し、関連するプライベートチャンネル、現在のチャンネルも離脱したい場合は、`leave`メソッドを呼び出してください。
 
     Echo.leave('orders');
 

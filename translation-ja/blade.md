@@ -167,11 +167,11 @@ Bladeビューに渡されたデータは、波括弧で変数を囲うことで
 
     Hello, {{ $name }}.
 
+> {tip} Bladeの`{{ }}`記法はXSS攻撃を防ぐため、自動的にPHPの`htmlspecialchars`関数を通されます。
+
 もちろんビューに渡された変数の内容を表示するだけに限られません。PHP関数の結果をechoすることもできます。実際、どんなPHPコードもBladeのecho文の中に書けます。
 
     The current UNIX timestamp is {{ time() }}.
-
-> {tip} Bladeの`{{ }}`記法はXSS攻撃を防ぐため、自動的にPHPの`htmlspecialchars`関数を通されます。
 
 #### エスケープしないデータの表示
 

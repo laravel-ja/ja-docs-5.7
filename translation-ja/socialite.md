@@ -1,6 +1,7 @@
 # Laravel Socialite
 
 - [イントロダクション](#introduction)
+- [Socialiteのアップデート](#upgrading-socialite)
 - [インストール](#installation)
 - [設定](#configuration)
 - [ルート](#routing)
@@ -16,6 +17,11 @@
 
 > {tip} 他のプラットフォームのアダプタは、コミュニティにより管理されている[Socialiteプロバイダ](https://socialiteproviders.github.io/)Webサイトで一覧できます。
 
+<a name="upgrading-socialite"></a>
+## Socialiteのアップデート
+
+Socialiteのメジャーバージョンへアップデートするときは、[アップグレードガイド](https://github.com/laravel/socialite/blob/master/UPGRADE.md)を十分にレビューしてください。
+
 <a name="installation"></a>
 ## インストール
 
@@ -29,8 +35,8 @@ Socialiteを使用開始するには、Composerを使い、プロジェクトの
 Socialiteを使用する前に、アプリケーションで使用するOAuthサービスの認証情報も追加する必要があります。認証情報は`config/services.php`設定ファイルで指定し、アプリケーションの必要に合わせ、`facebook`、`twitter`、`linkedin`、`google`、`github`、`gitlab`、`bitbucket`キーを使用してください。一例をご覧ください。
 
     'github' => [
-        'client_id' => env('GITHUB_CLIENT_ID'),         // GitHubのClient ID
-        'client_secret' => env('GITHUB_CLIENT_SECRET'), // GitHubのClient Secret
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://your-callback-url',
     ],
 

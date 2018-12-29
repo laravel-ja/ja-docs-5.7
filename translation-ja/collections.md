@@ -166,6 +166,7 @@
 [whenNotEmpty](#method-whennotempty)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
+[whereBetween](#method-wherebetween)
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
 [whereInstanceOf](#method-whereinstanceof)
@@ -1025,8 +1026,8 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     $chunks = $collection->chunk(2);
 
-    $sequence = $chunks->mapSpread(function ($odd, $even) {
-        return $odd + $even;
+    $sequence = $chunks->mapSpread(function ($even, $odd) {
+        return $even + $odd;
     });
 
     $sequence->all();
@@ -2110,6 +2111,31 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 #### `whereStrict()` {#collection-method}
 
 このメソッドの使用法は、[`where`](#method-where)メソッドと同じです。しかし、値の比較はすべて「厳格」な比較で行われます。
+
+<a name="method-wherebetween"></a>
+#### `whereBetween()` {#collection-method}
+
+`whereBetween`メソッドは、指定した範囲でコレクションをフィルタリングします。
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 80],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Pencil', 'price' => 30],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereBetween('price', [100, 200]);
+
+    $filtered->all();
+
+    /*
+        [
+            ['product' => 'Desk', 'price' => 200],
+            ['product' => 'Bookcase', 'price' => 150],
+            ['product' => 'Door', 'price' => 100],
+        ]
+    */
 
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}

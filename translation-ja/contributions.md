@@ -3,6 +3,7 @@
 - [バグレポート](#bug-reports)
 - [コア開発の議論](#core-development-discussion)
 - [どのブランチ？](#which-branch)
+- [アセットのコンパイル](#compiled-assets)
 - [セキュリティ脆弱性](#security-vulnerabilities)
 - [コーディングスタイル](#coding-style)
     - [PHPDoc](#phpdoc)
@@ -54,6 +55,11 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 次のLaravelリリースに含めるべき、**メジャー**な新機能は、常に`master`ブランチへ送ってください。
 
 もし、あなたの新機能がメジャーなのか、マイナーなのかはっきりしなければ、[Laravel Discord server](https://discordapp.com/invite/mPZNm7A)の`#internals`チャンネルでTaylor Otwellに尋ねてください。
+
+<a name="compiled-assets"></a>
+## アセットのコンパイル
+
+`laravel/laravel`リポジトリの`resources/sass`や`resources/js`下のほとんどのファイルのように、コンパイル済みファイルに影響を及ぼすファイルへ変更を行う場合、コンパイル済みファイルをコミットしないでください。大きなファイルサイズであるため、メンテナは実際レビューできません。悪意のあるコードをLaravelへ紛れ込ませる方法を提供してしまいます。これを防御的に防ぐため、全てのコンパイル済みファイルはLaravelメンテナが生成し、コミットします。
 
 <a name="security-vulnerabilities"></a>
 ## セキュリティ脆弱性

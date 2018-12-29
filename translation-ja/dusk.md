@@ -1253,10 +1253,10 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          *
          * @param  \Laravel\Dusk\Browser  $browser
          * @param  int  $month
-         * @param  int  $year
+         * @param  int  $day
          * @return void
          */
-        public function selectDate($browser, $month, $year)
+        public function selectDate($browser, $month, $day)
         {
             $browser->click('@date-field')
                     ->within('@month-list', function ($browser) use ($month) {
@@ -1339,10 +1339,11 @@ DustテストにCircleCIを使用する場合、以下の設定ファイルを�
 
 Duskのテストを[Codeship](https://codeship.com)で実行するには、以下のコマンドをCodeshipプロジェクトへ追加してください。もちろん、以下のコマンドは参考例ですので、必要に応じ自由にコマンドを追加してください。
 
-    phpenv local 7.1
+    phpenv local 7.2
     cp .env.testing .env
-    composer install --no-interaction
-    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
+    mkdir -p ./bootstrap/cache
+    composer install --no-interaction --prefer-dist
+    php artisan key:generate
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
 

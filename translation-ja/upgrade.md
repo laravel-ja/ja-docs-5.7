@@ -62,6 +62,14 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
     mix.js('resources/js/app.js', 'public/js')
        .sass('resources/sass/app.scss', 'public/css');
 
+#### `svg` Directory Added
+
+**影響の可能性: とても高い**
+
+`public`ディレクトリへ、新しく`svg`ディレクトリが追加されました。その中に名前が示すエラーページを表示するための、`403.svg`、`404.svg`、`500.svg`、`503.svg`のsvgファイルを含んでいます。
+
+[GitHub](https://github.com/laravel/laravel/tree/master/public/svg)から、これらのファイルを取得できます。
+
 ### 認証
 
 #### `Authenticate`ミドルウェア

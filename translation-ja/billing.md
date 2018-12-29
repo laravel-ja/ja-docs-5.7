@@ -1,6 +1,7 @@
 # Laravel Cashier
 
 - [イントロダクション](#introduction)
+- [Cashierのアップデート](#upgrading-cashier)
 - [設定](#configuration)
     - [Stripe](#stripe-configuration)
     - [Braintree](#braintree-configuration)
@@ -14,12 +15,16 @@
     - [サブスクリプション課金日付け](#subscription-anchor-date)
     - [サブスクリプションキャンセル](#cancelling-subscriptions)
     - [サブスクリプション再開](#resuming-subscriptions)
-    - [クレジットカード変更](#updating-credit-cards)
 - [サブスクリプションのトレイト](#subscription-trials)
     - [カードの事前登録あり](#with-credit-card-up-front)
     - [カードの事前登録なし](#without-credit-card-up-front)
 - [顧客](#customers)
-    - [顧客の生成](#create-customers)
+    - [Creating Customers](#creating-customers)
+- [カード](#cards)
+    - [クレジットカードの取得](#retrieving-credit-cards)
+    - [登録済みカードの判定](#determining-if-a-card-is-on-file)
+    - [クレジットカードの更新](#updating-credit-cards)
+    - [クレジットカードの削除](#deleting-credit-cards)
 - [StripeのWebフック処理](#handling-stripe-webhooks)
     - [Webフックハンドラの定義](#defining-webhook-event-handlers)
     - [サブスクリプション不可](#handling-failed-subscriptions)
@@ -40,6 +45,11 @@
 Laravel Cashierは[Stripe](https://stripe.com)と[Braintree](https://www.braintreepayments.com)によるサブスクリプション（定期課金）サービスの読みやすく、スラスラと記述できるインターフェイスを提供します。これにより書くのが恐ろしくなるような、サブスクリプション支払いのための決まりきったコードのほとんどが処理できます。基本的なサブスクリプション管理に加え、Cashierはクーポン、サブスクリプションの変更、サブスクリプション数、キャンセル猶予期間、さらにインボイスのPDF発行まで行います。
 
 > {note} サブスクリプションを提供せず、「一回だけ」の支払いを取り扱う場合は、Cashierを使用してはいけません。StripeかBraintreeのSDKを直接使用してください。
+
+<a name="upgrading-cashier"></a>
+## Cashierのアップデート
+
+Cashierのメジャーアップデートを行う場合は、[アップグレードガイド](https://github.com/laravel/cashier/blob/master/UPGRADE.md)を注意深く読み、確認してください。
 
 <a name="configuration"></a>
 ## 設定
@@ -389,13 +399,6 @@ Stripe／Braintreeがサポートしている追加のフィールドについ�
 
 ユーザーがサブスクリプションをキャンセルし、それからそのサブスクリプションを再開する場合、そのサブスクリプションの有効期日が完全に切れていなければすぐに課金されません。そのサブスクリプションはシンプルに再度有効になり、元々の支払いサイクルにより課金されます。
 
-<a name="updating-credit-cards"></a>
-### クレジットカード変更
-
-顧客のクレジットカード情報を更新する場合は、`updateCard`メソッドを使います。このメソッドは、Stripeトークンを受け付け、新しいクレジットカードをデフォルトの支払先として登録します。
-
-    $user->updateCard($stripeToken);
-
 <a name="subscription-trials"></a>
 ## サブスクリプションのトレイト
 
@@ -470,11 +473,62 @@ Stripe／Braintreeがサポートしている追加のフィールドについ�
 
 時にサブスクリプションの定期購入を始めなくても、顧客を生成したい場合があります。それには、`createAsStripeCustomer`メソッドを使用します。
 
-    $user->createAsStripeCustomer($stripeToken);
+    $user->createAsStripeCustomer();
 
 もちろん、Stripeで作った顧客にたいし、後からサブスクリプションの定期購入を開始することができます。
 
 > {tip} Braintreeの同じ機能は、`createAsBraintreeCustomer`メソッドです。
+
+<a name="cards"></a>
+## カード
+
+<a name="retrieving-credit-cards"></a>
+### クレジットカードの取得
+
+Billableなモデルインスタンスの`cards`メソッドは、`Laravel\Cashier\Card`インスタンスのコレクションを返します。
+
+    $cards = $user->cards();
+
+デフォルトカードを取得するには、`defaultCard`メソッドを使用します。
+
+    $card = $user->defaultCard();
+
+<a name="determining-if-a-card-is-on-file"></a>
+### 登録済みカードの判定
+
+顧客のアカウントに紐付けられているクレジットカードがあるかを確認する場合は、`hasCardOnFile`メソッドを使用します。
+
+    if ($user->hasCardOnFile()) {
+        //
+    }
+
+<a name="updating-credit-cards"></a>
+### クレジットカードの更新
+
+顧客のクレジットカード情報を更新するには、`updateCard`メソッドを使用します。このメソッドはStripeトークンを引数に取り、新しいクレジットカードをデフォルトの支払先に設定します。
+
+    $user->updateCard($stripeToken);
+
+Stripe側の顧客デフォルトカード情報と同期させるには、`updateCardFromStripe`メソッドを使用します。
+
+    $user->updateCardFromStripe();
+
+<a name="deleting-credit-cards"></a>
+### クレジットカードの削除
+
+カードを削除するには、最初に`cards`メソッドで顧客のカードを取得しておく必要があります。次に、削除したいカードインスタンスに対し、`delete`メソッドを呼び出します。
+
+    foreach ($user->cards() as $card) {
+        $card->delete();
+    }
+
+> {note} デフォルトカードを削除する場合は、データベース上の新しいデフォルトカードを同期させるために、`updateCardFromStripe`メソッドを必ず呼び出してください。
+
+アプリケーションに保存されている全てのカード情報を削除するには、`deleteCards`メソッドを使用します。
+
+    $user->deleteCards();
+
+> {note} ユーザーにアクティブなサブスクリプションがある場合、最後の支払い方法が削除されないように考慮する必要があるでしょう。
 
 <a name="handling-stripe-webhooks"></a>
 ## StripeのWebフック処理
@@ -488,7 +542,9 @@ StripeとBraintree、両方共にWebフックによりアプリケーション�
 
 > {note} ルートを登録したら、Stripeコントロールパネル設定のWebフックURLも、合わせて設定してください。
 
-このコントローラはデフォルトで、（Stripeの設定により決まる）課金の失敗が多すぎる場合や顧客の変更、顧客の削除、サブスクリプションのアップデート、クレジットカードの変更時に、サブスクリプションを自動的にキャンセル処理します。しかしながら、処理したいWebフックイベントをどれでも処理できるようにするために、このコントローラを拡張する方法を以降で学びます。
+このコントローラはデフォルトで、（Stripeの設定により決まる）課金の失敗が多すぎる場合や顧客の変更、顧客の削除、サブスクリプションのアップデート、クレジットカードの変更時に、サブスクリプションを自動的にキャンセル処理します。処理したいWebフックイベントをどれでも処理できるようにするために、このコントローラを拡張する方法は、以降で説明します。
+
+> {note} Cashierに含まれる、[Webフック署名の確認](/docs/{{version}}/billing#verifying-webhook-signatures)ミドルウェアを使用し、受信リクエストを確実に保護してください。
 
 #### WebフックとCSRF保護
 
@@ -512,10 +568,10 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
     class WebhookController extends CashierController
     {
         /**
-         * StripeのWebフック処理
+         * インボイス支払い成功時の処理
          *
          * @param  array  $payload
-         * @return Response
+         * @return \Symfony\Component\HttpFoundation\Response
          */
         public function handleInvoicePaymentSucceeded($payload)
         {
@@ -545,16 +601,9 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
 <a name="verifying-webhook-signatures"></a>
 ### Webフック署名の確認
 
-Webフックを安全にするため、[StripeのWebフック著名](https://stripe.com/docs/webhooks/signatures)が利用できます。便利に利用できるように、Cashierは送信されてきたWebフックリクエストが有効なものか確認するミドルウェアを用意しています。
+Webフックを安全にするため、[StripeのWebフック著名](https://stripe.com/docs/webhooks/signatures)が利用できます。便利に利用できるように、Cashierは送信されてきたWebフックリクエストが有効なものか確認するミドルウェアをあらかじめ用意しています。
 
-利用開始するには、`services`設定ファイルの`stripe.webhook.secret`設定値を確実に設定してください。Webフックのシークレット値を設定したら、ルートに対し`VerifyWebhookSignature`ミドルウェアを指定します。
-
-    use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
-
-    Route::post(
-        'stripe/webhook',
-        '\App\Http\Controllers\WebhookController@handleWebhook'
-    )->middleware(VerifyWebhookSignature::class);
+Webフックの確認を有効にするには、`services`設定ファイルの`stripe.webhook.secret`設定値を確実に設定してください。Webフックの`secret`は、Stripeアカウントダッシュボードで取得できます。
 
 <a name="handling-braintree-webhooks"></a>
 ## BraintreeのWebフック処理
@@ -593,14 +642,14 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
     class WebhookController extends CashierController
     {
         /**
-         * Braintree Webフックの処理
+         * 新しいクレームの処理
          *
-         * @param  WebhookNotification  $webhook
-         * @return Response
+         * @param  \Braintree\WebhookNotification  $webhook
+         * @return \Symfony\Component\HttpFoundation\Responses
          */
-        public function handleDisputeOpened(WebhookNotification $notification)
+        public function handleDisputeOpened(WebhookNotification $webhook)
         {
-            // イベントの処理
+            // クレーム開始(dispute opened)Webフックの処理
         }
     }
 
@@ -657,10 +706,12 @@ Cashierは課金の失敗時にサブスクリプションを自動的に処理�
     // Braintreeはドル単位で課金する
     $user->invoiceFor('One Time Fee', 5);
 
-金額は即時にユーザーのクレジットカードへ課金されます。`invoiceFor`メソッドは第３引数として配列を受け付け、裏で作成されるStripe／Braintreeの課金オプションを指定できます。
+金額は即時にユーザーのクレジットカードへ課金されます。`invoiceFor`メソッドは第３引数に配列を受け付けます。この配列はインボイスアイテムへの支払いオプションを含みます。第４引数も配列で、インボイス自身に対する支払いオプションを指定します。
 
-    $user->invoiceFor('One Time Fee', 500, [
-        'custom-option' => $value,
+    $user->invoiceFor('Stickers', 500, [
+        'quantity' => 50,
+    ], [
+        'tax_percent' => 21,
     ]);
 
 Braintreeを課金プロバイダに使用している場合、`invoiceFor` の呼び出し時に`description`オプションを含める必要があります。
@@ -668,7 +719,6 @@ Braintreeを課金プロバイダに使用している場合、`invoiceFor` の�
     $user->invoiceFor('One Time Fee', 500, [
         'description' => 'your invoice description here',
     ]);
-
 
 > {note} `invoiceFor`メソッドは、課金失敗時にリトライするStripeインボイスを生成します。リトライをしてほしくない場合は、最初に課金に失敗した時点で、Stripe APIを使用し、生成したインボイスを閉じる必要があります。
 

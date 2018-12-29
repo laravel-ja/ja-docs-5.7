@@ -45,7 +45,7 @@ local環境では`APP_DEBUG`環境変数を`true`に設定すべきでしょう�
             //
         }
 
-        return parent::report($exception);
+        parent::report($exception);
     }
 
 > {tip} `report`メソッド中で数多くの`instanceof`チェックを行う代わりに、[reportable exceptions](/docs/{{version}}/errors#renderable-exceptions)の使用を考慮してください。
