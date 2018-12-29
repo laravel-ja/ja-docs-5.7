@@ -62,7 +62,7 @@ Laravel Passportを使用している場合は、`composer.json`ファイルの`
     mix.js('resources/js/app.js', 'public/js')
        .sass('resources/sass/app.scss', 'public/css');
 
-#### `svg` Directory Added
+#### `svg`ディレクトリの追加
 
 **影響の可能性: とても高い**
 
