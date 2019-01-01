@@ -1370,14 +1370,12 @@ Duskテストを[Heroku CI](https://www.heroku.com/continuous-integration)上で
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-[Travis CI](https://travis-ci.org)上でDuskテストを実行するためには、Ubuntu 14.04 (Trusty)環境を"sudo-enabled"で使用する必要があります。Travis CIはグラフィカルな環境ではないため、Chromeブラウザを実行するには追加の手順を行う必要があります。さらに、PHPの組み込みWebサーバを起動するために、`php artisan serve`を使用する必要もあるでしょう。
+[Travis CI](https://travis-ci.org)上でDuskテストを実行するためには、以降の`.travis.yml`設定を使用してください。Travis CIはグラフィカルな環境ではないため、Chromeブラウザを実行するには追加の手順を行う必要があります。さらに、PHPの組み込みWebサーバを起動するために、`php artisan serve`を使用する必要もあるでしょう。
 
     language: php
-    sudo: required
-    dist: trusty
 
     php:
-      - 7.2
+      - 7.3
 
     addons:
       chrome: stable

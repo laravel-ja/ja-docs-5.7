@@ -242,6 +242,7 @@ LaravelはJSON APIとレスポンスをテストする数多くのヘルパを�
 [assertJsonFragment](#assert-json-fragment)
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
+[assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertLocation](#assert-location)
@@ -372,6 +373,13 @@ LaravelはJSON APIとレスポンスをテストする数多くのヘルパを�
 レスポンスがJSONの一部をそのまま含んでいないことを宣言。
 
     $response->assertJsonMissingExact(array $data);
+
+<a name="assert-json-missing-validation-errors"></a>
+#### assertJsonMissingValidationErrors
+
+レスポンスが指定したキーに対するJSONバリデーションエラーを含んていないことを宣言。
+
+    $response->assertJsonMissingValidationErrors($keys);
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
