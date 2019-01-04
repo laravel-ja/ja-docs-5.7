@@ -155,3 +155,7 @@ local環境では`APP_DEBUG`環境変数を`true`に設定すべきでしょう�
 様々なHTTPステータスコードごとに、Laravelはカスタムエラーページを簡単に返せます。たとえば404 HTTPステータスコードに対してカスタムエラーページを返したければ、`resources/views/errors/404.blade.php`を作成してください。このファイルはアプリケーションで起こされる全404エラーに対し動作します。ビューはこのディレクトリに置かれ、対応するHTTPコードと一致した名前にしなくてはなりません。`abort`ヘルパが生成する`HttpException`インスタンスは、`$exception`変数として渡されます。
 
     <h2>{{ $exception->getMessage() }}</h2>
+
+Laravelのエラーページテンプレートは、`vendor:publish` Artisanコマンドで公開できます。テンプレートを公開したら、好みのようにカスタマイズできます。
+
+    php artisan vendor:publish --tag=laravel-errors
