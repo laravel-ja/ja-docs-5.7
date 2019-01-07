@@ -783,15 +783,20 @@ Eloquentリレーションは全てメソッドとして定義されているた
 
 ネストした`has`文は「ドット」記法で組立てられます。たとえば最低一つのコメントと評価を持つ全ポストを取得する場合です。
 
-    // 最低１つのコメントと、それに対する評価を持つ全ポストの取得
+    // 最低１つのコメントと、それに対する評価を持つポストの取得
     $posts = App\Post::has('comments.votes')->get();
 
 もっと強力な機能がお望みならば`has`の問い合わせに"WHERE"で条件を付けられる、`whereHas`や`orWhereHas`を利用して下さい。これらのメソッドによりリレーションの制約にカスタマイズした制約を追加できます。たとえばコメントの内容を調べることです。
 
-    // like foo%の制約に一致する最低１つのコメントを持つ全ポストの取得
+    // like foo%の制約に一致する最低１つのコメントを持つポストの取得
     $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
+
+    // like foo%の制約に一致する最低１０個のコメントを持つポストの取得
+    $posts = App\Post::whereHas('comments', function ($query) {
+        $query->where('content', 'like', 'foo%');
+    }, '>=', 10)->get();
 
 <a name="querying-relationship-absence"></a>
 ### 存在しないリレーションのクエリ

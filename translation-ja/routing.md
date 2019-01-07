@@ -82,7 +82,7 @@ Laravelの全ルートは、`routes`ディレクトリ下に設置されてい�
 
     Route::redirect('/here', '/there', 301);
 
-`Route::permananentRedirect`メソッドを使えば、`301`ステータスコードが返されます。
+`Route::permanentRedirect`メソッドを使えば、`301`ステータスコードが返されます。
 
     Route::permanentRedirect('/here', '/there');
 
