@@ -70,7 +70,7 @@
 
 Pusherと[Laravel Echo](#installing-laravel-echo)を使用する場合、`resources/js/bootstrap.js`ファイルのEchoインスタンスをインスタンス化する時に、使用するブロードキャスタとして、`pusher`を指定する必要があります。
 
-    import Echo from "laravel-echo"
+    import Echo from "laravel-echo";
 
     window.Pusher = require('pusher-js');
 

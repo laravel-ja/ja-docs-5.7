@@ -118,7 +118,7 @@
 <a name="psr7-requests"></a>
 ### PSR-7リクエスト
 
-[PSR-7規約](http://www.php-fig.org/psr/psr-7/)はリクエストとレスポンスを含めたHTTPメッセージのインターフェイスを規定しています。PSR-7リクエストのインスタンスを受け取りたければ、ライブラリーをいくつかインストールする必要があります。LaravelはLaravelリクエストとレスポンスをPSR-7互換の実装に変換するために、**Symfony HTTPメッセージブリッジコンポーネント**を使用しています。
+[PSR-7規約](https://www.php-fig.org/psr/psr-7/)は、リクエストとレスポンスを含めたHTTPメッセージのインターフェイスを規定しています。PSR-7リクエストのインスタンスを受け取りたければ、ライブラリーをいくつかインストールする必要があります。LaravelはLaravelリクエストとレスポンスをPSR-7互換の実装に変換するために、**Symfony HTTPメッセージブリッジコンポーネント**を使用しています。
 
     composer require symfony/psr-http-message-bridge
     composer require zendframework/zend-diactoros
@@ -345,7 +345,7 @@ Laravelフレームワークが作成するクッキーは全て暗号化され�
 
 #### 他のファイルメソッド
 
-他にも、たくさんのメソッドが`UploadedFile`インスタンスに存在しています。[このクラスのAPIドキュメント](http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html)で、より詳細な情報が得られます。
+他にも、たくさんのメソッドが`UploadedFile`インスタンスに存在しています。[このクラスのAPIドキュメント](https://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html)で、より詳細な情報が得られます。
 
 <a name="storing-uploaded-files"></a>
 ### アップロードファイルの保存
@@ -400,7 +400,7 @@ TLS／SSL証明を行うロードバランサの裏でアプリケーション�
         protected $headers = Request::HEADER_X_FORWARDED_ALL;
     }
 
-> {tip} AWS Elastic Load Balancingを使用している場合、`$headers`の値は`Request::HEADER_X_FORWARDED_AWS_ELB`に設定する必要があります。`$headers`で使用する内容の詳細は、Symfonyの[trusting proxies](http://symfony.com/doc/current/deployment/proxies.html)ドキュメントを参照してください。
+> {tip} AWS Elastic Load Balancingを使用している場合、`$headers`の値は`Request::HEADER_X_FORWARDED_AWS_ELB`に設定する必要があります。`$headers`で使用する内容の詳細は、Symfonyの[trusting proxies](https://symfony.com/doc/current/deployment/proxies.html)ドキュメントを参照してください。
 
 #### 全プロキシを信用
 

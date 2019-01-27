@@ -22,6 +22,7 @@
     - [ジョブ失敗後のクリーンアップ](#cleaning-up-after-failed-jobs)
     - [ジョブ失敗イベント](#failed-job-events)
     - [失敗したジョブの再試行](#retrying-failed-jobs)
+    - [不明なモデルの無視](#ignoring-missing-models)
 - [ジョブイベント](#job-events)
 
 <a name="introduction"></a>
@@ -244,6 +245,8 @@ Redisキューを使用する場合、ワーカのループの繰り返しとRed
         new OptimizePodcast,
         new ReleasePodcast
     ])->dispatch();
+
+> {note} ジョブの削除に`$this->delete()`メソッドを使用しても、チェーンしたジョブの処理を停止できません。チェーンの実行を停止するのは、チェーン中のジョブが失敗した場合のみです。
 
 #### チェーンの接続とキュー
 
@@ -678,6 +681,20 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 失敗したジョブを全部削除するには、`queue:flush`コマンドを使います。
 
     php artisan queue:flush
+
+<a name="ignoring-missing-models"></a>
+### 不明なモデルの無視
+
+Eloquentモデルをジョブで取り扱う場合は自動的に、キューに積む前にシリアライズし、ジョブを処理するときにリストアされます。しかし、ジョブがワーカにより処理されるのを待っている間にモデルが削除されると、そのジョブは`ModelNotFoundException`により失敗します。
+
+利便性のため、ジョブの`deleteWhenMissingModels`プロパティを`true`に指定すれば、モデルが見つからない場合自動的に削除できます。
+
+    /**
+     * モデルが存在していない場合に、ジョブを削除する
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
 
 <a name="job-events"></a>
 ## ジョブイベント

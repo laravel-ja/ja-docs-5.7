@@ -927,7 +927,7 @@ Eloquentリレーションは全てメソッドとして定義されているた
 <a name="constraining-eager-loads"></a>
 ### Eagerロードへの制約
 
-場合によりリレーションをEagerロードしたいが、Eagerロードクエリに制約を追加したい場合があります。例を見てください。
+ときにリレーションをEagerロードしたいが、Eagerロードクエリに条件を追加したい場合があります。例を見てください。
 
     $users = App\User::with(['posts' => function ($query) {
         $query->where('title', 'like', '%first%');
@@ -938,6 +938,8 @@ Eloquentリレーションは全てメソッドとして定義されているた
     $users = App\User::with(['posts' => function ($query) {
         $query->orderBy('created_at', 'desc');
     }])->get();
+
+> {note} `limit`と`take`クエリビルダメソッドは、Eagerロードの制約時には使用できません。
 
 <a name="lazy-eager-loading"></a>
 ### 遅延Eagerローディング

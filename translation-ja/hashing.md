@@ -67,7 +67,7 @@ Argon2アルゴリズムを使用する場合、`memory`と`time`、`threads`オ
         'threads' => 2,
     ]);
 
-> {tip} これらのオプションの詳細情報は、[PHP公式ドキュメント](http://php.net/manual/ja/function.password-hash.php)をご覧ください。
+> {tip} これらのオプションの詳細情報は、[PHP公式ドキュメント](https://secure.php.net/manual/ja/function.password-hash.php)をご覧ください。
 
 #### パスワードとハッシュ値の比較
 

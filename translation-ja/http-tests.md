@@ -216,7 +216,7 @@ LaravelはJSON APIとレスポンスをテストする数多くのヘルパを�
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
         column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
     }
 
@@ -259,6 +259,7 @@ LaravelはJSON APIとレスポンスをテストする数多くのヘルパを�
 [assertSessionHasErrors](#assert-session-has-errors)
 [assertSessionHasErrorsIn](#assert-session-has-errors-in)
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
+[assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
@@ -492,6 +493,13 @@ LaravelはJSON APIとレスポンスをテストする数多くのヘルパを�
 セッションがエラーを持っていないことを宣言。
 
     $response->assertSessionHasNoErrors();
+
+<a name="assert-session-doesnt-have-errors"></a>
+#### assertSessionDoesntHaveErrors
+
+セッションが、指定したキーに対するエラーを持っていないことを宣言。
+
+    $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
 
 <a name="assert-session-missing"></a>
 #### assertSessionMissing

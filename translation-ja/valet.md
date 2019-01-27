@@ -33,7 +33,7 @@ Valetは以下をサポートしていますが、これらに限定されませ
 - [Contao](https://contao.org/en/)
 - [Craft](https://craftcms.com)
 - [Drupal](https://www.drupal.org/)
-- [Jigsaw](http://jigsaw.tighten.co)
+- [Jigsaw](https://jigsaw.tighten.co)
 - [Joomla](https://www.joomla.org/)
 - [Katana](https://github.com/themsaid/katana)
 - [Kirby](https://getkirby.com/)
@@ -55,17 +55,17 @@ Valetは以下をサポートしていますが、これらに限定されませ
 
 ご存知のように、ローカルのLaravel開発環境として[Homestead](/docs/{{version}}/homestead)も用意しています。HomesteadとValetは利用者の目的とローカルの開発についてのアプローチが異なります。Homesteadは自動的にNginx設定を行うUbuntuの完全な仮想マシンを提供しています。HomesteadはLinux開発環境の完全な仮想化を行いたい、もしくはWindows／Linux上で動作させたい場合、素晴らしい選択肢になります。
 
-ValetはMac上でのみサポートされ、PHPとデータベースサーバを直接ローカルマシンへインストールする必要があります。[Homebrew](http://brew.sh/)を利用し、`brew install php`と`brew install mysql`のようなコマンドを実行すれば、簡単にインストールできます。Valetは最低限度のリソースを使い、とても早いローカル開発環境を提供します。そのため、PHPとMySQLだけが必要で、完全な仮想開発環境は必要ない場合にぴったりです。
+ValetはMac上でのみサポートされ、PHPとデータベースサーバを直接ローカルマシンへインストールする必要があります。[Homebrew](https://brew.sh/)を利用し、`brew install php`と`brew install mysql`のようなコマンドを実行すれば、簡単にインストールできます。Valetは最低限度のリソースを使い、とても早いローカル開発環境を提供します。そのため、PHPとMySQLだけが必要で、完全な仮想開発環境は必要ない場合にぴったりです。
 
 ValetとHomesteadのどちらを選んでも、Laravelの開発環境に向け設定されており、良い選択になるでしょう。どちらを選ぶかは、自分の好みとチームの必要により決まるでしょう。
 
 <a name="installation"></a>
 ## インストール
 
-**ValetにはMacオペレーティングシステムと[Homebrew](http://brew.sh/)が必要です。インストールする前に、ApacheやNginxのようなローカルマシンの８０番ポートへバインドするプログラムがないことを確認してください。**
+**ValetにはMacオペレーティングシステムと[Homebrew](https://brew.sh/)が必要です。インストールする前に、ApacheやNginxのようなローカルマシンの８０番ポートへバインドするプログラムがないことを確認してください。**
 
 <div class="content-list" markdown="1">
-- `brew update`で最新バージョンの[Homebrew](http://brew.sh/)をインストール、もしくはアップデートしてください。
+- `brew update`で最新バージョンの[Homebrew](https://brew.sh/)をインストール、もしくはアップデートしてください。
 - Homebrewを使い、`brew install php`でPHP7.3をインストールしてください。
 - [Composer](https://getcomposer.org)をインストールしてください。
 - `composer global require laravel/valet`でValetをインストールしてください。`~/.composer/vendor/bin`ディレクトリが実行パスに含まれていることを確認してください。

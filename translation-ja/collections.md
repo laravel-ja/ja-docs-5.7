@@ -170,6 +170,7 @@
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
 [whereInstanceOf](#method-whereinstanceof)
+[whereNotBetween](#method-wherenotbetween)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
 [wrap](#method-wrap)
@@ -515,6 +516,16 @@
     });
 
     // false
+
+コレクションが空の場合、`every`はtrueを返します。
+
+    $collection = collect([]);
+
+    $collection->every(function($value, $key) {
+        return $value > 2;
+    });
+
+    // true
 
 <a name="method-except"></a>
 #### `except()` {#collection-method}
@@ -2179,6 +2190,30 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
     ]);
 
     return $collection->whereInstanceOf(User::class);
+
+<a name="method-wherenotbetween"></a>
+#### `whereNotBetween()` {#collection-method}
+
+`whereNotBetween`メソッドは、指定された範囲でコレクションをフィルタリングします。
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 80],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Pencil', 'price' => 30],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereNotBetween('price', [100, 200]);
+
+    $filtered->all();
+
+    /*
+        [
+            ['product' => 'Chair', 'price' => 80],
+            ['product' => 'Pencil', 'price' => 30],
+        ]
+    */
 
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}

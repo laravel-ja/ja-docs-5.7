@@ -1018,7 +1018,11 @@ uniqueチェックで指定したIDを除外したい場合があります。た
 
 もし、テーブルの主キーとして`id`以外のカラム名を使用している場合は、`ignore`メソッドを呼び出す時に、カラムの名前を指定してください。
 
-    'email' => Rule::unique('users')->ignore($user->id, 'user_id')
+    Rule::unique('users')->ignore($user->id, 'user_id')
+
+`unique`ルールはデフォルトで、バリデートしようとしている属性名と一致するカラムの同一性をチェックします。しかしながら、`unique`メソッドの第２引数として、異なったカラム名を渡すことも可能です。
+
+    Rule::unique('users', 'email_address')->ignore($user->id),
 
 **追加のWHERE節を付け加える**
 

@@ -167,6 +167,9 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
         public function testOrderShipping()
         {
             Mail::fake();
+            
+            // Assert that no mailables were sent...
+            Mail::assertNothingSent();
 
             // 注文の実行コード…
 
@@ -215,6 +218,9 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
         public function testOrderShipping()
         {
             Notification::fake();
+            
+            // Assert that no notifications were sent...
+            Notification::assertNothingSent();
 
             // 注文の実行コード…
 
@@ -263,6 +269,9 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
         public function testOrderShipping()
         {
             Queue::fake();
+            
+            // Assert that no jobs were pushed...
+            Queue::assertNothingPushed();
 
             // 注文の実行コード…
 

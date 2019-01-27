@@ -47,6 +47,7 @@ Nginxを実行しているサーバにアプリケーションをデプロイす
         location ~ \.php$ {
             fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
             fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include fastcgi_params;
         }
 

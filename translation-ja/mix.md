@@ -101,7 +101,7 @@ Mixは[Webpack](https://webpack.js.org)上の設定レイヤーですから、La
 <a name="sass"></a>
 ### Sass
 
-`sass`メソッドは、[Sass](http://sass-lang.com/)をCSSへコンパイルします。次のように使用します。
+`sass`メソッドは、[Sass](https://sass-lang.com/)をCSSへコンパイルします。次のように使用します。
 
     mix.sass('resources/sass/app.scss', 'public/css');
 
@@ -134,7 +134,7 @@ LessやSassと同様に、`stylus`メソッドにより、[Stylus](http://stylus
 <a name="postcss"></a>
 ### PostCSS
 
-強力なCSS加工ツールである[PostCSS](http://postcss.org/)も、Laravel Mixには最初から含まれています。デフォルトでは、自動的に必要なCSS3ベンダープレフィックスを適用する、人気の[Autoprefixer](https://github.com/postcss/autoprefixer)プラグインを利用します。しかし、アプリケーションに適したプラグインを自由に追加できます。最初に、NPMにより希望のプラグインをインストールし、それから`webpack.mix.js`の中から参照してください。
+強力なCSS加工ツールである[PostCSS](https://postcss.org/)も、Laravel Mixには最初から含まれています。デフォルトでは、自動的に必要なCSS3ベンダープレフィックスを適用する、人気の[Autoprefixer](https://github.com/postcss/autoprefixer)プラグインを利用します。しかし、アプリケーションに適したプラグインを自由に追加できます。最初に、NPMにより希望のプラグインをインストールし、それから`webpack.mix.js`の中から参照してください。
 
     mix.sass('resources/sass/app.scss', 'public/css')
        .options({

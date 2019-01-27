@@ -4,6 +4,7 @@
 - [インストレーション](#installation)
     - [設定](#configuration)
     - [データの刈り込み](#data-pruning)
+    - [マイグレーションのカスタマイズ](#migration-customization)
 - [ダッシュボードの認可](#dashboard-authorization)
 - [フィルタリング](#filtering)
     - [エンティティ](#filtering-entries)
@@ -76,6 +77,11 @@ Telescopeをローカル環境でのみ使用する場合は、`--dev`フラグ�
             $this->app->register(TelescopeServiceProvider::class);
         }
     }
+
+<a name="migration-customization"></a>
+### マイグレーションのカスタマイズ
+
+Telescopeのデフォルトマイグレーションに従わない場合、`AppServiceProvider`の`register`メソッドの中で、`Telescope::ignoreMigrations`メソッドを呼び出す必要があります。`php artisan vendor:publish --tag=telescope-migrations`コマンドを使い、デフォルトマイグレーションをエクスポートすることもできます。
 
 <a name="configuration"></a>
 ### 設定

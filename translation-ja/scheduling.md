@@ -67,7 +67,7 @@ Laravelのコマンドスケジューラは、Laravel自身の中でコマンド
         }
     }
 
-さらにクロージャを使用したスケジュールでは、[invoke可能なオブジェクト](http://php.net/manual/en/language.oop5.magic.php#object.invoke)も使用できます。Invoke可能なオブジェクトとは、単に`__invoke`メソッドを含むPHPクラスのことです。
+さらにクロージャを使用したスケジュールでは、[invoke可能なオブジェクト](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke)も使用できます。Invoke可能なオブジェクトとは、単に`__invoke`メソッドを含むPHPクラスのことです。
 
     $schedule->call(new DeleteRecentUsers)->daily();
 

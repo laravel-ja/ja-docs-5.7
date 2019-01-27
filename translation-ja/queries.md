@@ -232,12 +232,16 @@ LaravelクエリビルダはアプリケーションをSQLインジェクショ�
                 ->select('users.*', 'contacts.phone', 'orders.price')
                 ->get();
 
-#### LEFT JOIN文
+#### LEFT JOIN／RIGHT JOIN文
 
-"INNER JOIN"の代わりに"LEFT JOIN"を実行したい場合は`leftJoin`メソッドを使います。`leftJoin`メソッドの使い方は`join`メソッドと同じです。
+"INNER JOIN"の代わりに"LEFT JOIN"か"RIGHT JOIN"を実行したい場合は、`leftJoin`や`rightJoin`メソッドを使います。これらのメソッドの使い方は`join`メソッドと同じです。
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->get();
+
+    $users = DB::table('users')
+                ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
 
 #### クロスジョイン文

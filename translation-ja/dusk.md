@@ -19,6 +19,7 @@
     - [添付ファイル](#attaching-files)
     - [キーワードの使用](#using-the-keyboard)
     - [マウスの使用](#using-the-mouse)
+    - [JavaScriptダイアログ](#javascript-dialogs)
     - [セレクタの範囲指定](#scoping-selectors)
     - [要素の待機](#waiting-for-elements)
     - [Veuアサーションの作成](#making-vue-assertions)
@@ -455,6 +456,25 @@ Duskはフォームと入力要素を操作する、様々なメソッドを提�
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
+<a name="javascript-dialogs"></a>
+### JavaScriptダイアログ
+
+DuskはJavaScriptダイアログを操作する、様々なメソッドを提供しています。
+
+    // ダイアログが表示され、メッセージが指定した値と一致することを宣言
+    $browser->assertDialogOpened('value');
+
+    // 開いているJavaScript入力(prompt)ダイアログに、指定値をタイプ
+    $browser->typeInDialog('Hello World');
+
+開いているJavaScriptダイアログをOKボタンのクリックで閉じるには：
+
+    $browser->acceptDialog();
+
+開いているJavaScriptダイアログをキャンセルボタンのクリックで閉じるには（確認ダイアログのみ）：
+
+    $browser->dismissDialog();
+
 <a name="scoping-selectors"></a>
 ### セレクタの範囲指定
 
@@ -463,7 +483,7 @@ Duskはフォームと入力要素を操作する、様々なメソッドを提�
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
               ->clickLink('Delete');
-    });
+    });s
 
 <a name="waiting-for-elements"></a>
 ### 要素の待機
@@ -556,7 +576,7 @@ Duskはフォームと入力要素を操作する、様々なメソッドを提�
 以下のメソッドで、特定のVueコンポーネント属性が、指定値になるまで待つことができます。
 
     // 指定したコンポーネント属性が、指定値を含むまで待つ
-    $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
+    $browser->waitUntilVue('user.name', 'Taylor', '@user');
 
     // 指定したコンポーネント属性が、指定値を含まなくなるまで待つ
     $browser->waitUntilVueIsNot('user.name', null, '@user');

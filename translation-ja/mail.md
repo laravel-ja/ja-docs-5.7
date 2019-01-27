@@ -557,7 +557,7 @@ Markdown MailableではBladeコンポーネントとMarkdown記法が利用で�
 
 mailableのテンプレートをデザインしているとき、Bladeテンプレートのようにブラウザでレンダし、簡単にレビューできると便利です。そのため、Laravelでは、ルートのクロージャやコントローラから直接mailableを返すことができます。mailableが返されるとレンダされ、ブラウザに表示されますので、実際のメールアドレスへ送る必要はなく、素早くレビューできます。
 
-    Route::get('/mailable', function () {
+    Route::get('mailable', function () {
         $invoice = App\Invoice::find(1);
 
         return new App\Mail\InvoicePaid($invoice);
