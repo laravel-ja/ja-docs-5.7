@@ -167,7 +167,7 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
         public function testOrderShipping()
         {
             Mail::fake();
-            
+
             // Assert that no mailables were sent...
             Mail::assertNothingSent();
 
@@ -218,7 +218,7 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
         public function testOrderShipping()
         {
             Notification::fake();
-            
+
             // Assert that no notifications were sent...
             Notification::assertNothingSent();
 
@@ -269,7 +269,7 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
         public function testOrderShipping()
         {
             Queue::fake();
-            
+
             // Assert that no jobs were pushed...
             Queue::assertNothingPushed();
 
@@ -299,7 +299,7 @@ Laravelにはイベント、ジョブ、ファサードを最初からモック�
 <a name="storage-fake"></a>
 ## Storage Fake
 
-とてもシンプルにファイルアップロードのテストを行うため、`Strorage`ファサードの`fake`メソッドにより、`UploadedFile`クラスのファイル生成ユーティリティと組み合わされたフェイクディスクを簡単に生成できます。
+とてもシンプルにファイルアップロードのテストを行うため、`Storage`ファサードの`fake`メソッドにより、`UploadedFile`クラスのファイル生成ユーティリティと組み合わされたフェイクディスクを簡単に生成できます。
 
     <?php
 
