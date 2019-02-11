@@ -167,7 +167,7 @@ Laravelアプリケーションに含まれている`EventServiceProvider`は、
 
 #### キュー接続とキュー名のカスタマイズ
 
-イベントリスナのキュー接続とキュー名をカスタマイズしたい場合は、`$connection`と`$queue`プロパティをリスナクラスで定義します。
+イベントリスナのキュー接続とキュー名、イベントリスナのキュー遅延時間をカスタマイズしたい場合は、`$connection`、`$queue`、`$delay`プロパティをリスナクラスで定義します。
 
     <?php
 
@@ -191,6 +191,13 @@ Laravelアプリケーションに含まれている`EventServiceProvider`は、
          * @var string|null
          */
         public $queue = 'listeners';
+
+        /**
+         * ジョブが処理開始されるまでの時間（秒）
+         *
+         * @var int
+         */
+        public $delay = 60;
     }
 
 <a name="manually-accessing-the-queue"></a>

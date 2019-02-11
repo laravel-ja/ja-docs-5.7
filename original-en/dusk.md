@@ -461,6 +461,9 @@ Or, you may drag an element in a single direction:
 
 Dusk provides various methods to interact with JavaScript Dialogs:
 
+    // Wait for a dialog to appear:
+    $browser->waitForDialog($seconds = null);
+    
     // Assert that a dialog has been displayed and that its message matches the given value:
     $browser->assertDialogOpened('value');
 
@@ -483,7 +486,7 @@ Sometimes you may wish to perform several operations while scoping all of the op
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
               ->clickLink('Delete');
-    });s
+    });
 
 <a name="waiting-for-elements"></a>
 ### Waiting For Elements

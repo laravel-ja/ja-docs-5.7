@@ -71,7 +71,7 @@ Scoutを厳格（リアルタイム）に利用する必要が無いのであれ
 
 Algoliaドライバを使用する場合、Algolia `id`と`secret`接続情報を`config/scout.php`設定ファイルで設定する必要があります。接続情報を設定し終えたら、Algolia PHP SDKをComposerパッケージマネージャで、インストールする必要があります。
 
-    composer require algolia/algoliasearch-client-php:^1.27
+    composer require algolia/algoliasearch-client-php:^2.2
 
 <a name="configuration"></a>
 ## 設定
@@ -351,9 +351,9 @@ Scoutは検索クエリに対して"WHERE"節を単に追加する方法も提�
 
 エンジンの検索の振る舞いをカスタマイズする必要があれば、`search`メソッドの第２引数にコールパックを渡してください。たとえば、Algoliaへサーチクエリが渡される前に、サーチオプションにgeo-locationデータを追加するために、このコールバックが利用できます。
 
-    use AlgoliaSearch\Index;
+    use Algolia\AlgoliaSearch\SearchIndex;
 
-    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
+    App\Order::search('Star Trek', function (SearchIndex $algolia, string $query, array $options) {
         $options['body']['query']['bool']['filter']['geo_distance'] = [
             'distance' => '1000km',
             'location' => ['lat' => 36, 'lon' => 111],
@@ -378,6 +378,7 @@ Scoutは検索クエリに対して"WHERE"節を単に追加する方法も提�
     abstract public function mapIds($results);
     abstract public function map($results, $model);
     abstract public function getTotalCount($results);
+    abstract public function flush($model);
 
 これらのメソッドの実装をレビューするために、`Laravel\Scout\Engines\AlgoliaEngine`クラスが役に立つでしょう。このクラスは独自エンジンで、各メソッドをどのように実装すればよいかの、良い取り掛かりになるでしょう。
 

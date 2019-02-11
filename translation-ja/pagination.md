@@ -189,15 +189,19 @@ Laravelのペジネーター結果クラスは`Illuminate\Contracts\Support\Json
 
 ペジネータインスタンスは以下の追加ペジネーション情報を提供しています。
 
-- `$results->count()`
-- `$results->currentPage()`
-- `$results->firstItem()`
-- `$results->hasMorePages()`
-- `$results->lastItem()`
-- `$results->lastPage() (simplePaginateでは使用不可)`
-- `$results->nextPageUrl()`
-- `$results->onFirstPage()`
-- `$results->perPage()`
-- `$results->previousPageUrl()`
-- `$results->total() (simplePaginateでは使用不可)`
-- `$results->url($page)`
+メソッド  |  説明
+-------  |  -----------
+`$results->count()`  |  現在のページのアイテム数取得
+`$results->currentPage()`  |  現在のページ数
+`$results->firstItem()`  |  現在ページの最初のアイテムが何番目か取得
+`$results->getOptions()`  |  ペジネータオプション取得
+`$results->getUrlRange($start, $end)`  |  一定範囲のペジネーションURLを取得
+`$results->hasMorePages()`  |  複数ページへアイテムを分割できる数があるか判定
+`$results->lastItem()`  |  現在ページの最後のアイテムが何番目か取得
+`$results->lastPage()`  |  利用可能な最終ページ数取得（`simplePaginate`では使用できない）
+`$results->nextPageUrl()`  |  次ページのURL取得
+`$results->onFirstPage()`  |  ペジネータが最初のページを扱っているか判定
+`$results->perPage()`  |  ページごとに表示するアイテム数
+`$results->previousPageUrl()`  |  前ページのURL取得
+`$results->total()`  |  データ領域にある、条件に一致するアイテムの総数（`simplePaginate`では使用できない）
+`$results->url($page)`  |  指定したページのURL取得

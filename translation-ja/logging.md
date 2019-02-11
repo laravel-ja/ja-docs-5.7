@@ -49,6 +49,16 @@ Monologはデフォルトで`production`や`local`のような、現在の環境
 
 > {tip} `monolog`と`custom`ドライバの詳細は、[上級チャンネルカスタマイズ](#advanced-monolog-channel-customization)のドキュメントを確認し、学んでください。
 
+#### シングルファイルとディリーチャンネルの設定
+
+`single`と`daily`チャンネルは３つ設定オプションを持っています。`bubble`、`permission`、`locking`です。
+
+名前 | 説明 | デフォルト値
+------------- | ------------- | -------------
+`bubble` | 処理後に他のチャンネルへメッセージをバブルアップさせるか | `true`
+`permission` | ログファイルのパーミッション | `644`
+`locking` | 書き込む前にログファイルのロックを試みる | `false`
+
 #### Slackチャンネルの設定
 
 `slack`チャンネルには、`url`設定オプションが必須です。このURLはSlackチームに対して設定されている、[incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks)へのURLと一致させる必要があります。

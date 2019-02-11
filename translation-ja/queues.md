@@ -8,11 +8,13 @@
     - [クラス構成](#class-structure)
 - [ジョブのディスパッチ](#dispatching-jobs)
     - [遅延ディスパッチ](#delayed-dispatching)
+    - [同期ディスパッチ](#synchronous-dispatching)
     - [ジョブのチェーン](#job-chaining)
     - [キューと接続のカスタマイズ](#customizing-the-queue-and-connection)
     - [最大試行回数／タイムアウト値の指定](#max-job-attempts-and-timeout)
     - [レート制限](#rate-limiting)
     - [エラー処理](#error-handling)
+- [クロージャのキュー投入](#queueing-closures)
 - [キューワーカの実行](#running-the-queue-worker)
     - [キュープライオリティ](#queue-priorities)
     - [キューワーカとデプロイ](#queue-workers-and-deployment)
@@ -236,6 +238,35 @@ Redisキューを使用する場合、ワーカのループの繰り返しとRed
 
 > {note} Amazon SQSキューサービスは、最大１５分の遅延時間です。
 
+<a name="synchronous-dispatching"></a>
+### 同期ディスパッチ
+
+ジョブを即時（同期的）にディスパッチしたい場合は、`dispatchNow`メソッドを使用します。このメソッドを使用する場合、そのジョブはキューされずに現在のプロセスで即時実行されます。
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+    use App\Jobs\ProcessPodcast;
+    use App\Http\Controllers\Controller;
+
+    class PodcastController extends Controller
+    {
+        /**
+         * 新ポッドキャストの保存
+         *
+         * @param  Request  $request
+         * @return Response
+         */
+        public function store(Request $request)
+        {
+            // ポッドキャストの作成…
+
+            ProcessPodcast::dispatchNow($podcast);
+        }
+    }
+
 <a name="job-chaining"></a>
 ### ジョブチェーン
 
@@ -425,6 +456,19 @@ Redisキューを使用する場合、ワーカのループの繰り返しとRed
 ### エラー処理
 
 ジョブの処理中に例外が投げられると、ジョブは自動的にキューへ戻され、再試行されます。ジョブはアプリケーションが許している最大試行回数に達するまで、連続して実行されます。最大試行回数は`queue:work` Artisanコマンドへ`--tries`スイッチを使い定義されます。もしくは、ジョブクラス自身に最大試行回数を定義することもできます。キューワーカの実行についての情報は、[以降](#running-the-queue-worker)で説明します。
+
+<a name="queueing-closures"></a>
+## クロージャのキュー投入
+
+ジョブクラスをキューへディスパッチする代わりに、クロージャもディスパッチできます。これは現在のリクエストサイクル外で実行する必要のある、シンプルなタスクを扱うのに適しています。
+
+    $podcast = App\Podcast::find(1);
+
+    dispatch(function () use ($podcast) {
+        $podcast->publish();
+    });
+
+クロージャをキューへディスパッチすると、処理中に改変されないように、クロージャのコード内容は暗号化署名されます。
 
 <a name="running-the-queue-worker"></a>
 ## キューワーカの実行
@@ -622,7 +666,7 @@ Supervisorの詳細情報は、[Supervisorドキュメント](http://supervisord
 <a name="failed-job-events"></a>
 ### ジョブ失敗イベント
 
-ジョブが失敗した時に呼び出されるイベントを登録したい場合、`Queue::failing`メソッドが使えます。このイベントはメールや[Stride](https://www.stride.com)により、チームへ通知する良い機会になります。例として、Laravelに含まれている`AppServiceProvider`で、このイベントのコールバックを付け加えてみましょう。
+ジョブが失敗した時に呼び出されるイベントを登録したい場合、`Queue::failing`メソッドが使えます。このイベントはメールや[Slack](https://www.slack.com)により、チームへ通知する良い機会になります。例として、Laravelに含まれている`AppServiceProvider`で、このイベントのコールバックを付け加えてみましょう。
 
     <?php
 

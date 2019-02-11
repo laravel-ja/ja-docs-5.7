@@ -49,6 +49,16 @@ Name | Description
 
 > {tip} Check out the documentation on [advanced channel customization](#advanced-monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
+#### Configuring The Single and Daily Channels
+
+The `single` and `daily` channels have three optional configuration options: `bubble`, `permission`, and `locking`.
+
+Name | Description | Default
+------------- | ------------- | -------------
+`bubble` | Indicates if messages should bubble up to other channels after being handled | `true`
+`permission` | The log file's permissions | `644`
+`locking` | Attempt to lock the log file before writing to it | `false`
+
 #### Configuring The Slack Channel
 
 The `slack` channel requires a `url` configuration option. This URL should match a URL for an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) that you have configured for your Slack team.

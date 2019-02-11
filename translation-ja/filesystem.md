@@ -436,4 +436,11 @@ LaravelのFlysystem統合には、最初から様々な「ドライバ」が含�
 
 `extend`メソッドの最初の引数はドライバの名前で、２つ目は`$app`と`$config`変数を受け取るクロージャです。このリゾルバークロージャは`League\Flysystem\Filesystem`のインスタンスを返す必要があります。`$config`変数は`config/filesystems.php`で定義したディスクの値を含んでいます。
 
-拡張を登録するサービスプロバイダを作成したら、`config/filesystems.php`設定ファイルで`dropbox`ドライバを使用できます。
+次に、`config/app.php`設定ファイルで、サービスプロバイダを登録します。
+
+    'providers' => [
+        // ...
+        App\Providers\DropboxServiceProvider::class,
+    ];
+
+拡張のサービスプロバイダを作成し、登録し終えたら、`config/filesystems.php`設定ファイルで、`dropbox`ドライバを使用します。

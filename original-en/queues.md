@@ -8,11 +8,13 @@
     - [Class Structure](#class-structure)
 - [Dispatching Jobs](#dispatching-jobs)
     - [Delayed Dispatching](#delayed-dispatching)
+    - [Synchronous Dispatching](#synchronous-dispatching)
     - [Job Chaining](#job-chaining)
     - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
     - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
     - [Rate Limiting](#rate-limiting)
     - [Error Handling](#error-handling)
+- [Queueing Closures](#queueing-closures)
 - [Running The Queue Worker](#running-the-queue-worker)
     - [Queue Priorities](#queue-priorities)
     - [Queue Workers & Deployment](#queue-workers-and-deployment)
@@ -236,6 +238,35 @@ If you would like to delay the execution of a queued job, you may use the `delay
 
 > {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
 
+<a name="synchronous-dispatching"></a>
+### Synchronous Dispatching
+
+If you would like to dispatch a job immediately (synchronously), you may use the `dispatchNow` method. When using this method, the job will not be queued and will be run immediately within the current process:
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    use Illuminate\Http\Request;
+    use App\Jobs\ProcessPodcast;
+    use App\Http\Controllers\Controller;
+
+    class PodcastController extends Controller
+    {
+        /**
+         * Store a new podcast.
+         *
+         * @param  Request  $request
+         * @return Response
+         */
+        public function store(Request $request)
+        {
+            // Create podcast...
+
+            ProcessPodcast::dispatchNow($podcast);
+        }
+    }
+
 <a name="job-chaining"></a>
 ### Job Chaining
 
@@ -425,6 +456,19 @@ Alternatively, you may specify the maximum number of workers that may simultaneo
 ### Error Handling
 
 If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
+
+<a name="queueing-closures"></a>
+## Queueing Closures
+
+Instead of dispatching a job class to the queue, you may also dispatch a Closure. This is great for quick, simple tasks that need to be executed outside of the current request cycle:
+
+    $podcast = App\Podcast::find(1);
+
+    dispatch(function () use ($podcast) {
+        $podcast->publish();
+    });
+
+When dispatching Closures to the queue, the Closure's code contents is cryptographically signed so it can not be modified in transit.
 
 <a name="running-the-queue-worker"></a>
 ## Running The Queue Worker
@@ -622,7 +666,7 @@ You may define a `failed` method directly on your job class, allowing you to per
 <a name="failed-job-events"></a>
 ### Failed Job Events
 
-If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [Stride](https://www.stride.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [Slack](https://www.slack.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
 
     <?php
 

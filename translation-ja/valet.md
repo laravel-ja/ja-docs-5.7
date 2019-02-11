@@ -78,13 +78,23 @@ Valetはマシンが起動されると、毎回デーモンを自動的に起動
 
 #### 他のドメインの使用
 
-デフォルトではValetは`.test` TLDをプロジェクトのドメインとして処理します。他のドメインを使いたい場合、`valet domain tld-name`コマンドを使ってください。
+デフォルトでValetは`.test` TLDをプロジェクトのドメインとして処理します。他のドメインを使いたい場合、`valet tld tld-name`コマンドを使ってください。
 
-たとえば、`.test`の代わりに`.app`を使用したければ、`valet domain app`と実行します。Valetは`*.app`をプロジェクトのために自動的に使い始めます。
+たとえば、`.test`の代わりに`.app`を使用したければ、`valet tld app`と実行します。Valetは`*.app`をプロジェクトのために自動的に使い始めます。
 
 #### データベース
 
 データベースを使いたい場合、コマンドラインで`brew install mysql@5.7`を実行し、MySQLを試してください。MySQLがインストールできたら、`brew services start mysql@5.7`コマンドを使い、起動します。`127.0.0.1`でデータベースに接続し、ユーザー名は`root`、パスワードは空文字列です。
+
+#### PHPバージョン
+
+Valetでは`valet use php@version`コマンドにより、PHPバージョンを変更できます。指定されたPHPバージョンがインストールされていない場合、ValetはBrewによりインストールします。
+
+```
+valet use php@7.2
+
+valet use php
+```
 
 <a name="upgrading"></a>
 ### アップグレード

@@ -499,7 +499,7 @@ Bladeのサブビューがサブディレクトリへ設置されている場合
 
     use Illuminate\Support\Facades\Blade;
 
-    Blade::include('include.input', 'input');
+    Blade::include('includes.input', 'input');
 
 サブビューのエイリアスを設定したら、Bladeディレクティブとして、そのエイリアス名を使用することにより、レンダされます。
 
