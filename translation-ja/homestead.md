@@ -223,7 +223,7 @@ MySQLの代わりにMariaDBを使用したい場合は、`mariadb`オプショ�
     mariadb: true
 
 <a name="installing-mongodb"></a>
-### Installing MongoDB
+### MongoDBのインストール
 
 MongoDBのコミュニティエディションをインストールするには、以下のように`Homestead.yaml`ファイルを変更してください。
 
