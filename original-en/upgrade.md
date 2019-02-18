@@ -15,7 +15,7 @@ Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` fi
 
 If you are using Laravel Passport, you should update your `laravel/passport` dependency to `^7.0` in your `composer.json` file.
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
+Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
 ### Application
 
@@ -412,7 +412,7 @@ The `check` method now **optionally** checks if the algorithm of the hash matche
 
 #### Mailable Dynamic Variable Casing
 
-**Likelihood Of Impact: Medium**
+**Likelihood Of Impact: Low**
 
 Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
 

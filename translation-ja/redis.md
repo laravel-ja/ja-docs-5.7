@@ -146,7 +146,7 @@ PhpRedis拡張を使用するには、Redis設定の`client`オプションを`p
         }
     }
 
-もちろん前記の通り、`Redis`ファサードでどんなRedisコマンドでも呼び出すことができます。Laravelはmagicメソッドを使いコマンドをRedisサーバへ送りますので、Redisコマンドで期待されている引数を渡してください。
+前記の通り、`Redis`ファサードでどんなRedisコマンドでも呼び出すことができます。Laravelはmagicメソッドを使いコマンドをRedisサーバへ送りますので、Redisコマンドで期待されている引数を渡してください。
 
     Redis::set('name', 'Taylor');
 

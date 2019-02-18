@@ -28,7 +28,7 @@ Laravelでは、データベースを駆動するアプリケーションのテ�
 
 データベースにデータが存在しないことをアサートする、`assertDatabaseMissing`ヘルパを使うこともできます。
 
-もちろん、`assertDatabaseHas`メソッドやその他のヘルパは、皆さんへ便利に使ってもらうため用意しています。PHPUnitの組み込みアサートメソッドは、テストで自由に使用できます。
+`assertDatabaseHas`メソッドやその他のヘルパは、皆さんが便利に使ってもらうため用意しています。PHPUnitの組み込みアサートメソッドは、テストで自由に使用できます。
 
 <a name="generating-factories"></a>
 ## ファクトリの生成
@@ -78,6 +78,7 @@ Laravelでは、データベースを駆動するアプリケーションのテ�
 
 テスト実行前に、何件かのレコードをデータベースに挿入する必要があります。こうしたテストデータを作る時に、手動でそれぞれのカラムへ値を指定する代わりに、Laravelではモデルファクトリを使用し、[Eloquentモデル](/docs/{{version}}/eloquent)の各属性にデフォルト値を設定できます。手始めに、アプリケーションの`database/factories/UserFactory.php`ファイルを見てください。このファイルには初めからファクトリの定義が一つ含まれています。
 
+    use Illuminate\Support\Str;
     use Faker\Generator as Faker;
 
     $factory->define(App\User::class, function (Faker $faker) {
@@ -86,7 +87,7 @@ Laravelでは、データベースを駆動するアプリケーションのテ�
             'email' => $faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
         ];
     });
 

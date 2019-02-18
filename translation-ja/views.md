@@ -28,7 +28,7 @@
 
 ご覧の通り、`view`ヘルパに渡している最初の引数は、`resources/views`ディレクトリ中のビューファイル名に対応しています。２つ目の引数は、ビューで使用するデータの配列です。上記の例では、ビューに`name`変数を渡し、それは[Blade記法](/docs/{{version}}/blade)を使用しているビューの中に表示されます。
 
-もちろん、ビューは`resources/views`ディレクトリのサブディレクトリにネストすることもできます。ネストしたビューを参照するために「ドット」記法が使えます。例えば、ビューが`resources/views/admin/profile.blade.php`として保存するなら、次のように指定します。
+ビューは`resources/views`ディレクトリのサブディレクトリにネストすることもできます。ネストしたビューを参照するために「ドット」記法が使えます。例えば、ビューが`resources/views/admin/profile.blade.php`として保存するなら、次のように指定します。
 
     return view('admin.profile', $data);
 
@@ -48,7 +48,7 @@
 
     return view()->first(['custom.admin', 'admin'], $data);
 
-もちろん、`View`[ファサード](/docs/{{version}}/facades)を使い、このメソッドを呼び出すこともできます。
+`View`[ファサード](/docs/{{version}}/facades)を使い、このメソッドを呼び出すこともできます。
 
     use Illuminate\Support\Facades\View;
 

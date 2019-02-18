@@ -175,7 +175,7 @@ Laravelの認証機能は「ガード」と「プロバイダ」を中心概念�
         // 認証済みのユーザーのみが入れる
     })->middleware('auth');
 
-もちろん[コントローラ](/docs/{{version}}/controllers)を使っていれば、ルート定義に付加する代わりに、コントローラのコンストラクターで`middleware`メソッドを呼び出すことができます。
+[コントローラ](/docs/{{version}}/controllers)を使っていれば、ルート定義に付加する代わりに、コントローラのコンストラクターで`middleware`メソッドを呼び出すことができます。
 
     public function __construct()
     {
@@ -214,7 +214,7 @@ Laravelの組み込み`LoginController`クラスを使用している場合、`I
 <a name="authenticating-users"></a>
 ## 自前のユーザー認証
 
-もちろん、Laravelに含まれる認証コントローラを使うことを強要しているわけでありません。これらのコントローラを削除する選択肢を選ぶのなら、Laravel認証クラスを直接使用しユーザーの認証を管理する必要があります。心配ありません。それでも簡単です！
+Laravelに含まれる、認証コントローラを使うよう強要しているわけではないことに留意してください。これらのコントローラを削除する選択肢を選ぶのなら、Laravel認証クラスを直接使用しユーザーの認証を管理する必要があります。心配ありません。それでも簡単です！
 
 Laravelの認証サービスには`Auth`[ファサード](/docs/{{version}}/facades)でアクセスできます。クラスの最初で`Auth`ファサードを確実にインポートしておきましょう。次に`attempt`メソッドを見てみましょう。
 
@@ -280,7 +280,7 @@ Laravelの認証サービスには`Auth`[ファサード](/docs/{{version}}/faca
 <a name="remembering-users"></a>
 ### 継続ログイン
 
-アプリケーションでログイン維持(Remember me)機能を持たせたい場合は、`attempt`メソッドの第２引数に論理値を指定します。ユーザーが自分でログアウトしない限り、認証が無期限に持続するようになります。もちろん、"remember me"トークンを保存するために使用する文字列の`remember_token`カラムを`users`テーブルに持たせる必要があります。
+アプリケーションでログイン維持(Remember me)機能を持たせたい場合は、`attempt`メソッドの第２引数に論理値を指定します。ユーザーが自分でログアウトしない限り、認証が無期限に持続するようになります。"remember me"トークンを保存するために使用する文字列の`remember_token`カラムを`users`テーブルに持たせる必要があります。
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // このメンバーは継続ログインされる
@@ -299,14 +299,14 @@ Laravelの認証サービスには`Auth`[ファサード](/docs/{{version}}/faca
 
 #### Userインスタンスによる認証
 
-既に存在しているユーザーインスタンスでアプリケーションにログインさせる必要があれば、`login`メソッドにそのユーザーインスタンスを指定し呼び出してください。指定されたオブジェクトは`Illuminate\Contracts\Auth\Authenticatable`[契約](/docs/{{version}}/contracts)を実装している必要があります。もちろん、Laravelが用意している`App\User`モデルはこのインターフェイスを実装しています。
+既に存在しているユーザーインスタンスでアプリケーションにログインさせる必要があれば、`login`メソッドにそのユーザーインスタンスを指定し呼び出してください。指定されたオブジェクトは`Illuminate\Contracts\Auth\Authenticatable`[契約](/docs/{{version}}/contracts)を実装している必要があります。Laravelが用意している`App\User`モデルはこのインターフェイスを実装しています。
 
     Auth::login($user);
 
     // 指定したユーザーでログインし、"remember"にする
     Auth::login($user, true);
 
-もちろん、使用したいガードインスタンスを指定することもできます。
+使用したいガードインスタンスを指定することもできます。
 
     Auth::guard('admin')->login($user);
 

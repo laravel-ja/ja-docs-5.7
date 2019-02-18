@@ -347,7 +347,7 @@ If you are working with multiple queue connections, you may specify which connec
         }
     }
 
-Of course, you may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
+You may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
@@ -499,9 +499,9 @@ The `--once` option may be used to instruct the worker to only process a single 
 
 #### Processing All Queued Jobs & Then Exiting
 
- The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
+The `--stop-when-empty` option may be used to instruct the worker to process all jobs and then exit gracefully. This option can be useful when working Laravel queues within a Docker container if you wish to shutdown the container after the queue is empty:
 
-     php artisan queue:work --stop-when-empty
+    php artisan queue:work --stop-when-empty
 
 #### Resource Considerations
 
@@ -579,7 +579,7 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Of course, you should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
+In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. You should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
 
 #### Starting Supervisor
 

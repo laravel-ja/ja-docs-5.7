@@ -167,7 +167,7 @@ Laravel MixはWebpack上に構築されているため、Webpackのコンセプ�
 デフォルト動作として、Laravel MixとWebpackが`example.png`を見つけると、それを`public/images`フォルダへコピーします。それから、生成したスタイルシート中の`url()`を書き換えます。
 
     .example {
-      background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
+        background: url(/images/example.png?d41d8cd98f00b204e9800998ecf8427e);
     }
 
 この機能は便利ですが、好きなようにフォルダ構造を設定することもできます。その場合、以下のように`url()`リライトを停止してください。

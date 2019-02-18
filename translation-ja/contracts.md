@@ -129,22 +129,22 @@ Laravelでは多くのタイプのクラスが[サービスコンテナ](/docs/{
 
     use App\User;
     use App\Events\OrderWasPlaced;
-    use Illuminate\Contracts\Redis\Database;
+    use Illuminate\Contracts\Redis\Factory;
 
     class CacheOrderInformation
     {
         /**
-         * Redisデータベースの実装
+         * Redisファクトリの実装
          */
         protected $redis;
 
         /**
          * 新しいイベントハンドラの生成
          *
-         * @param  Database  $redis
+         * @param  Factory  $redis
          * @return void
          */
-        public function __construct(Database $redis)
+        public function __construct(Factory $redis)
         {
             $this->redis = $redis;
         }

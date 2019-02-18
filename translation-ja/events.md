@@ -24,7 +24,7 @@ Laravelのイベントはシンプルなオブザーバの実装で、アプリ�
 <a name="registering-events-and-listeners"></a>
 ## イベント／リスナ登録
 
-Laravelアプリケーションに含まれている`EventServiceProvider`は、イベントリスナを全て登録するために便利な場所を提供しています。`listen`プロパティは全イベント（キー）とリスナ（値）で構成されている配列です。もちろん、アプリケーションで必要とされているイベントをこの配列に好きなだけ追加できます。たとえば`OrderShipped`イベントを追加してみましょう。
+Laravelアプリケーションに含まれている`EventServiceProvider`は、イベントリスナを全て登録するために便利な場所を提供しています。`listen`プロパティは全イベント（キー）とリスナ（値）で構成されている配列です。アプリケーションで必要とされているイベントをこの配列に好きなだけ追加できます。例として、`OrderShipped`イベントを追加してみましょう。
 
     /**
      * アプリケーションのイベントリスナをマップ
@@ -40,7 +40,7 @@ Laravelアプリケーションに含まれている`EventServiceProvider`は、
 <a name="generating-events-and-listeners"></a>
 ### イベント／リスナ生成
 
-毎回ハンドラやリスナを作成するのは、当然のことながら手間がかかります。代わりにハンドラとリスナを`EventServiceProvider`に追加し、`event:generate`コマンドを使いましょう。このコマンドは`EventServiceProvider`にリストしてあるイベントやリスナを生成してくれます。既存のイベントとハンドラには、もちろん変更を加えません。
+毎回ハンドラやリスナを作成するのは、当然のことながら手間がかかります。代わりにハンドラとリスナを`EventServiceProvider`に追加し、`event:generate`コマンドを使いましょう。このコマンドは`EventServiceProvider`にリストしてあるイベントやリスナを生成してくれます。既存のイベントとハンドラには、変更を加えません。
 
     php artisan event:generate
 

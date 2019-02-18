@@ -476,7 +476,7 @@ Minioを使用するために、`config/filesystems.php`設定ファイルの中
 
 共同作業者やクライアントと、現在作業中の内容を共有したい場合もあるでしょう。Vagrantには、`vagrant share`により、これをサポートする方法が組み込み済みです。しかし、この方法は`Homestead.yaml`ファイルに複数サイトを設定している場合には動作しません。
 
-この問題を解決するため、Homesteadは独自の`share`コマンドを持っています。使用を開始するには、`vagrant ssh`によりHomesteadマシンとSSH接続し、`share homestead.test`を実行してください。これにより、`Homestead.yaml`設定ファイルの`homestead.test`サイトが共有されます。もちろん、`homestead.test`の代わりに他の設定済みサイトを指定できます。
+この問題を解決するため、Homesteadは独自の`share`コマンドを持っています。使用を開始するには、`vagrant ssh`によりHomesteadマシンとSSH接続し、`share homestead.test`を実行してください。これにより、`Homestead.yaml`設定ファイルの`homestead.test`サイトが共有されます。`homestead.test`の代わりに他の設定済みサイトを指定できます。
 
     share homestead.test
 

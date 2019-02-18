@@ -33,7 +33,7 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
 <a name="configuring-the-locale"></a>
 ### ロケールの設定
 
-アプリケーションのデフォルト言語は`config/app.php`設定ファイルで指定します。もちろんこの値はアプリケーションに合うように変更できます。さらに`App`ファサードの`setLocale`メソッドを使い、実行時にアクティブな言語を変更することもできます。
+アプリケーションのデフォルト言語は`config/app.php`設定ファイルで指定します。この値はアプリケーションに合うように変更できます。さらに`App`ファサードの`setLocale`メソッドを使い、実行時にアクティブな言語を変更することもできます。
 
     Route::get('welcome/{locale}', function ($locale) {
         App::setLocale($locale);
@@ -100,7 +100,7 @@ Laravelのローカリゼーション機能はアプリケーションで多言�
 
     echo __('I love programming.');
 
-もちろん、[Bladeテンプレートエンジン](/docs/{{version}}/blade)を使用している場合は、`{{ }}`記法で翻訳文字列をechoするか、`@lang`ディレクティブを使用します。
+[Bladeテンプレートエンジン](/docs/{{version}}/blade)を使用している場合は、`{{ }}`記法で翻訳文字列をechoするか、`@lang`ディレクティブを使用します。
 
     {{ __('messages.welcome') }}
 

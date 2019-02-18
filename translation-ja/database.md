@@ -25,7 +25,7 @@ LaravelはSQLを直接使用する場合でも、[Fluentクエリビルダ](/doc
 
 データベース設定ファイルは`config/database.php`です。このファイルで使用するデータベース接続を全部定義すると同時に、デフォルトで使用する接続も指定してください。サポートしているほとんどのデータベースシステムの例がファイルの中に用意しています。
 
-デフォルトでLaravelのサンプル[環境設定](/docs/{{version}}/configuration#environment-configuration)は、ローカルマシン上でLaravelでの開発を行うのに便利な仮想マシンである[Laravel Homestead](/docs/{{version}}/homestead)用に設定してあります。もちろん、ローカルのデータベースに合わせるため、自由に変更してくだい。
+デフォルトでLaravelのサンプル[環境設定](/docs/{{version}}/configuration#environment-configuration)は、ローカルマシン上でLaravelでの開発を行うのに便利な仮想マシンである[Laravel Homestead](/docs/{{version}}/homestead)用に設定してあります。ローカルのデータベースに合わせ、自由に変更してくだい。
 
 #### SQLite設定
 

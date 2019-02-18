@@ -90,11 +90,9 @@ If you need a database, try MySQL by running `brew install mysql@5.7` on your co
 
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Brew if it is not already installed:
 
-```
-valet use php@7.2
-
-valet use php
-```
+    valet use php@7.2
+    
+    valet use php
 
 <a name="upgrading"></a>
 ### Upgrading
@@ -168,8 +166,6 @@ Valet even includes a command to share your local sites with the world. No addit
 To share a site, navigate to the site's directory in your terminal and run the `valet share` command. A publicly accessible URL will be inserted into your clipboard and is ready to paste directly into your browser. That's it.
 
 To stop sharing your site, hit `Control + C` to cancel the process.
-
-> {note} `valet share` does not currently support sharing sites that have been secured using the `valet secure` command.
 
 <a name="custom-valet-drivers"></a>
 ## Custom Valet Drivers

@@ -15,7 +15,7 @@
 <a name="server-requirements"></a>
 ### サーバ要件
 
-Laravelフレームワークを動作させるには多少のシステム要件があります。もちろん、[Laravel Homestead](/docs/{{version}}/homestead)仮想マシンでは、要求が全て満たされています。ですから、Laravelのローカル開発環境としてHomesteadを活用されることを強くおすすめします。
+Laravelフレームワークを動作させるには多少のシステム要件があります。[Laravel Homestead](/docs/{{version}}/homestead)仮想マシンでは、要求が全て満たされています。そのため、Laravelのローカル開発環境としてHomesteadを活用されることを強くおすすめします。
 
 しかし、Homesteadを使用しない場合は、以下の要件を満たす必要があります。
 
@@ -65,7 +65,7 @@ PHPがローカルにインストール済みで、PHPの組込み開発サー�
 
     php artisan serve
 
-もちろん、より堅牢なローカル開発の選択肢として、[Homestead](/docs/{{version}}/homestead)と[Valet](/docs/{{version}}/valet)も利用できます。
+より堅牢なローカル開発の選択肢として、[Homestead](/docs/{{version}}/homestead)と[Valet](/docs/{{version}}/valet)も利用できます。
 
 <a name="configuration"></a>
 ### 設定
@@ -130,4 +130,4 @@ Nginxを使用する場合は、全てのリクエストが`index.php`フロン�
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-もちろん、[Homestead](/docs/{{version}}/homestead)か[Valet](/docs/{{version}}/valet)を使用する場合は、きれいなURLの設定は自動的に行われます。
+[Homestead](/docs/{{version}}/homestead)か[Valet](/docs/{{version}}/valet)を使用する場合は、きれいなURLの設定は自動的に行われます。

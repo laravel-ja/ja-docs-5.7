@@ -26,27 +26,27 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 
 <div class="collection-method-list" markdown="1">
 
-[array_add](#method-array-add)
-[array_collapse](#method-array-collapse)
-[array_divide](#method-array-divide)
-[array_dot](#method-array-dot)
-[array_except](#method-array-except)
-[array_first](#method-array-first)
-[array_flatten](#method-array-flatten)
-[array_forget](#method-array-forget)
-[array_get](#method-array-get)
-[array_has](#method-array-has)
-[array_last](#method-array-last)
-[array_only](#method-array-only)
-[array_pluck](#method-array-pluck)
-[array_prepend](#method-array-prepend)
-[array_pull](#method-array-pull)
-[array_random](#method-array-random)
-[array_set](#method-array-set)
-[array_sort](#method-array-sort)
-[array_sort_recursive](#method-array-sort-recursive)
-[array_where](#method-array-where)
-[array_wrap](#method-array-wrap)
+[Arr::add](#method-array-add)
+[Arr::collapse](#method-array-collapse)
+[Arr::divide](#method-array-divide)
+[Arr::dot](#method-array-dot)
+[Arr::except](#method-array-except)
+[Arr::first](#method-array-first)
+[Arr::flatten](#method-array-flatten)
+[Arr::forget](#method-array-forget)
+[Arr::get](#method-array-get)
+[Arr::has](#method-array-has)
+[Arr::last](#method-array-last)
+[Arr::only](#method-array-only)
+[Arr::pluck](#method-array-pluck)
+[Arr::prepend](#method-array-prepend)
+[Arr::pull](#method-array-pull)
+[Arr::random](#method-array-random)
+[Arr::set](#method-array-set)
+[Arr::sort](#method-array-sort)
+[Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::where](#method-array-where)
+[Arr::wrap](#method-array-wrap)
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
@@ -74,31 +74,31 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 <div class="collection-method-list" markdown="1">
 
 [\__](#method-__)
-[camel_case](#method-camel-case)
+[Str::camel](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
-[ends_with](#method-ends-with)
-[kebab_case](#method-kebab-case)
+[Str::endsWith](#method-ends-with)
+[Str::kebab](#method-kebab-case)
 [preg_replace_array](#method-preg-replace-array)
-[snake_case](#method-snake-case)
-[starts_with](#method-starts-with)
-[str_after](#method-str-after)
-[str_before](#method-str-before)
-[str_contains](#method-str-contains)
-[str_finish](#method-str-finish)
-[str_is](#method-str-is)
-[str_limit](#method-str-limit)
+[Str::snake](#method-snake-case)
+[Str::startsWith](#method-starts-with)
+[Str::after](#method-str-after)
+[Str::before](#method-str-before)
+[Str::contains](#method-str-contains)
+[Str::finish](#method-str-finish)
+[Str::is](#method-str-is)
+[Str::limit](#method-str-limit)
 [Str::orderedUuid](#method-str-ordered-uuid)
-[str_plural](#method-str-plural)
-[str_random](#method-str-random)
-[str_replace_array](#method-str-replace-array)
-[str_replace_first](#method-str-replace-first)
-[str_replace_last](#method-str-replace-last)
-[str_singular](#method-str-singular)
-[str_slug](#method-str-slug)
-[str_start](#method-str-start)
-[studly_case](#method-studly-case)
-[title_case](#method-title-case)
+[Str::plural](#method-str-plural)
+[Str::random](#method-str-random)
+[Str::replaceArray](#method-str-replace-array)
+[Str::replaceFirst](#method-str-replace-first)
+[Str::replaceLast](#method-str-replace-last)
+[Str::singular](#method-str-singular)
+[Str::slug](#method-str-slug)
+[Str::start](#method-str-start)
+[Str::studly](#method-studly-case)
+[Str::title](#method-title-case)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
 [Str::uuid](#method-str-uuid)
@@ -193,64 +193,76 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 ## 配列とオブジェクト
 
 <a name="method-array-add"></a>
-#### `array_add()` {#collection-method .first-collection-method}
+#### `Arr::add()` {#collection-method .first-collection-method}
 
-`array_add`関数は指定されたキー／値のペアをそのキーが存在していない場合、配列に追加します。
+`Arr::add`メソッドは指定されたキー／値のペアをそのキーが存在していない場合、配列に追加します。
 
-    $array = array_add(['name' => 'Desk'], 'price', 100);
+    use Illuminate\Support\Arr;
+
+    $array = Arr::add(['name' => 'Desk'], 'price', 100);
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-collapse"></a>
-#### `array_collapse()` {#collection-method}
+#### `Arr::collapse()` {#collection-method}
 
-`array_collapse`関数は配列の配列を一次元の配列へ展開します。
+`Arr::collapse`メソッドは配列の配列を一次元の配列へ展開します。
 
-    $array = array_collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
+    use Illuminate\Support\Arr;
+
+    $array = Arr::collapse([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
     // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 <a name="method-array-divide"></a>
-#### `array_divide()` {#collection-method}
+#### `Arr::divide()` {#collection-method}
 
-`array_divide`関数は２つの配列をリターンします。一つは指定した配列のキー、もう一方は値です。
+`Arr::divide`メソッドは２つの配列を返します。一つは指定した配列のキー、もう一方は値です。
 
-    [$keys, $values] = array_divide(['name' => 'Desk']);
+    use Illuminate\Support\Arr;
+
+    [$keys, $values] = Arr::divide(['name' => 'Desk']);
 
     // $keys: ['name']
 
     // $values: ['Desk']
 
 <a name="method-array-dot"></a>
-#### `array_dot()` {#collection-method}
+#### `Arr::dot()` {#collection-method}
 
-`array_dot`関数は多次元配列を「ドット」記法で深さを表した一次元配列に変換します。
+`Arr::dot`メソッドは多次元配列を「ドット」記法で深さを表した一次元配列に変換します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $flattened = array_dot($array);
+    $flattened = Arr::dot($array);
 
     // ['products.desk.price' => 100]
 
 <a name="method-array-except"></a>
-#### `array_except()` {#collection-method}
+#### `Arr::except()` {#collection-method}
 
-`array_except`関数は指定されたキー／値ペアを配列から削除します。
+`Arr::except`メソッドは指定されたキー／値ペアを配列から削除します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Desk', 'price' => 100];
 
-    $filtered = array_except($array, ['price']);
+    $filtered = Arr::except($array, ['price']);
 
     // ['name' => 'Desk']
 
 <a name="method-array-first"></a>
-#### `array_first()` {#collection-method}
+#### `Arr::first()` {#collection-method}
 
-`array_first`関数は指定されたテストにパスした最初の要素を返します。
+`Arr::first`メソッドは指定されたテストにパスした最初の要素を返します。
+
+    use Illuminate\Support\Arr;
 
     $array = [100, 200, 300];
 
-    $first = array_first($array, function ($value, $key) {
+    $first = Arr::first($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -258,70 +270,84 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 
 デフォルト値を３つ目の引数で指定することもできます。この値はテストでどの値もテストにパスしない場合に返されます。
 
-    $first = array_first($array, $callback, $default);
+    use Illuminate\Support\Arr;
+
+    $first = Arr::first($array, $callback, $default);
 
 <a name="method-array-flatten"></a>
-#### `array_flatten()` {#collection-method}
+#### `Arr::flatten()` {#collection-method}
 
-`array_flatten`関数は、多次元配列を一次元配列へ変換します。
+`Arr::flatten`メソッドは、多次元配列を一次元配列へ変換します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
 
-    $flattened = array_flatten($array);
+    $flattened = Arr::flatten($array);
 
     // ['Joe', 'PHP', 'Ruby']
 
 <a name="method-array-forget"></a>
-#### `array_forget()` {#collection-method}
+#### `Arr::forget()` {#collection-method}
 
-`array_forget`関数は「ドット記法」で指定されたキーと値のペアを深くネストされた配列から取り除きます。
+`Arr::forget`メソッドは「ドット記法」で指定されたキーと値のペアを深くネストされた配列から取り除きます。
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    array_forget($array, 'products.desk');
+    Arr::forget($array, 'products.desk');
 
     // ['products' => []]
 
 <a name="method-array-get"></a>
-#### `array_get()` {#collection-method}
+#### `Arr::get()` {#collection-method}
 
-`array_get`関数は指定された値を「ドット」記法で指定された値を深くネストされた配列から取得します。
+`Arr::get`メソッドは指定された値を「ドット」記法で指定された値を深くネストされた配列から取得します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    $price = array_get($array, 'products.desk.price');
+    $price = Arr::get($array, 'products.desk.price');
 
     // 100
 
-`array_get`関数は、指定したキーが存在しない場合に返されるデフォルト値を指定できます。
+`Arr::get`メソッドは、指定したキーが存在しない場合に返されるデフォルト値も指定できます。
 
-    $discount = array_get($array, 'products.desk.discount', 0);
+    use Illuminate\Support\Arr;
+
+    $discount = Arr::get($array, 'products.desk.discount', 0);
 
     // 0
 
 <a name="method-array-has"></a>
-#### `array_has()` {#collection-method}
+#### `Arr::has()` {#collection-method}
 
-`array_has`関数は、「ドット」記法で指定されたアイテムが配列に存在するかをチェックします。
+`Arr::has`メソッドは、「ドット」記法で指定されたアイテムが配列に存在するかをチェックします。
+
+    use Illuminate\Support\Arr;
 
     $array = ['product' => ['name' => 'Desk', 'price' => 100]];
 
-    $contains = array_has($array, 'product.name');
+    $contains = Arr::has($array, 'product.name');
 
     // true
 
-    $contains = array_has($array, ['product.price', 'product.discount']);
+    $contains = Arr::has($array, ['product.price', 'product.discount']);
 
     // false
 
 <a name="method-array-last"></a>
-#### `array_last()` {#collection-method}
+#### `Arr::last()` {#collection-method}
 
-`array_last`関数は、テストでパスした最後の配列要素を返します。
+`Arr::last`メソッドは、テストでパスした最後の配列要素を返します。
+
+    use Illuminate\Support\Arr;
 
     $array = [100, 200, 300, 110];
 
-    $last = array_last($array, function ($value, $key) {
+    $last = Arr::last($array, function ($value, $key) {
         return $value >= 150;
     });
 
@@ -329,66 +355,80 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 
 メソッドの第３引数には、デフォルト値を渡します。テストでパスする値がない場合に、返されます。
 
-    $last = array_last($array, $callback, $default);
+    use Illuminate\Support\Arr;
+
+    $last = Arr::last($array, $callback, $default);
 
 <a name="method-array-only"></a>
-#### `array_only()` {#collection-method}
+#### `Arr::only()` {#collection-method}
 
-`array_only`関数は配列中の指定されたキー／値ペアのアイテムのみを返します。
+`Arr::only`メソッドは配列中の指定されたキー／値ペアのアイテムのみを返します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 
-    $slice = array_only($array, ['name', 'price']);
+    $slice = Arr::only($array, ['name', 'price']);
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pluck"></a>
-#### `array_pluck()` {#collection-method}
+#### `Arr::pluck()` {#collection-method}
 
-`array_pluck`関数は配列中の指定キーに対する値を全て取得します。
+`Arr::pluck`メソッドは配列中の指定キーに対する値を全て取得します。
+
+    use Illuminate\Support\Arr;
 
     $array = [
         ['developer' => ['id' => 1, 'name' => 'Taylor']],
         ['developer' => ['id' => 2, 'name' => 'Abigail']],
     ];
 
-    $names = array_pluck($array, 'developer.name');
+    $names = Arr::pluck($array, 'developer.name');
 
     // ['Taylor', 'Abigail']
 
 さらに、結果のリストのキー項目も指定できます。
 
-    $names = array_pluck($array, 'developer.name', 'developer.id');
+    use Illuminate\Support\Arr;
+
+    $names = Arr::pluck($array, 'developer.name', 'developer.id');
 
     // [1 => 'Taylor', 2 => 'Abigail']
 
 <a name="method-array-prepend"></a>
-#### `array_prepend()` {#collection-method}
+#### `Arr::prepend()` {#collection-method}
 
-`array_prepend`関数は配列の先頭にアイテムを追加します。
+`Arr::prepend`メソッドは配列の先頭にアイテムを追加します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['one', 'two', 'three', 'four'];
 
-    $array = array_prepend($array, 'zero');
+    $array = Arr::prepend($array, 'zero');
 
     // ['zero', 'one', 'two', 'three', 'four']
 
 必要であれば、値に対するキーを指定できます。
 
+    use Illuminate\Support\Arr;
+
     $array = ['price' => 100];
 
-    $array = array_prepend($array, 'Desk', 'name');
+    $array = Arr::prepend($array, 'Desk', 'name');
 
     // ['name' => 'Desk', 'price' => 100]
 
 <a name="method-array-pull"></a>
-#### `array_pull()` {#collection-method}
+#### `Arr::pull()` {#collection-method}
 
-`array_pull`関数は配列から指定されたキー／値ペアを取得し、同時に削除します。
+`Arr::pull`メソッドは配列から指定されたキー／値ペアを取得し、同時に削除します。
+
+    use Illuminate\Support\Arr;
 
     $array = ['name' => 'Desk', 'price' => 100];
 
-    $name = array_pull($array, 'name');
+    $name = Arr::pull($array, 'name');
 
     // $name: Desk
 
@@ -396,48 +436,60 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
 
 メソッドの第３引数として、デフォルト値を渡せます。この値はキーが存在しない場合に返されます。
 
-    $value = array_pull($array, $key, $default);
+    use Illuminate\Support\Arr;
+
+    $value = Arr::pull($array, $key, $default);
 
 <a name="method-array-random"></a>
-#### `array_random()` {#collection-method}
+#### `Arr::random()` {#collection-method}
 
-`array_random`関数は配列からランダムに値を返します。
+`Arr::random`メソッドは配列からランダムに値を返します。
+
+    use Illuminate\Support\Arr;
 
     $array = [1, 2, 3, 4, 5];
 
-    $random = array_random($array);
+    $random = Arr::random($array);
 
     // 4 - (ランダムに取得された値)
 
 第２引数として、返すアイテム数を任意に指定することもできます。この引数を指定した場合、たとえ一つだけ取得したいときでも配列で返されることに注意してください。
 
-    $items = array_random($array, 2);
+    use Illuminate\Support\Arr;
+
+    $items = Arr::random($array, 2);
 
     // [2, 5] - (retrieved randomly)
 
 <a name="method-array-set"></a>
-#### `array_set()` {#collection-method}
+#### `Arr::set()` {#collection-method}
 
-`array_set`関数は「ドット」記法を使用し、深くネストした配列に値をセットします。
+`Arr::set`メソッドは「ドット」記法を使用し、深くネストした配列に値をセットします。
+
+    use Illuminate\Support\Arr;
 
     $array = ['products' => ['desk' => ['price' => 100]]];
 
-    array_set($array, 'products.desk.price', 200);
+    Arr::set($array, 'products.desk.price', 200);
 
     // ['products' => ['desk' => ['price' => 200]]]
 
 <a name="method-array-sort"></a>
-#### `array_sort()` {#collection-method}
+#### `Arr::sort()` {#collection-method}
 
-`array_sort`関数は、配列の値に基づきソートします。
+`Arr::sort`メソッドは、配列の値に基づきソートします。
+
+    use Illuminate\Support\Arr;
 
     $array = ['Desk', 'Table', 'Chair'];
 
-    $sorted = array_sort($array);
+    $sorted = Arr::sort($array);
 
     // ['Chair', 'Desk', 'Table']
 
 指定したクロージャの結果に基づき、ソートすることもできます。
+
+    use Illuminate\Support\Arr;
 
     $array = [
         ['name' => 'Desk'],
@@ -445,7 +497,7 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
         ['name' => 'Chair'],
     ];
 
-    $sorted = array_values(array_sort($array, function ($value) {
+    $sorted = array_values(Arr::sort($array, function ($value) {
         return $value['name'];
     }));
 
@@ -458,9 +510,11 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
     */
 
 <a name="method-array-sort-recursive"></a>
-#### `array_sort_recursive()` {#collection-method}
+#### `Arr::sortRecursive()` {#collection-method}
 
-`array_sort_recursive`関数は、数値の下位配列に対し`sort`機能、連想配列の下位配列に対し`ksort`を使用し、配列を再帰的にソートします。
+`Arr::sortRecursive`メソッドは、数値の下位配列に対し`sort`機能、連想配列の下位配列に対し`ksort`を使用し、配列を再帰的にソートします。
+
+    use Illuminate\Support\Arr;
 
     $array = [
         ['Roman', 'Taylor', 'Li'],
@@ -468,7 +522,7 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
         ['one' => 1, 'two' => 2, 'three' => 3],
     ];
 
-    $sorted = array_sort_recursive($array);
+    $sorted = Arr::sortRecursive($array);
 
     /*
         [
@@ -479,34 +533,40 @@ Laravelは様々な、グローバル「ヘルパ」PHP関数を用意してい�
     */
 
 <a name="method-array-where"></a>
-#### `array_where()` {#collection-method}
+#### `Arr::where()` {#collection-method}
 
-`array_where`は指定されたクロージャで、配列をフィルタリングします。
+`Arr::where`は指定されたクロージャで、配列をフィルタリングします。
+
+    use Illuminate\Support\Arr;
 
     $array = [100, '200', 300, '400', 500];
 
-    $filtered = array_where($array, function ($value, $key) {
+    $filtered = Arr::where($array, function ($value, $key) {
         return is_string($value);
     });
 
     // [1 => '200', 3 => '400']
 
 <a name="method-array-wrap"></a>
-#### `array_wrap()` {#collection-method}
+#### `Arr::wrap()` {#collection-method}
 
-`array_wrap`関数は、指定した値を配列中にラップします。指定した値が配列中に存在している場合は、変更されません。
+`Arr::wrap`メソッドは、指定した値を配列中にラップします。指定した値が配列中に存在している場合は、変更されません。
+
+    use Illuminate\Support\Arr;
 
     $string = 'Laravel';
 
-    $array = array_wrap($string);
+    $array = Arr::wrap($string);
 
     // ['Laravel']
 
 NULL値を指定すると、空の配列が返ってきます。
 
+    use Illuminate\Support\Arr;
+
     $nothing = null;
 
-    $array = array_wrap($nothing);
+    $array = Arr::wrap($nothing);
 
     // []
 
@@ -722,11 +782,13 @@ NULL値を指定すると、空の配列が返ってきます。
 指定した翻訳文字列や翻訳キーが存在しない場合、`__`関数は指定した値をそのまま返します。たとえば、上記の場合に翻訳キーが存在しなければ、`__`関数は`messages.welcome`を返します。
 
 <a name="method-camel-case"></a>
-#### `camel_case()` {#collection-method}
+#### `Str::camel()` {#collection-method}
 
-`camel_case`関数は、文字列をキャメルケース（２つ目以降の単語の先頭は大文字）へ変換します。
+`Str::camel`関数は、文字列をキャメルケース（`camelCase`）へ変換します。
 
-    $converted = camel_case('foo_bar');
+    use Illuminate\Support\Str;
+
+    $converted = Str::camel('foo_bar');
 
     // fooBar
 
@@ -749,20 +811,22 @@ NULL値を指定すると、空の配列が返ってきます。
     // &lt;html&gt;foo&lt;/html&gt;
 
 <a name="method-ends-with"></a>
-#### `ends_with()` {#collection-method}
+#### `Str::endsWith()` {#collection-method}
 
-`ends_with`関数は、最初の文字列が２つ目の引数の文字列で終わっているか調べます。
+`Str::endsWith`関数は、最初の文字列が２つ目の引数の文字列で終わっているか調べます。
 
-    $result = ends_with('This is my name', 'name');
+    $result = Str::endsWith('This is my name', 'name');
 
     // true
 
 <a name="method-kebab-case"></a>
-#### `kebab_case()` {#collection-method}
+#### `Str::kebab()` {#collection-method}
 
-`kebab_case`関数は、指定した文字列を「ケバブ-ケース」に変換します。
+`Str::kebab`関数は、指定した文字列をケバブ-ケース（`kebab-case`）に変換します。
 
-    $converted = kebab_case('fooBar');
+    use Illuminate\Support\Str;
+
+    $converted = Str::kebab('fooBar');
 
     // foo-bar
 
@@ -778,94 +842,114 @@ NULL値を指定すると、空の配列が返ってきます。
     // The event will take place between 8:30 and 9:00
 
 <a name="method-snake-case"></a>
-#### `snake_case()` {#collection-method}
+#### `Str::snake()` {#collection-method}
 
-`snake_case`関数は文字列をスネークケース（小文字名下線区切り）に変換します。
+`Str::snake`関数は文字列をスネークケース（`snake_case`）に変換します。
 
-    $converted = snake_case('fooBar');
+    use Illuminate\Support\Str;
+
+    $converted = Str::snake('fooBar');
 
     // foo_bar
 
 <a name="method-starts-with"></a>
-#### `starts_with()` {#collection-method}
+#### `Str::startsWith()` {#collection-method}
 
-`starts_with`関数は指定した文字列が、２番めの文字列で始まっているか調べます。
+`Str::startsWith`関数は指定した文字列が、２番めの文字列で始まっているか調べます。
 
-    $result = starts_with('This is my name', 'This');
+    use Illuminate\Support\Str;
+
+    $result = Str::startsWith('This is my name', 'This');
 
     // true
 
 <a name="method-str-after"></a>
-#### `str_after()` {#collection-method}
+#### `Str::after()` {#collection-method}
 
-`str_after`関数は、指定した値に続く文字列を全て返します。
+`Str::after`関数は、指定した値に続く文字列を全て返します。
 
-    $slice = str_after('This is my name', 'This is');
+    use Illuminate\Support\Str;
+
+    $slice = Str::after('This is my name', 'This is');
 
     // ' my name'
 
 <a name="method-str-before"></a>
-#### `str_before()` {#collection-method}
+#### `Str::before()` {#collection-method}
 
-`str_before`関数は、文字列中の指定した値より前の文字列を全部返します。
+`Str::before`関数は、文字列中の指定した値より前の文字列を全部返します。
 
-    $slice = str_before('This is my name', 'my name');
+    use Illuminate\Support\Str;
+
+    $slice = Str::before('This is my name', 'my name');
 
     // 'This is '
 
 <a name="method-str-contains"></a>
-#### `str_contains()` {#collection-method}
+#### `Str::contains()` {#collection-method}
 
-`str_contains`関数は指定した文字列が、２つ目の文字列を含んでいるか調べます。（大文字小文字の区別あり）
+`Str::contains`関数は指定した文字列が、２つ目の文字列を含んでいるか調べます。（大文字小文字の区別あり）
 
-    $contains = str_contains('This is my name', 'my');
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', 'my');
 
     // true
 
 指定した文字列に値のどれかが含まれているかを判定するために、値の配列を渡すことも可能です。
 
-    $contains = str_contains('This is my name', ['my', 'foo']);
+    use Illuminate\Support\Str;
+
+    $contains = Str::contains('This is my name', ['my', 'foo']);
 
     // true
 
 <a name="method-str-finish"></a>
-#### `str_finish()` {#collection-method}
+#### `Str::finish()` {#collection-method}
 
-`str_finish`関数は指定した文字列の最後が、２つ目の引数の値で終了していない場合、その値を追加します。
+`Str::finish`関数は指定した文字列の最後が、２つ目の引数の値で終了していない場合、その値を追加します。
 
-    $adjusted = str_finish('this/string', '/');
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::finish('this/string', '/');
 
     // this/string/
 
-    $adjusted = str_finish('this/string/', '/');
+    $adjusted = Str::finish('this/string/', '/');
 
     // this/string/
 
 <a name="method-str-is"></a>
-#### `str_is()` {#collection-method}
+#### `Str::is()` {#collection-method}
 
-`str_is`関数は指定した文字列がパターンに一致しているかを判定します。アスタリスクが使用されるとワイルドカードとして利用されます。
+`Str::is`関数は指定した文字列がパターンに一致しているかを判定します。アスタリスクが使用されると、ワイルドカードとして利用されます。
 
-    $matches = str_is('foo*', 'foobar');
+    use Illuminate\Support\Str;
+
+    $matches = Str::is('foo*', 'foobar');
 
     // true
 
-    $matches = str_is('baz*', 'foobar');
+    $matches = Str::is('baz*', 'foobar');
 
     // false
 
 <a name="method-str-limit"></a>
-#### `str_limit()` {#collection-method}
+#### `Str::limit()` {#collection-method}
 
-`str_limit`関数は、指定した長さへ文字列を切り詰めます。
+`Str::limit`関数は、指定した長さへ文字列を切り詰めます。
 
-    $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20);
+    use Illuminate\Support\Str;
+
+    $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20);
 
     // The quick brown fox...
 
 また、第３引数として、最長文字列数を超えた場合に末尾へ追加する、文字列を渡すこともできます。
 
-    $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
+    use Illuminate\Support\Str;
+
+    $truncated = Str::limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
 
     // The quick brown fox (...)
 
@@ -879,114 +963,136 @@ NULL値を指定すると、空の配列が返ってきます。
     return (string) Str::orderedUuid();
 
 <a name="method-str-plural"></a>
-#### `str_plural()` {#collection-method}
+#### `Str::plural()` {#collection-method}
 
-`str_plural`関数は単数形を複数形へ変換します。この関数は現在英語のみサポートしています。
+`Str::plural`関数は単数形を複数形へ変換します。この関数は現在英語のみサポートしています。
 
-    $plural = str_plural('car');
+    use Illuminate\Support\Str;
+
+    $plural = Str::plural('car');
 
     // cars
 
-    $plural = str_plural('child');
+    $plural = Str::plural('child');
 
     // children
 
 整数をこの関数の第２引数に指定することで、文字列の単数形と複数形を切り替えて取得できます。
 
-    $plural = str_plural('child', 2);
+    use Illuminate\Support\Str;
+
+    $plural = Str::plural('child', 2);
 
     // children
 
-    $plural = str_plural('child', 1);
+    $plural = Str::plural('child', 1);
 
     // child
 
 <a name="method-str-random"></a>
-#### `str_random()` {#collection-method}
+#### `Str::random()` {#collection-method}
 
-`str_random`関数は指定された長さのランダムな文字列を生成します。この関数は、PHPの`random_bytes`関数を使用します。
+`Str::random`関数は指定された長さのランダムな文字列を生成します。この関数は、PHPの`random_bytes`関数を使用します。
 
-    $random = str_random(40);
+    use Illuminate\Support\Str;
+
+    $random = Str::random(40);
 
 <a name="method-str-replace-array"></a>
-#### `str_replace_array()` {#collection-method}
+#### `Str::replaceArray()` {#collection-method}
 
-`str_replace_array`関数は配列を使い、文字列を指定値へ順番に置き換えます。
+`Str::replaceArray`関数は配列を使い、文字列を指定値へ順番に置き換えます。
+
+    use Illuminate\Support\Str;
 
     $string = 'The event will take place between ? and ?';
 
-    $replaced = str_replace_array('?', ['8:30', '9:00'], $string);
+    $replaced = Str::replaceArray('?', ['8:30', '9:00'], $string);
 
     // The event will take place between 8:30 and 9:00
 
 <a name="method-str-replace-first"></a>
-#### `str_replace_first()` {#collection-method}
+#### `Str::replaceFirst()` {#collection-method}
 
-`str_replace_first`関数は、文字列中で最初に出現した値を指定値で置き換えます。
+`Str::replaceFirst`関数は、文字列中で最初に出現した値を指定値で置き換えます。
 
-    $replaced = str_replace_first('the', 'a', 'the quick brown fox jumps over the lazy dog');
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceFirst('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
     // a quick brown fox jumps over the lazy dog
 
 <a name="method-str-replace-last"></a>
-#### `str_replace_last()` {#collection-method}
+#### `Str::replaceLast()` {#collection-method}
 
-`str_replace_last`関数は、文字列中で最後に出現した値を指定値で置き換えます。
+`Str::replaceLast`関数は、文字列中で最後に出現した値を指定値で置き換えます。
 
-    $replaced = str_replace_last('the', 'a', 'the quick brown fox jumps over the lazy dog');
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceLast('the', 'a', 'the quick brown fox jumps over the lazy dog');
 
     // the quick brown fox jumps over a lazy dog
 
 <a name="method-str-singular"></a>
-#### `str_singular()` {#collection-method}
+#### `Str::singular()` {#collection-method}
 
-`str_singular`関数は複数形を単数形へ変換します。この関数は、現在英語のみサポートしています。
+Str::singular`関数は複数形を単数形へ変換します。この関数は、現在英語のみサポートしています。
 
-    $singular = str_singular('cars');
+    use Illuminate\Support\Str;
+
+    $singular = Str::singular('cars');
 
     // car
 
-    $singular = str_singular('children');
+    $singular = Str::singular('children');
 
     // child
 
 <a name="method-str-slug"></a>
-#### `str_slug()` {#collection-method}
+#### `Str::slug()` {#collection-method}
 
-`str_slug`関数は指定された文字列から、URLフレンドリーな「スラグ」を生成します。
+`Str::slug`関数は指定された文字列から、URLフレンドリーな「スラグ」を生成します。
 
-    $slug = str_slug('Laravel 5 Framework', '-');
+    use Illuminate\Support\Str;
+
+    $slug = Str::slug('Laravel 5 Framework', '-');
 
     // laravel-5-framework
 
 <a name="method-str-start"></a>
-#### `str_start()` {#collection-method}
+#### `Str::start()` {#collection-method}
 
-`str_start`関数は文字列が指定値から始まっていない場合、先頭にその文字列を追加します。
+`Str::start`関数は文字列が指定値から始まっていない場合、先頭にその文字列を追加します。
 
-    $adjusted = str_start('this/string', '/');
+    use Illuminate\Support\Str;
+
+    $adjusted = Str::start('this/string', '/');
 
     // /this/string
 
-    $adjusted = str_start('/this/string', '/');
+    $adjusted = Str::start('/this/string', '/');
 
     // /this/string
 
 <a name="method-studly-case"></a>
-#### `studly_case()` {#collection-method}
+#### `Str::studly()` {#collection-method}
 
-`studly_case`関数は文字列をアッパーキャメルケース（単語の頭文字を大文字）に変換します。
+`Str::studly`関数は文字列をアッパーキャメルケース（`StudlyCase`）に変換します。
+
+    use Illuminate\Support\Str;
 
     $converted = studly_case('foo_bar');
 
     // FooBar
 
 <a name="method-title-case"></a>
-#### `title_case()` {#collection-method}
+#### `Str::title()` {#collection-method}
 
-`title_case`関数は、指定された文字列を「タイトルケース」へ変換します。
+`Str::title`関数は、指定された文字列をタイトルケース（`Title Case`）へ変換します。
 
-    $converted = title_case('a nice title uses the correct case');
+    use Illuminate\Support\Str;
+
+    $converted = Str::title('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
 

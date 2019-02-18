@@ -285,32 +285,32 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
 
 メールへ添付するには、`attach`メソッドをmailableクラスの`build`メソッド中で呼び出します。`attach`メソッドは最初の引数に、ファイルのフルパスを取ります。
 
-        /**
-         * メッセージの生成
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            return $this->view('emails.orders.shipped')
-                        ->attach('/path/to/file');
-        }
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->attach('/path/to/file');
+    }
 
 ファイルをメッセージ添付する場合、`attach`メソッドの第２引数として配列を渡し、表示名やMIMEタイプを指定することもできます。
 
-        /**
-         * メッセージの生成
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            return $this->view('emails.orders.shipped')
-                        ->attach('/path/to/file', [
-                            'as' => 'name.pdf',
-                            'mime' => 'application/pdf',
-                        ]);
-        }
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->attach('/path/to/file', [
+                        'as' => 'name.pdf',
+                        'mime' => 'application/pdf',
+                    ]);
+    }
 
 #### ディスクからのファイル添付
 
@@ -321,11 +321,11 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
      *
      * @return $this
      */
-     public function build()
-     {
-        return $this->view('email.orders.shipped')
-                    ->attachFromStorage('/path/to/file');
-     }
+    public function build()
+    {
+       return $this->view('email.orders.shipped')
+                   ->attachFromStorage('/path/to/file');
+    }
 
 必要に応じ、ファイルの添付名と追加のオプションを第２，第３引数として指定できます。
 
@@ -334,13 +334,13 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
      *
      * @return $this
      */
-     public function build()
-     {
-        return $this->view('email.orders.shipped')
-                    ->attachFromStorage('/path/to/file', 'name.pdf', [
-                        'mime' => 'application/pdf'
-                    ]);
-     }
+    public function build()
+    {
+       return $this->view('email.orders.shipped')
+                   ->attachFromStorage('/path/to/file', 'name.pdf', [
+                       'mime' => 'application/pdf'
+                   ]);
+    }
 
 デフォルトディスク以外のストレージディスクを指定する場合は、`attachFromStorageDisk`メソッドを使用します。
 
@@ -349,28 +349,28 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
      *
      * @return $this
      */
-     public function build()
-     {
-        return $this->view('email.orders.shipped')
-                    ->attachFromStorageDisk('s3', '/path/to/file');
-     }
+    public function build()
+    {
+       return $this->view('email.orders.shipped')
+                   ->attachFromStorageDisk('s3', '/path/to/file');
+    }
 
 #### Rawデータ添付
 
 `attachData`メソッドは添付内容のバイト文字列をそのまま添付する場合に使用します。たとえば、メモリ中でPDFを生成し、それをディスクに書き出さずに、メールへ添付したい場合にこのメソッドを使用できます。`attachData`メソッドはrawデータバイトを最初の引数に取り、ファイル名を第２引数に、オプションの配列を第３引数に取ります。
 
-        /**
-         * メッセージの生成
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            return $this->view('emails.orders.shipped')
-                        ->attachData($this->pdf, 'name.pdf', [
-                            'mime' => 'application/pdf',
-                        ]);
-        }
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->view('emails.orders.shipped')
+                    ->attachData($this->pdf, 'name.pdf', [
+                        'mime' => 'application/pdf',
+                    ]);
+    }
 
 <a name="inline-attachments"></a>
 ### インライン添付
@@ -400,20 +400,20 @@ mailableクラスの`build`メソッドの中で、メールの中身をレン�
 
 `Mailable`ベースクラスの`withSwiftMessage`クラスにより、メッセージ送信前にSwiftMailerメッセージインスタンスを直接呼び出すコールバクを登録できます。これにより配信する前に、メッセージを送信する機会を得られます。
 
-        /**
-         * メッセージの生成
-         *
-         * @return $this
-         */
-        public function build()
-        {
-            $this->view('emails.orders.shipped');
+    /**
+     * メッセージの生成
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        $this->view('emails.orders.shipped');
 
-            $this->withSwiftMessage(function ($message) {
-                $message->getHeaders()
-                        ->addTextHeader('Custom-Header', 'HeaderValue');
-            });
-        }
+        $this->withSwiftMessage(function ($message) {
+            $message->getHeaders()
+                    ->addTextHeader('Custom-Header', 'HeaderValue');
+        });
+    }
 
 <a name="markdown-mailables"></a>
 ## Markdown Mailable
@@ -536,7 +536,7 @@ Markdown MailableではBladeコンポーネントとMarkdown記法が利用で�
         }
     }
 
-もちろん、メール送信時に"to"で受取人を指定するだけに限りません。"to"、"cc"、"bcc"による受取人をすべて一つのメソッドチェーンで呼び出せます。
+メール送信時に"to"で受取人を指定するだけに限りません。"to"、"cc"、"bcc"による受取人をすべて一つのメソッドチェーンで呼び出せます。
 
     Mail::to($request->user())
         ->cc($moreUsers)
@@ -575,7 +575,7 @@ mailableのテンプレートをデザインしているとき、Bladeテンプ�
         ->bcc($evenMoreUsers)
         ->queue(new OrderShipped($order));
 
-このメソッドはバックグラウンドでメールを送信するため、自動的にジョブをキューに投入する面倒を見ます。もちろん、この機能を使用する前に[キューの設定](/docs/{{version}}/queues)を行う必要があります。
+このメソッドはバックグラウンドでメールを送信するため、自動的にジョブをキューに投入する面倒を見ます。この機能を使用する前に[キューの設定](/docs/{{version}}/queues)を行う必要があります。
 
 #### 遅延メッセージキュー
 

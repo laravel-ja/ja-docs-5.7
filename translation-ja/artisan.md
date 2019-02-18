@@ -76,7 +76,7 @@ Artisanに用意されているコマンドに加え、独自のカスタムコ�
 
 > {tip} コンソールコマンドを軽いままにし、実行内容をアプリケーションサービスとして遅らせるのは、コードの再利用性のためのグッドプラクティスです。以下の例で、メール送信の「重荷を軽く」するために、サービスクラスを注入しているところに注目してください。
 
-コマンドのサンプルを見てみましょう。コマンドのコンストラクタ、もしくは`handle`メソッドで、必要な依存を注入できるところに注目してください。Laravelの[サービスコンテナ](/docs/{{version}}/container)は、コンストラクタか`handle`メソッドでタイプヒントされた依存をすべて自動的に注入します。
+コマンドのサンプルを見てみましょう。コマンドの`handle`メソッドで、必要な依存を注入できるところに注目してください。Laravelの[サービスコンテナ](/docs/{{version}}/container)は、`handle`メソッドでタイプヒントされた依存をすべて自動的に注入します。
 
     <?php
 
@@ -103,33 +103,24 @@ Artisanに用意されているコマンドに加え、独自のカスタムコ�
         protected $description = 'Send drip e-mails to a user';
 
         /**
-         * drip Eメールサービス
-         *
-         * @var DripEmailer
-         */
-        protected $drip;
-
-        /**
          * 新しいコマンドインスタンスの生成
          *
-         * @param  DripEmailer  $drip
          * @return void
          */
-        public function __construct(DripEmailer $drip)
+        public function __construct()
         {
             parent::__construct();
-
-            $this->drip = $drip;
         }
 
         /**
          * コンソールコマンドの実行
          *
+         * @param  \App\DripEmailer  $drip
          * @return mixed
          */
-        public function handle()
+        public function handle(DripEmailer $drip)
         {
-            $this->drip->send(User::find($this->argument('user')));
+            $drip->send(User::find($this->argument('user')));
         }
     }
 

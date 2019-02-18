@@ -9,7 +9,7 @@
 
 `get`メソッドであれリレーションによるものであれ、Eloquentが複数のレコードをリターンする場合`Illuminate\Database\Eloquent\Collection`オブジェクトが返されます。EloquentコレクションオブジェクトはLaravelの[ベースコレクション](/docs/{{version}}/collections)を継承しているので、Eloquentモデルの裏にある配列をスムーズに操作するために継承した多くのメソッドがもちろん使用できます。
 
-当然ながら全コレクションはイテレーターとしても動作し、シンプルなPHP配列のようにループで取り扱うことができます。
+全コレクションはイテレーターとしても動作し、シンプルなPHP配列のようにループで取り扱うことができます。
 
     $users = App\User::where('active', 1)->get();
 

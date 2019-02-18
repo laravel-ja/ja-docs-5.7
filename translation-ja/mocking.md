@@ -1,21 +1,21 @@
 # モック
 
-- [イントロダクション](#イントロダクション)
+- [イントロダクション](#introduction)
 - [Bus Fake](#bus-fake)
 - [Event Fake](#event-fake)
-    - [限定的なEvent Fake](#scoped-event-fakes)
+    - [イベントのサブセットのフェイク](#scoped-event-fakes)
 - [Mail Fake](#mail-fake)
 - [Notification Fake](#notification-fake)
 - [Queue Fake](#queue-fake)
 - [Storage Fake](#storage-fake)
-- [ファサード](#mocking-facades)
+- [Facades](#mocking-facades)
 
 <a name="イントロダクション"></a>
 ## イントロダクション
 
 Laravelアプリケーションをテストするとき、アプリケーションの一部分を「モック」し、特定のテストを行う間は実際のコードを実行したくない場合があります。たとえば、イベントを発行するコントローラをテストする時は、実際に実行したくないイベントリスナをモックしたいと思うことでしょう。これにより、コントローラのHTTPレスポンスだけをテストでき、イベントリスナの実行は心配しなくて済みます。なぜなら、イベントリスナは自身のテストケースにおいて、テストできるからです。
 
-Laravelにはイベント、ジョブ、ファサードを最初からモックできるヘルパが準備されています。これらのヘルパは主に[Mockery](http://docs.mockery.io/en/latest/)上で動作する便利なレイヤーを提供しているので、複雑なMockeryのメソッドコールを自分で作成する必要はありません。もちろん、MockeryやPHPUnitを使用し、自身のモックやスパイを自由に作成してください。
+Laravelにはイベント、ジョブ、ファサードを最初からモックできるヘルパが準備されています。これらのヘルパは主に[Mockery](http://docs.mockery.io/en/latest/)上で動作する便利なレイヤーを提供しているので、複雑なMockeryのメソッドコールを自分で作成する必要はありません。MockeryやPHPUnitを使用し、自身のモックやスパイを自由に作成してください。
 
 <a name="bus-fake"></a>
 ## Bus Fake

@@ -36,7 +36,7 @@ Laravel5.7はLaravel5.6からの持続的な向上に付け加え、[Laravel Nov
 
 ### Laravel Nova
 
-[Laravel Nova](https://nova.laravel.com)はLaravelアプリケーションの美しく、クラス最高な管理ダッシュボードです。もちろん、Novaのメインな機能は、裏で働いているEloquentを使用したデータベースレコードを管理する能力です。さらに、Novaはフィルター、レンズ、アクション、キューされたアクション、メトリクス、認証、カスタムツール、カスタムカード、カスタムフィールドなども提供しています。
+[Laravel Nova](https://nova.laravel.com)はLaravelアプリケーションの美しく、クラス最高な管理ダッシュボードです。Novaのメインな機能は、裏で働いているEloquentを使用したデータベースレコードを管理する能力です。さらに、Novaはフィルター、レンズ、アクション、キューされたアクション、メトリクス、認証、カスタムツール、カスタムカード、カスタムフィールドなども提供しています。
 
 Laravel Novaについてより詳しく学ぶには、[NovaのWebサイト](https://nova.laravel.com)で確認してください。
 

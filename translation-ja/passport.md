@@ -15,6 +15,7 @@
     - [パスワードグラントクライアントの作成](#creating-a-password-grant-client)
     - [トークンのリクエスト](#requesting-password-grant-tokens)
     - [全スコープの要求](#requesting-all-scopes)
+    - [ユーザー名フィールドのカスタマイズ](#customizing-the-username-field)
 - [暗黙のグラントトークン](#implicit-grant-tokens)
 - [クライアント認証情報グラントトークン](#client-credentials-grant-tokens)
 - [パーソナルアクセストークン](#personal-access-tokens)
@@ -444,6 +445,35 @@ OAuth2のパスワードグラントはモバイルアプリケーションの�
         ],
     ]);
 
+<a name="customizing-the-username-field"></a>
+### ユーザー名フィールドのカスタマイズ
+
+パスワードグラントを使用する認証を行う場合、Passportはモデルの`email`属性をユーザー名（"username"）として利用します。しかし、モデルの`findForPassport`メソッドを定義することで、この振る舞いをカスタマイズできます。
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Passport\HasApiTokens;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+
+        /**
+         * 指定されたユーザー名のユーザーインスタンスを見つける
+         *
+         * @param  string  $username
+         * @return \App\User
+         */
+        public function findForPassport($username)
+        {
+            return $this->where('username', $username)->first();
+        }
+    }
+
 <a name="implicit-grant-tokens"></a>
 ## 暗黙のグラントトークン
 
@@ -803,22 +833,20 @@ API構築時にJavaScriptアプリケーションから、自分のAPIを利用�
 
 Passportはアクセストークン発行時とトークンリフレッシュ時にイベントを発行します。これらのイベントをデータベース状の他のアクセストークンを破棄したり、無効にしたりするために使用できます。アプリケーションの`EventServiceProvider`で、これらのイベントをリッスンできます。
 
-```php
-/**
- * アプリケーションにマップされたイベントリスナ
- *
- * @var array
- */
-protected $listen = [
-    'Laravel\Passport\Events\AccessTokenCreated' => [
-        'App\Listeners\RevokeOldTokens',
-    ],
+    /**
+     * アプリケーションのイベントリスナマッピング
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\RevokeOldTokens',
+        ],
 
-    'Laravel\Passport\Events\RefreshTokenCreated' => [
-        'App\Listeners\PruneOldTokens',
-    ],
-];
-```
+        'Laravel\Passport\Events\RefreshTokenCreated' => [
+            'App\Listeners\PruneOldTokens',
+        ],
+    ];
 
 <a name="testing"></a>
 ## テスト

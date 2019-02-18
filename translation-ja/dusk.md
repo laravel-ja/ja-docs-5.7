@@ -1342,10 +1342,10 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
 
 DustテストにCircleCIを使用する場合、以下の設定ファイルを手始めに利用できます。TravisCIと同様に、`php artisan serve`コマンドを使用し、PHP組み込みWebサーバを起動できます。
 
-     version: 2
-     jobs:
-         build:
-             steps:
+    version: 2
+    jobs:
+        build:
+            steps:
                 - run: sudo apt-get install -y libsqlite3-dev
                 - run: cp .env.testing .env
                 - run: composer install -n --ignore-platform-reqs
@@ -1354,23 +1354,23 @@ DustテストにCircleCIを使用する場合、以下の設定ファイルを�
                 - run: vendor/bin/phpunit
 
                 - run:
-                   name: Start Chrome Driver
-                   command: ./vendor/laravel/dusk/bin/chromedriver-linux
-                   background: true
+                    name: Start Chrome Driver
+                    command: ./vendor/laravel/dusk/bin/chromedriver-linux
+                    background: true
 
                 - run:
-                   name: Run Laravel Server
-                   command: php artisan serve
-                   background: true
+                    name: Run Laravel Server
+                    command: php artisan serve
+                    background: true
 
                 - run:
-                   name: Run Laravel Dusk Tests
-                   command: php artisan dusk
+                    name: Run Laravel Dusk Tests
+                    command: php artisan dusk
 
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-Duskのテストを[Codeship](https://codeship.com)で実行するには、以下のコマンドをCodeshipプロジェクトへ追加してください。もちろん、以下のコマンドは参考例ですので、必要に応じ自由にコマンドを追加してください。
+Duskのテストを[Codeship](https://codeship.com)で実行するには、以下のコマンドをCodeshipプロジェクトへ追加してください。以下のコマンドはひとつの参考例です。必要に応じ自由にコマンドを追加してください。
 
     phpenv local 7.2
     cp .env.testing .env

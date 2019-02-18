@@ -77,7 +77,7 @@ Laravelにデフォルトで含まれる`webpack.mix.js`は、`resources/sass/ap
 
 > {tip} Vueコンポーネントを変更したら、毎回`npm run dev`コマンドを実行しなくてはならないことを覚えておきましょう。もしくは、`npm run watch`コマンドを実行して監視すれば、コンポーネントが更新されるたび、自動的に再コンパイルされます。
 
-もちろん、Vueコンポーネントの記述を学ぶことに興味があれば、Vueフレームワーク全体についての概念を簡単に読み取れる、[Vueドキュメント](https://vuejs.org/guide/)を一読してください。
+Vueコンポーネントの記述を学ぶことに興味があれば、Vueフレームワーク全体についての概念を簡単に読み取れる、[Vueドキュメント](https://vuejs.org/guide/)を一読してください。
 
 <a name="using-react"></a>
 ### Reactの使用

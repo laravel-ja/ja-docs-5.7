@@ -1342,35 +1342,35 @@ Once the component has been defined, we can easily select a date within the date
 
 If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
 
-     version: 2
-     jobs:
-         build:
-             steps:
+    version: 2
+    jobs:
+        build:
+            steps:
                 - run: sudo apt-get install -y libsqlite3-dev
                 - run: cp .env.testing .env
                 - run: composer install -n --ignore-platform-reqs
                 - run: npm install
                 - run: npm run production
                 - run: vendor/bin/phpunit
-
+       
                 - run:
-                   name: Start Chrome Driver
-                   command: ./vendor/laravel/dusk/bin/chromedriver-linux
-                   background: true
-
+                    name: Start Chrome Driver
+                    command: ./vendor/laravel/dusk/bin/chromedriver-linux
+                    background: true
+       
                 - run:
-                   name: Run Laravel Server
-                   command: php artisan serve
-                   background: true
-
+                    name: Run Laravel Server
+                    command: php artisan serve
+                    background: true
+       
                 - run:
-                   name: Run Laravel Dusk Tests
-                   command: php artisan dusk
+                    name: Run Laravel Dusk Tests
+                    command: php artisan dusk
 
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are a starting point and you are free to add additional commands as needed:
+To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. These commands are just a starting point and you are free to add additional commands as needed:
 
     phpenv local 7.2
     cp .env.testing .env

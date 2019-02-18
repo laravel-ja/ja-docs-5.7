@@ -80,7 +80,7 @@ Socialiteを使用する前に、アプリケーションで使用するOAuthサ
 
 `redirect`メソッドはユーザーをOAuthプロバイダへ送るのを担当します。一方の`user`メソッドは送られて来たリクエストを読み、プロバイダからユーザーの情報を取得します。
 
-もちろん、コントローラメソッドへのルートを定義する必要があります。
+コントローラメソッドへのルートを定義する必要があります。
 
     Route::get('login/github', 'Auth\LoginController@redirectToProvider');
     Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');

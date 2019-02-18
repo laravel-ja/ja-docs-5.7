@@ -90,11 +90,9 @@ Valetはマシンが起動されると、毎回デーモンを自動的に起動
 
 Valetでは`valet use php@version`コマンドにより、PHPバージョンを変更できます。指定されたPHPバージョンがインストールされていない場合、ValetはBrewによりインストールします。
 
-```
-valet use php@7.2
-
-valet use php
-```
+    valet use php@7.2
+    
+    valet use php
 
 <a name="upgrading"></a>
 ### アップグレード
@@ -168,8 +166,6 @@ Valetはローカルサイトを世界と共有するコマンドも用意して
 サイトを共有するには、ターミナルでサイトのディレクトリに移動し、`valet share`コマンドを実行します。公開用のURLはクリップボードにコピーされますので、ブラウザに直接ペーストしてください。これだけです。
 
 サイトの共有を停止するには、`Control + C`でプロセスをキャンセルしてください。
-
-> {note} `valet secure`コマンドを使用してセキュアにしたサイトの共有は、現在`valet share`はサポートしていません。
 
 <a name="custom-valet-drivers"></a>
 ## カスタムValetドライバ

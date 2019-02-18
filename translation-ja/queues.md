@@ -347,7 +347,7 @@ Redisキューを使用する場合、ワーカのループの繰り返しとRed
         }
     }
 
-もちろん、ジョブを投入する接続とキューを指定するために、`onConnection`と`onQueue`メソッドをチェーンすることもできます。
+ジョブを投入する接続とキューを指定するために、`onConnection`と`onQueue`メソッドをチェーンすることもできます。
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
@@ -501,7 +501,7 @@ Laravelには、キューに投入された新しいジョブを処理する、�
 
 `--stop-when-empty`オプションは、全てのジョブを処理してから終了するように、ワーカへ指示するために使用します。このオプションは、LaravelキューがDockerコンテナ中で動作していて、キューが空になった後にコンテナをシャットダウンしたい場合に便利です。
 
-     php artisan queue:work --stop-when-empty
+    php artisan queue:work --stop-when-empty
 
 #### リソースの考察
 
@@ -579,7 +579,7 @@ Supervisorの設定ファイルは、通常`/etc/supervisor/conf.d`ディレク�
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
 
-この例の`numprocs`ディレクティブは、Supervisorに全部で８つのqueue:workプロセスを実行・監視し、落ちている時は自動的に再起動するように指示しています。もちろん`command`ディレクティブの`queue:work sqs`の部分を変更し、希望のキュー接続に合わせてください。
+この例の`numprocs`ディレクティブは、Supervisorに全部で８つのqueue:workプロセスを実行・監視し、落ちている時は自動的に再起動するように指示しています。`command`ディレクティブの`queue:work sqs`の部分を変更し、希望のキュー接続に合わせてください。
 
 #### Supervisorの起動
 

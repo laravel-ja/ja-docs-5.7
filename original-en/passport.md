@@ -15,6 +15,7 @@
     - [Creating A Password Grant Client](#creating-a-password-grant-client)
     - [Requesting Tokens](#requesting-password-grant-tokens)
     - [Requesting All Scopes](#requesting-all-scopes)
+    - [Customizing The Username Field](#customizing-the-username-field)
 - [Implicit Grant Tokens](#implicit-grant-tokens)
 - [Client Credentials Grant Tokens](#client-credentials-grant-tokens)
 - [Personal Access Tokens](#personal-access-tokens)
@@ -444,6 +445,35 @@ When using the password grant or client credentials grant, you may wish to autho
         ],
     ]);
 
+<a name="customizing-the-username-field"></a>
+### Customizing The Username Field
+
+When authenticating using the password grant, Passport will use the `email` attribute of your model as the "username". However, you may customize this behavior by defining a `findForPassport` method on your model:
+
+    <?php
+
+    namespace App;
+
+    use Laravel\Passport\HasApiTokens;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable
+    {
+        use HasApiTokens, Notifiable;
+
+        /**
+         * Find the user instance for the given username.
+         *
+         * @param  string  $username
+         * @return \App\User
+         */
+        public function findForPassport($username)
+        {
+            return $this->where('username', $username)->first();
+        }
+    }
+
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
 
@@ -803,22 +833,20 @@ When using this method of authentication, the default Laravel JavaScript scaffol
 
 Passport raises events when issuing access tokens and refresh tokens. You may use these events to prune or revoke other access tokens in your database. You may attach listeners to these events in your application's `EventServiceProvider`:
 
-```php
-/**
- * The event listener mappings for the application.
- *
- * @var array
- */
-protected $listen = [
-    'Laravel\Passport\Events\AccessTokenCreated' => [
-        'App\Listeners\RevokeOldTokens',
-    ],
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\RevokeOldTokens',
+        ],
 
-    'Laravel\Passport\Events\RefreshTokenCreated' => [
-        'App\Listeners\PruneOldTokens',
-    ],
-];
-```
+        'Laravel\Passport\Events\RefreshTokenCreated' => [
+            'App\Listeners\PruneOldTokens',
+        ],
+    ];
 
 <a name="testing"></a>
 ## Testing
