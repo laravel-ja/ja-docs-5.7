@@ -137,8 +137,8 @@ Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示�
      *
      * @return void
      */
-	public function register()
-	{
+    public function register()
+    {
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
@@ -151,7 +151,7 @@ Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示�
                 $entry->isScheduledTask() ||
                 $entry->hasMonitoredTag();
         });
-	}
+    }
 
 <a name="filtering-batches"></a>
 ### バッチ
@@ -165,8 +165,8 @@ Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示�
      *
      * @return void
      */
-	public function register()
-	{
+    public function register()
+    {
         $this->hideSensitiveRequestDetails();
 
         Telescope::filterBatch(function (Collection $entries) {
@@ -181,7 +181,7 @@ Telescopeはデフォルトで、ダッシュボードを`/telescope`で表示�
                     $entry->hasMonitoredTag();
                 });
         });
-	}
+    }
 
 <a name="available-watchers"></a>
 ## 利用可能なワッチャー

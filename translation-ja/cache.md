@@ -124,7 +124,7 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
 #### アイテムの存在確認
 
-`has`メソッドで、キャッシュにアイテムが存在しているかを調べることができます。このメソッドは、値が`null`か`false`の場合、`false`を返します。
+`has`メソッドで、キャッシュにアイテムが存在しているかを調べることができます。このメソッドは、値が`null`の場合、`false`を返します。
 
     if (Cache::has('key')) {
         //
@@ -222,8 +222,14 @@ Redisの設定についての詳細は、[Laravelドキュメントページ](/d
 
 リクエスト時にロックが獲得できないときに、指定秒数待機するようにLaravelに指示できます。指定制限時間内にロックが獲得できなかった場合は、`Illuminate\Contracts\Cache\LockTimeoutException`が投げられます。
 
-    if (Cache::lock('foo', 10)->block(5)) {
+    use Illuminate\Contracts\Cache\LockTimeoutException;
+
+    try {
+        Cache::lock('foo', 10)->block(5);
+
         // 最大５秒待機し、ロックを獲得
+    } catch (LockTimeoutException $e) {
+        // Unable to acquire lock...
     }
 
     Cache::lock('foo', 10)->block(5, function () {

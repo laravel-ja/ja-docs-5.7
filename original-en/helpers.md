@@ -1081,7 +1081,7 @@ The `Str::studly` method converts the given string to `StudlyCase`:
 
     use Illuminate\Support\Str;
 
-    $converted = studly_case('foo_bar');
+    $converted = Str::studly('foo_bar');
 
     // FooBar
 
@@ -1145,6 +1145,12 @@ If the method accepts route parameters, you may pass them as the second argument
 The `asset` function generates a URL for an asset using the current scheme of the request (HTTP or HTTPS):
 
     $url = asset('img/photo.jpg');
+
+You can configure the asset URL host by setting the `ASSET_URL` variable in your `.env` file. This can be useful if you host your assets on an external service like Amazon S3:
+
+    // ASSET_URL=http://example.com/assets
+
+    $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {#collection-method}

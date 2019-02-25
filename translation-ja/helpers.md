@@ -1081,7 +1081,7 @@ Str::singular`関数は複数形を単数形へ変換します。この関数は
 
     use Illuminate\Support\Str;
 
-    $converted = studly_case('foo_bar');
+    $converted = Str::studly('foo_bar');
 
     // FooBar
 
@@ -1145,6 +1145,12 @@ Str::singular`関数は複数形を単数形へ変換します。この関数は
 `asset`関数は、現在のリクエストのスキーマ(HTTPかHTTPS)を使い、アセットへのURLを生成します。
 
     $url = asset('img/photo.jpg');
+
+`.env`ファイルの`ASSET_URL`変数で、アセットURLホストを設定できます。Amazon S3のような外部サービスへ、アセットをホストする場合に便利です。
+
+    // ASSET_URL=http://example.com/assets
+
+    $url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 
 <a name="method-secure-asset"></a>
 #### `secure_asset()` {#collection-method}

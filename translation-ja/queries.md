@@ -638,6 +638,18 @@ JSON配列を長さでクエリするには、`whereJsonLength`を使います�
                 ->where('id', 1)
                 ->update(['votes' => 1]);
 
+#### UPDATEかINSERT
+
+データベースへ一致するレコードが存在している場合は更新し、一致するレコードがない場合は新規追加したいことも起きます。このようなシナリオでは、`updateOrInsert`メソッドが使えます。`updateOrInsert`メソッドは２つの引数を取ります。見つけようとするレコードの条件の配列と、更新するカラム／値のペアの配列です。
+
+`updateOrInsert`メソッドは最初の引数のカラム／値ペアを使い、一致するデータベースレコードを見つけようとします。レコードが存在していれば、２つ目の引数の値で更新します。レコードが見つからなければ、両引数をマージした結果で新しいレコードを挿入します。
+
+    DB::table('users')
+        ->updateOrInsert(
+            ['email' => 'john@example.com', 'name' => 'John'],
+            ['votes' => '2']
+        );
+
 <a name="updating-json-columns"></a>
 ### JSONカラムの更新
 

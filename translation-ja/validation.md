@@ -936,6 +936,20 @@ MIMEタイプと対応する拡張子の完全なリストは、[https://svn.apa
 
 **他のフィールド**が**値**のどれかと一致している場合、このフィールドが存在し、かつ空でないことをバリデートします。
 
+`required_if`ルールにもっと複雑な条件を指定したい場合は、`Rule::requiredIf`メソッドを使用してください。このメソッドは論理値かクロージャを引数に取ります。クロージャが渡された場合、そのクロージャはバリデーション対象が要求されているかを示すため、`ture`か`false`を返す必要があります。
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::requiredIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::requiredIf(function () use ($request) {
+            return $request->user()->is_admin;
+        }),
+    ]);
+
 <a name="rule-required-unless"></a>
 #### required\_unless:_他のフィールド_,_値_,...
 
