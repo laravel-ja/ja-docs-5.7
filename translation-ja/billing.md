@@ -19,7 +19,7 @@
     - [カードの事前登録あり](#with-credit-card-up-front)
     - [カードの事前登録なし](#without-credit-card-up-front)
 - [顧客](#customers)
-    - [Creating Customers](#creating-customers)
+    - [顧客の生成](#creating-customers)
 - [カード](#cards)
     - [クレジットカードの取得](#retrieving-credit-cards)
     - [登録済みカードの判定](#determining-if-a-card-is-on-file)
