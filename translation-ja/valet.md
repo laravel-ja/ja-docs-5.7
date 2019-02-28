@@ -91,7 +91,7 @@ Valetはマシンが起動されると、毎回デーモンを自動的に起動
 Valetでは`valet use php@version`コマンドにより、PHPバージョンを変更できます。指定されたPHPバージョンがインストールされていない場合、ValetはBrewによりインストールします。
 
     valet use php@7.2
-    
+
     valet use php
 
 <a name="upgrading"></a>
@@ -99,7 +99,7 @@ Valetでは`valet use php@version`コマンドにより、PHPバージョンを�
 
 Valetインストールをアップデートするには、ターミナルで`composer global update`コマンドを実行します。アップグレードできたら、`valet install`コマンドを実行し、必要な設定ファイルの追加アップグレードを行うのは、グッドプラクティスです。
 
-#### アップグレード To Valet 2.0
+#### Valet2.0へのアップグレード
 
 Valet 2.0では、Valetの裏で動作するWebサーバをCaddyからNginxへ移動しました。このバージョン並行するは、以下のコマンドを実行し、既存のCaddyデーモンを停止し、アンインストールしてください。
 
